@@ -115,7 +115,7 @@ function WorkCard({
                     className={cn(
                         "relative w-full overflow-hidden rounded-sm bg-zinc-900",
                         isFeatured
-                            ? "aspect-[16/10] md:aspect-[16/9]"
+                            ? "h-full min-h-full aspect-[16/10] md:aspect-auto"
                             : "aspect-[16/9]"
                     )}
                 >
