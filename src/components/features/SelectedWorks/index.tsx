@@ -8,12 +8,12 @@ import { SelectedWorksClient, WorkItem } from "./SelectedWorksClient";
 const WORKS_DATA: WorkItem[] = [
     {
         id: "01",
-        title: "The Stone House",
-        category: "Residences",
-        location: "Dallas, TX",
-        image: "/images/selected-works/casa-dallas.png",
-        year: "2025",
-        slug: "stone-house-dallas",
+        title: "The Design Atelier",
+        category: "Interiors",
+        location: "Dallas HQ",
+        image: "/images/selected-works/architect-office-tools.png",
+        year: "2026",
+        slug: "design-atelier",
         featured: true, // Will display as large card in "All" view
     },
     {
