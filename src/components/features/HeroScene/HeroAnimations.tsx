@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-export function HeroAnimator({ children }: { children: React.ReactNode }) {
+export function HeroAnimator({ children, className }: { children: React.ReactNode; className?: string }) {
     const ref = useRef(null);
     const { scrollY } = useScroll();
     const y = useTransform(scrollY, [0, 1000], [0, 400]);
@@ -16,7 +16,7 @@ export function HeroAnimator({ children }: { children: React.ReactNode }) {
         <m.div
             ref={ref}
             style={{ y, opacity }}
-            className="relative z-10 text-center px-6 max-w-5xl mx-auto mt-20"
+            className={className}
         >
             {children}
         </m.div>
@@ -53,7 +53,7 @@ export function HeroActions() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-6 items-start"
         >
             {/* Shining Border Button */}
             <div className="relative group">
@@ -70,6 +70,19 @@ export function HeroActions() {
             <Button variant="outline" size="lg" className="px-8 text-base text-white border-white/20 hover:bg-white/10 backdrop-blur-md">
                 View Projects
             </Button>
+        </m.div>
+    )
+}
+
+export function HeroFacts({ children }: { children: React.ReactNode }) {
+    return (
+        <m.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
+            className="hidden md:block" // Hidden on mobile for simplicity, or stack it
+        >
+            {children}
         </m.div>
     )
 }

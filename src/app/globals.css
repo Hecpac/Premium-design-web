@@ -117,9 +117,85 @@ h1 {
   @apply text-7xl md:text-9xl tracking-[-0.05em] leading-[1.1];
 }
 
+/* Typography Scale */
+h2 {
+  @apply text-4xl md:text-6xl tracking-tight leading-tight;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl tracking-tight;
+}
+
+h4 {
+  @apply text-xl md:text-2xl tracking-normal font-sans;
+}
+
+.text-lead {
+  @apply text-lg md:text-xl font-light text-[hsl(var(--muted-foreground))] leading-relaxed;
+  /* Max width for readability typically 65ch, handled in layout */
+}
+
+.text-caption {
+  @apply text-sm text-[hsl(var(--muted-foreground))] font-light tracking-wide;
+}
+
+.text-label {
+  @apply text-xs uppercase tracking-[0.2em] font-medium text-[hsl(var(--muted-foreground))];
+}
+
+.text-numeral {
+  @apply font-mono text-[hsl(var(--muted-foreground))] font-light;
+}
+
+/* Spacing Scale (Editorial) */
+.section-spacing {
+  @apply py-24 md:py-40;
+  /* 96px - 160px */
+}
+
+.content-spacing {
+  @apply gap-12 md:gap-24;
+}
+
+/* Component Patterns */
+.editorial-card {
+  @apply relative p-8 md:p-12 border border-white/10 bg-white/5 backdrop-blur-sm rounded-sm overflow-hidden transition-all duration-500 hover:border-[hsl(var(--primary))/0.5];
+}
+
+.thin-rule {
+  @apply w-full h-px bg-white/10 my-8;
+}
+
+.stat-block {
+  @apply flex flex-col gap-2;
+}
+
+.stat-value {
+  @apply font-[family-name:var(--font-playfair)] text-5xl md:text-7xl text-[hsl(var(--foreground))] font-light;
+}
+
+.stat-label {
+  @apply text-xs uppercase tracking-[0.2em] font-medium text-[hsl(var(--primary))];
+}
+
 /* Text Utilities */
 .text-balance {
   text-wrap: balance;
+}
+
+/* Optimal Noise Overlay: Fixed, Static, Pointer-events none */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  /* Use a static image if possible for max performance. 
+     SVG filter here is rasterized once by the browser. */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  user-select: none;
 }
 
 /* Smooth scrolling */

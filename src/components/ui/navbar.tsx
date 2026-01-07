@@ -28,7 +28,7 @@ function Navbar({ className, brandName = "Premium Home" }: NavbarProps) {
                 // Sticky positioning
                 "fixed top-0 left-0 right-0 z-50",
                 // Frosty glassmorphism effect
-                "bg-white/5 backdrop-blur-md",
+                "bg-black/60 backdrop-blur-md supports-[backdrop-filter]:bg-white/5",
                 "border-b border-white/10",
                 // Layout
                 "px-6 py-4",

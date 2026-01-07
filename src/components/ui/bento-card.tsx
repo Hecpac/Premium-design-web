@@ -18,13 +18,13 @@ const BentoCard = React.forwardRef<HTMLDivElement, BentoCardProps>(
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 whileHover={{
-                    borderColor: "rgba(198, 168, 124, 0.4)",
-                    transition: { duration: 0.2 }
+                    y: -4,
+                    transition: { duration: 0.3, ease: "easeOut" }
                 }}
                 className={cn(
                     // Base glassmorphism styles
-                    "relative overflow-hidden rounded-2xl",
-                    "bg-white/5 backdrop-blur-sm",
+                    "relative overflow-hidden rounded-sm group focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
+                    "bg-white/5",
                     "border border-white/10",
                     // Subtle noise texture via gradient
                     "before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/5 before:via-transparent before:to-transparent before:pointer-events-none",
