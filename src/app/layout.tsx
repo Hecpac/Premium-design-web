@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Providers } from "@/components/providers";
 import { WebVitals } from "@/components/web-vitals";
 import "./globals.css";
@@ -194,6 +196,10 @@ export default function RootLayout({
           <WebVitals />
           {children}
         </Providers>
+        {/* Vercel Analytics - Page views, visitors, top pages */}
+        <Analytics />
+        {/* Vercel Speed Insights - Core Web Vitals monitoring */}
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,26 +1,27 @@
 "use client";
 
-import { m, useScroll, useTransform, useSpring, useInView, useMotionValue, animate } from "framer-motion";
+import { m, useScroll, useTransform, useSpring, useInView, useMotionValue, useReducedMotion, animate } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
-// --- PARALLAX WRAPPER ---
+// --- PARALLAX WRAPPER (Cinematic Subtle: Max 15px) ---
 export function HeroAnimator({ children, className }: { children: React.ReactNode; className?: string }) {
     const ref = useRef(null);
     const { scrollY } = useScroll();
+    const prefersReducedMotion = useReducedMotion();
 
-    // Parallax logic: slightly slower scroll for content
-    const y = useTransform(scrollY, [0, 800], [0, 150]); // 150px parallax shift
-    const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+    // Cinematic parallax: subtle 15px max shift for premium feel
+    const y = useTransform(scrollY, [0, 600], [0, prefersReducedMotion ? 0 : 15]);
+    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-    const springConfig = { stiffness: 100, damping: 30, mass: 1 };
+    // Smooth spring for buttery animation
+    const springConfig = { stiffness: 120, damping: 25, mass: 0.5 };
     const ySpring = useSpring(y, springConfig);
 
     return (
         <m.div
             ref={ref}
-            style={{ y: ySpring, opacity }}
+            style={{ y: prefersReducedMotion ? 0 : ySpring, opacity }}
             className={className}
         >
             {children}
@@ -28,18 +29,20 @@ export function HeroAnimator({ children, className }: { children: React.ReactNod
     );
 }
 
-// --- STAGGERED TITLE ---
+// --- STAGGERED TITLE (Cinematic Word-by-Word Reveal) ---
 export function HeroTitle({ children }: { children: React.ReactNode }) {
+    const prefersReducedMotion = useReducedMotion();
+
     return (
         <m.div
-            initial="hidden"
+            initial={prefersReducedMotion ? "visible" : "hidden"}
             animate="visible"
             variants={{
                 hidden: {},
                 visible: {
                     transition: {
-                        staggerChildren: 0.1,
-                        delayChildren: 0.2
+                        staggerChildren: 0.12, // Slightly slower for cinematic feel
+                        delayChildren: 0.3
                     }
                 }
             }}
@@ -49,91 +52,209 @@ export function HeroTitle({ children }: { children: React.ReactNode }) {
     );
 }
 
+/**
+ * TitleWord - Performance-optimized word reveal
+ * Only uses opacity + translateY (no blur/filter for GPU efficiency)
+ */
 export function TitleWord({ children, className }: { children: React.ReactNode, className?: string }) {
+    const prefersReducedMotion = useReducedMotion();
+
     return (
         <m.span
             className={className}
             variants={{
-                hidden: { opacity: 0, y: 40, filter: "blur(4px)" },
+                hidden: { opacity: 0, y: 30 },
                 visible: {
                     opacity: 1,
                     y: 0,
-                    filter: "blur(0px)",
-                    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+                    transition: {
+                        duration: 0.7,
+                        ease: [0.22, 1, 0.36, 1] // easeOutExpo for premium deceleration
+                    }
                 }
             }}
-            style={{ display: "inline-block", marginRight: "0.25em" }}
+            style={{
+                display: "inline-block",
+                marginRight: "0.25em",
+                willChange: prefersReducedMotion ? "auto" : "opacity, transform"
+            }}
         >
             {children}
         </m.span>
     )
 }
 
-// --- FADE UP SUBTITLE ---
+// --- FADE UP SUBTITLE (Cinematic Reveal) ---
 export function HeroSubtitle({ children }: { children: React.ReactNode }) {
+    const prefersReducedMotion = useReducedMotion();
+
     return (
         <m.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+            transition={{
+                duration: 0.9,
+                delay: prefersReducedMotion ? 0 : 0.9,
+                ease: [0.22, 1, 0.36, 1]
+            }}
         >
             {children}
         </m.div>
     );
 }
 
-// --- BUTTONS ---
+// --- BUTTONS (Premium Micro-Interactions) ---
+/**
+ * HeroCTA - Individual button with hover lift + glow
+ * Uses CSS transforms for 60fps performance
+ * Uses native anchors for proper link semantics
+ */
+function HeroCTA({
+    children,
+    variant = "primary",
+    href = "#contact"
+}: {
+    children: React.ReactNode;
+    variant?: "primary" | "secondary";
+    href?: string;
+}) {
+    const prefersReducedMotion = useReducedMotion();
+
+    if (variant === "primary") {
+        return (
+            <m.a
+                href={href}
+                className="relative group inline-flex items-center justify-center"
+                whileHover={prefersReducedMotion ? {} : { y: -2 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
+                {/* Animated glow backdrop */}
+                <m.div
+                    className="absolute -inset-1 bg-gradient-to-r from-[hsl(var(--primary))] via-amber-500 to-[hsl(var(--primary))] rounded-full blur-md pointer-events-none"
+                    initial={{ opacity: 0.4 }}
+                    whileHover={{ opacity: 0.8, scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                />
+                <span className="relative h-12 px-8 text-base bg-black text-white hover:bg-black/90 border border-white/10 overflow-hidden shadow-2xl rounded-full inline-flex items-center justify-center font-medium">
+                    <span className="relative z-10 flex items-center">
+                        {children}
+                        <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                    {/* Shine sweep effect */}
+                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+                </span>
+            </m.a>
+        );
+    }
+
+    return (
+        <m.a
+            href={href}
+            className="inline-flex items-center justify-center h-12 px-8 text-base text-white border border-white/20 hover:bg-white/10 hover:border-white/40 backdrop-blur-md transition-all duration-300 rounded-full font-medium"
+            whileHover={prefersReducedMotion ? {} : { y: -2 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        >
+            {children}
+        </m.a>
+    );
+}
+
 export function HeroActions() {
+    const prefersReducedMotion = useReducedMotion();
+
     return (
         <m.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: prefersReducedMotion ? 0 : 1.1, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col sm:flex-row gap-6 items-start"
         >
-            {/* Shining Border Button */}
-            <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-[hsl(var(--primary))] to-blue-600 rounded-full opacity-60 blur-sm group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-                <Button
-                    size="lg"
-                    className="relative px-8 text-base bg-black text-white hover:bg-black/90 border border-white/10 overflow-hidden"
-                >
-                    <span className="relative z-10 flex items-center">
-                        Book a Consultation
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                    </span>
-                    {/* Shine effect */}
-                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
-                </Button>
-            </div>
+            <HeroCTA variant="primary" href="#contact">
+                Book a Consultation
+            </HeroCTA>
 
-            <Button variant="outline" size="lg" className="px-8 text-base text-white border-white/20 hover:bg-white/10 backdrop-blur-md">
+            <HeroCTA variant="secondary" href="#projects">
                 View Projects
-            </Button>
+            </HeroCTA>
         </m.div>
     )
 }
 
-// --- ANIMATED STATS ---
-function Counter({ value, suffix = "", duration = 2 }: { value: number, suffix?: string, duration?: number }) {
+// --- ANIMATED STATS (Performance Optimized) ---
+/**
+ * Counter Component - Performance Engineering Requirements:
+ * 1. Zero CLS: Uses min-width based on final value character count
+ * 2. prefers-reduced-motion: Respects user accessibility preferences
+ * 3. Viewport-triggered: Only animates when entering viewport (useInView)
+ * 4. Efficient: Uses Framer Motion's useMotionValue + animate (no heavy libs)
+ */
+function Counter({
+    value,
+    prefix = "",
+    suffix = "",
+    duration = 2
+}: {
+    value: number;
+    prefix?: string;
+    suffix?: string;
+    duration?: number;
+}) {
     const nodeRef = useRef<HTMLSpanElement>(null);
-    const inView = useInView(nodeRef, { once: true, margin: "-100px" });
+    const inView = useInView(nodeRef, { once: true, margin: "-50px" });
+    const motionValue = useMotionValue(0);
+    const [hasAnimated, setHasAnimated] = useState(false);
+
+    // Respect prefers-reduced-motion
+    const prefersReducedMotion = useReducedMotion();
+
+    // Calculate min-width to prevent CLS (ch unit = width of "0" character)
+    const finalText = `${prefix}${value}${suffix}`;
+    const minWidth = `${finalText.length}ch`;
 
     useEffect(() => {
-        if (inView && nodeRef.current) {
-            const node = nodeRef.current;
-            const controls = animate(0, value, {
-                duration: duration,
-                ease: "easeOut",
-                onUpdate: (latest) => {
-                    node.textContent = Math.round(latest).toString() + suffix;
-                }
-            });
-            return controls.stop;
-        }
-    }, [inView, value, suffix, duration]);
+        if (!inView || hasAnimated) return;
 
-    return <span ref={nodeRef} className="stat-value opacity-0 animate-fade-in">{0 + suffix}</span>;
+        // If user prefers reduced motion, show final value immediately
+        if (prefersReducedMotion) {
+            if (nodeRef.current) {
+                nodeRef.current.textContent = finalText;
+            }
+            setHasAnimated(true);
+            return;
+        }
+
+        // Animate using Framer Motion's performant animate function
+        const controls = animate(motionValue, value, {
+            duration: duration,
+            ease: [0.22, 1, 0.36, 1], // Custom easeOutExpo for premium feel
+            onUpdate: (latest) => {
+                if (nodeRef.current) {
+                    nodeRef.current.textContent = `${prefix}${Math.round(latest)}${suffix}`;
+                }
+            },
+            onComplete: () => setHasAnimated(true)
+        });
+
+        return () => controls.stop();
+    }, [inView, hasAnimated, prefersReducedMotion, motionValue, value, duration, prefix, suffix, finalText]);
+
+    // Render final value initially to prevent CLS, CSS will handle the visual
+    return (
+        <span
+            ref={nodeRef}
+            className="stat-value tabular-nums"
+            style={{
+                minWidth,
+                display: "inline-block",
+                // Start at 0 visually but reserve space for final value
+            }}
+            aria-label={finalText}
+        >
+            {prefersReducedMotion ? finalText : `${prefix}0${suffix}`}
+        </span>
+    );
 }
 
 export function HeroFacts({ children }: { children: React.ReactNode }) {

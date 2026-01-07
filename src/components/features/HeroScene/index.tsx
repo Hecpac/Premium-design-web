@@ -70,8 +70,7 @@ export function HeroScene() {
                                 </div>
                                 <div className="thin-rule border-white/20" />
                                 <div className="stat-block">
-                                    <span className="stat-value text-[hsl(var(--primary))]">$</span>
-                                    <Counter value={50} suffix="M+" duration={3} />
+                                    <Counter value={50} prefix="$" suffix="M+" duration={3} />
                                     <span className="stat-label">Value Delivered</span>
                                 </div>
                             </div>

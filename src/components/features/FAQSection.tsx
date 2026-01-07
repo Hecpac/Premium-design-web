@@ -1,4 +1,3 @@
-import Script from "next/script";
 import {
     Accordion,
     AccordionContent,
@@ -6,12 +5,17 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// ============================================================================
+// FAQ DATA (Spanish - Luxury Construction)
+// Objection-handling focus, no risky ROI claims
+// ============================================================================
+
 interface FAQItem {
     question: string;
     answer: string;
 }
 
-const faqs: FAQItem[] = [
+const FAQ_DATA: FAQItem[] = [
     {
         question: "¿Cómo es el proceso de consulta inicial?",
         answer:
@@ -74,48 +78,112 @@ const faqs: FAQItem[] = [
     },
 ];
 
-// Generate FAQPage JSON-LD
-const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
+// ============================================================================
+// JSON-LD GENERATOR (Type-safe)
+// ============================================================================
+
+interface FAQPageSchema {
+    "@context": "https://schema.org";
+    "@type": "FAQPage";
+    mainEntity: Array<{
+        "@type": "Question";
+        name: string;
         acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.answer,
-        },
-    })),
-};
+            "@type": "Answer";
+            text: string;
+        };
+    }>;
+}
+
+function generateFAQSchema(faqs: FAQItem[]): FAQPageSchema {
+    return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+            },
+        })),
+    };
+}
+
+// ============================================================================
+// FAQ SECTION COMPONENT (Server Component with Client Accordion)
+// ============================================================================
 
 export function FAQSection() {
+    const faqSchema = generateFAQSchema(FAQ_DATA);
+
     return (
         <section
-            className="max-w-4xl mx-auto py-24 px-6 relative"
+            className="max-w-4xl mx-auto py-24 md:py-32 px-6 relative"
+            id="faq"
             aria-labelledby="faq-heading"
         >
-            {/* FAQPage JSON-LD */}
-            <Script
-                id="faq-jsonld"
+            {/* 
+                FAQPage JSON-LD - Injected safely via script tag
+                Using dangerouslySetInnerHTML is safe here because:
+                1. Content is generated server-side from static data
+                2. No user input is included
+                3. JSON.stringify escapes any special characters
+            */}
+            <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(faqSchema),
+                }}
             />
 
-            <h2
-                id="faq-heading"
-                className="font-[family-name:var(--font-playfair)] text-4xl md:text-5xl text-[hsl(var(--foreground))] mb-16 text-center"
-            >
-                Preguntas Frecuentes
-            </h2>
+            {/* Section Header */}
+            <div className="text-center mb-16">
+                <span className="text-label text-[hsl(var(--primary))] mb-4 block">
+                    Resolvemos sus dudas
+                </span>
+                <h2
+                    id="faq-heading"
+                    className="text-white mb-4"
+                >
+                    Preguntas{" "}
+                    <span className="text-[hsl(var(--primary))] italic">Frecuentes</span>
+                </h2>
+                <p className="text-zinc-400 max-w-2xl mx-auto">
+                    Todo lo que necesita saber antes de comenzar su proyecto de construcción de lujo en Dallas.
+                </p>
+            </div>
 
+            {/* Accordion - Client component isolated here */}
             <Accordion type="single" collapsible className="w-full">
-                {faqs.map((faq, index) => (
-                    <AccordionItem key={index} value={`item-${index}`}>
+                {FAQ_DATA.map((faq, index) => (
+                    <AccordionItem key={index} value={`faq-${index}`}>
                         <AccordionTrigger>{faq.question}</AccordionTrigger>
                         <AccordionContent>{faq.answer}</AccordionContent>
                     </AccordionItem>
                 ))}
             </Accordion>
+
+            {/* Bottom CTA */}
+            <div className="mt-16 text-center">
+                <div className="thin-rule max-w-xs mx-auto mb-8 opacity-30" />
+                <p className="text-zinc-500 text-sm mb-4">
+                    ¿No encuentra su pregunta?
+                </p>
+                <a
+                    href="#contact"
+                    className="text-[hsl(var(--primary))] hover:underline underline-offset-4 text-sm uppercase tracking-widest"
+                >
+                    Contáctenos directamente
+                </a>
+            </div>
         </section>
     );
 }
+
+// ============================================================================
+// EXPORTS
+// ============================================================================
+
+export { FAQ_DATA };
+export type { FAQItem };
