@@ -90,25 +90,8 @@ export default function InsightPage({ params }: PageProps) {
                 <div className="max-w-3xl mx-auto px-6">
                     <div
                         className="prose prose-invert prose-lg md:prose-xl prose-headings:font-[family-name:var(--font-playfair)] prose-headings:font-normal prose-p:font-light prose-p:text-zinc-300 prose-blockquote:border-l-[hsl(var(--primary))] prose-blockquote:text-white prose-blockquote:font-[family-name:var(--font-playfair)] prose-blockquote:not-italic prose-strong:text-white prose-a:text-[hsl(var(--primary))] prose-li:text-zinc-300"
-                        dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, "<br/>") }} // Simple Markdown simulation for demo string content
+                        dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, "<br/>") }}
                     />
-                    {/* Note: In a real app, use a markdown parser. The content in insights.ts is simulated markdown string. 
-              Since it's simple string with line breaks and some markdown syntax, we might want to basic parse or just render as is with style.
-              However, the updated insights.ts has actual markdown syntax. Using a library like react-markdown would be best, 
-              but to keep JS light and deps minimal as requested, I'll assume the user is okay with basic rendering or I should just render it safely.
-              
-              Actually, the user constraints: "Keep JS light". Adding react-markdown is a dependency.
-              If I really want to render the markdown perfectly I'd need a parser. 
-              But for this DEMO:
-              I will assume the 'content' string is HTML-ready OR I should parse it. 
-              The 'content' I wrote has `##`, `###`, `**`, `>`.
-              I'll enable `react-markdown` if it was in package.json, but I can't check it easily.
-              I'll just map the string to simple HTML replacement for the demo to work without huge deps. 
-              Or I'll simply wrap it in <ReactMarkdown> if I can assume it exists. 
-              Wait, I can't assume.  
-              
-              Let's do a MICRO parser for the demo content specifically.
-           */}
                 </div>
 
                 {/* Navigation & CTA */}

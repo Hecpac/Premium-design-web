@@ -1,81 +1,110 @@
 "use client";
 
-import { useInView, useMotionValue, useReducedMotion, animate, m } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /**
- * StatsCounterClient - Performance Engineering Requirements:
- * 1. Zero CLS: Uses min-width based on final value character count
- * 2. prefers-reduced-motion: Respects user accessibility preferences
- * 3. Viewport-triggered: Only animates when entering viewport (useInView)
- * 4. Efficient: Uses Framer Motion's useMotionValue + animate (no heavy libs)
+ * StatsCounterClient - Performance Engineering
+ * 
+ * fixes: "0" value bug by using robust vanilla IntersectionObserver + RAF
+ * features:
+ * - Zero CLS (min-width reservation)
+ * - prefers-reduced-motion support
+ * - Viewport triggering
+ * - No heavy animation lib dependencies for this critical hero element
  */
 export function StatsCounterClient({
     value,
     prefix = "",
     suffix = "",
-    duration = 2
+    duration = 2.5 // seconds
 }: {
     value: number;
     prefix?: string;
     suffix?: string;
     duration?: number;
 }) {
-    const nodeRef = useRef<HTMLSpanElement>(null);
-    const inView = useInView(nodeRef, { once: true, margin: "-10%" }); // Trigger when 10% in view
-    const motionValue = useMotionValue(0);
+    const [displayValue, setDisplayValue] = useState(0);
     const [hasAnimated, setHasAnimated] = useState(false);
+    const ref = useRef<HTMLSpanElement>(null);
 
-    // Respect prefers-reduced-motion
-    const prefersReducedMotion = useReducedMotion();
-
-    // Calculate min-width to prevent CLS (ch unit = width of "0" character)
-    const finalText = `${prefix}${value}${suffix}`;
-    const minWidth = `${finalText.length}ch`;
+    // Calculate strict min-width to prevent layout shift
+    // We assume the final value width is the maximum width needed
+    const finalString = `${prefix}${value}${suffix}`;
+    // Using 'ch' units based on length is a good heuristic for monospaced/tabular nums
+    const minWidth = `${finalString.length}ch`;
 
     useEffect(() => {
-        if (!inView || hasAnimated) return;
+        if (hasAnimated) return;
 
-        // If user prefers reduced motion, show final value immediately
-        if (prefersReducedMotion) {
-            if (nodeRef.current) {
-                nodeRef.current.textContent = finalText;
-            }
+        const element = ref.current;
+        if (!element) return;
+
+        // 1. Check Reduced Motion Preference
+        const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const shouldReduceMotion = mediaQuery.matches;
+
+        if (shouldReduceMotion) {
+            setDisplayValue(value);
             setHasAnimated(true);
             return;
         }
 
-        // Animate using Framer Motion's performant animate function
-        const controls = animate(motionValue, value, {
-            duration: duration,
-            ease: [0.22, 1, 0.36, 1], // Custom easeOutExpo for premium feel
-            onUpdate: (latest) => {
-                if (nodeRef.current) {
-                    nodeRef.current.textContent = `${prefix}${Math.round(latest)}${suffix}`;
+        // 2. Observer for Viewport Entry
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    startAnimation();
+                    observer.disconnect();
                 }
             },
-            onComplete: () => {
-                setHasAnimated(true);
-                if (nodeRef.current) nodeRef.current.textContent = finalText; // Ensure exact final value
-            }
-        });
+            { threshold: 0.1 } // Trigger when 10% visible
+        );
 
-        return () => controls.stop();
-    }, [inView, hasAnimated, prefersReducedMotion, motionValue, value, duration, prefix, suffix, finalText]);
+        observer.observe(element);
 
-    // Render 0 initially (or final if reduced motion) but reserve space for final value
+        // 3. Animation Logic (RAF)
+        let startTime: number | null = null;
+        let animationFrameId: number;
+
+        const startAnimation = () => {
+            const animate = (timestamp: number) => {
+                if (!startTime) startTime = timestamp;
+                const progress = timestamp - startTime;
+                const progressRatio = Math.min(progress / (duration * 1000), 1);
+
+                // Ease Out Expo for premium feel
+                // 1 - Math.pow(2, -10 * progressRatio)
+                const easeValue = progressRatio === 1 ? 1 : 1 - Math.pow(2, -10 * progressRatio);
+
+                const currentCount = Math.round(easeValue * value);
+                setDisplayValue(currentCount);
+
+                if (progressRatio < 1) {
+                    animationFrameId = requestAnimationFrame(animate);
+                } else {
+                    setDisplayValue(value);
+                    setHasAnimated(true);
+                }
+            };
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        return () => {
+            observer.disconnect();
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        };
+    }, [value, duration, hasAnimated]);
+
+    // Initial render: show 0 (or final if pre-rendered/hydrated late)
+    // We use tabular-nums to ensure character width consistency
     return (
         <span
-            ref={nodeRef}
-            className="stat-value tabular-nums font-feature-settings-tnum"
-            style={{
-                minWidth,
-                display: "inline-block",
-                textAlign: "left"
-            }}
-            aria-label={finalText}
+            ref={ref}
+            className="tabular-nums font-feature-settings-tnum inline-block text-left"
+            style={{ minWidth }}
+            aria-label={finalString}
         >
-            {prefersReducedMotion ? finalText : `${prefix}0${suffix}`}
+            {prefix}{hasAnimated ? value : displayValue}{suffix}
         </span>
     );
 }
