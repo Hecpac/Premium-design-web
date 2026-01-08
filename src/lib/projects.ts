@@ -250,40 +250,40 @@ export const PROJECTS: Project[] = [
         ],
     },
     {
-        slug: "modern-sanctuary",
-        title: "Modern Sanctuary",
-        location: "Dallas, TX",
+        slug: "lakeside-pavilion",
+        title: "Lakeside Pavilion",
+        location: "Grapevine, TX",
         category: "Residence",
         year: "2026",
-        coverImage: "/images/selected-works/new-project.webp",
+        coverImage: "/images/selected-works/casa-dallas.webp",
         gallery: [
-            "/images/selected-works/new-project.webp",
+            "/images/selected-works/casa-dallas.webp",
             "/images/selected-works/residence-preston-hollow.webp",
-            "/images/bento-concrete.webp",
+            "/images/selected-works/villa-las-colinas.webp",
         ],
         summary:
-            "Currently under construction, this bold contemporary residence pushes the boundaries of residential architecture in Dallas. Raw concrete, weathered steel, and expansive glass create a home that celebrates honest materials and dramatic volumes.",
+            "A serene lakefront residence that embraces the natural beauty of Grapevine Lake. Clean horizontal lines and floor-to-ceiling glass create seamless transitions between interior living spaces and the tranquil waterfront setting.",
         sections: [
             {
-                heading: "Design Intent",
+                heading: "Lakefront Living",
                 body: [
-                    "The clients sought a home that would challenge Dallas conventions. We responded with architecture that makes no apologies—board-formed concrete walls, cor-ten steel cladding, and a floating roof that defies expectations.",
-                    "Despite its modernist severity, the interior volumes are warm and welcoming, with double-height spaces bathed in natural light.",
+                    "Positioned on a prime waterfront lot, this residence was designed to maximize lake views from every principal room. The elongated floor plan follows the natural contour of the shoreline.",
+                    "A cantilevered deck extends over the water's edge, creating an intimate connection with the lake that few properties can match.",
                 ],
             },
             {
-                heading: "Under Construction",
+                heading: "Indoor-Outdoor Flow",
                 body: [
-                    "Foundation and structural concrete are complete. Steel framing for the cantilevered sections is underway. Expected completion is Q3 2026.",
-                    "Follow our progress as this ambitious project takes shape.",
+                    "Disappearing glass walls erase the boundary between the great room and covered terrace. When fully opened, the combined space exceeds 2,000 square feet of entertainment area.",
+                    "An outdoor kitchen, infinity-edge pool, and fire pit terrace create distinct zones for waterfront living.",
                 ],
             },
         ],
         stats: [
-            { label: "Square Feet", value: "7,200" },
-            { label: "Concrete Used", value: "380 yd³" },
-            { label: "Cantilever", value: "22 ft" },
-            { label: "Completion", value: "Q3 2026" },
+            { label: "Square Feet", value: "6,400" },
+            { label: "Lake Frontage", value: "180 ft" },
+            { label: "Pool Length", value: "50 ft" },
+            { label: "Deck Area", value: "1,200 sf" },
         ],
     },
     {

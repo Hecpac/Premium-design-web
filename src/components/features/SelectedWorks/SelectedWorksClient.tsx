@@ -96,7 +96,7 @@ function WorkCard({
     const prefersReducedMotion = useReducedMotion();
     const href = item.slug ? `/projects/${item.slug}` : "#";
     
-    // Lazy loading inteligente: primeras 3 imágenes eager (above fold)
+    // Lazy loading: first 3 images eager (above fold), rest lazy
     const isAboveFold = index < 3;
 
     return (
@@ -107,10 +107,7 @@ function WorkCard({
             animate="visible"
             exit="exit"
             transition={{ delay: index * 0.08 }}
-            className={cn(
-                "relative group",
-                isFeatured ? "md:col-span-2 md:row-span-2" : "md:col-span-1"
-            )}
+            className="relative group"
         >
             <Link
                 href={href}
@@ -128,9 +125,7 @@ function WorkCard({
                         "relative w-full overflow-hidden rounded-sm bg-zinc-900",
                         "ring-1 ring-white/5 transition-all duration-300",
                         "group-hover:ring-[hsl(var(--primary))]/20 group-hover:shadow-lg group-hover:shadow-[hsl(var(--primary))]/5",
-                        isFeatured
-                            ? "h-full min-h-full aspect-[16/10] md:aspect-auto"
-                            : "aspect-[16/9]"
+                        isFeatured ? "aspect-[16/10]" : "aspect-[16/9]"
                     )}
                 >
                     <Image
@@ -314,21 +309,80 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                 </div>
 
                 {/* Editorial Grid Layout */}
-                <m.div
-                    layout
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-                >
-                    <AnimatePresence mode="popLayout">
-                        {filteredItems.map((item, index) => (
-                            <WorkCard
-                                key={item.id}
-                                item={item}
-                                isFeatured={index === featuredIndex}
-                                index={index}
-                            />
-                        ))}
-                    </AnimatePresence>
-                </m.div>
+                {activeFilter === "All" && filteredItems.length > 0 ? (
+                    /* Featured Layout: Hero card left, stack right, then grid below */
+                    <div className="space-y-8">
+                        {/* Top Row: Featured + Sidebar */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+                            {/* Featured Card - Left 7 cols */}
+                            <m.div
+                                layout
+                                className="lg:col-span-7"
+                            >
+                                <AnimatePresence mode="popLayout">
+                                    {filteredItems[0] && (
+                                        <WorkCard
+                                            key={filteredItems[0].id}
+                                            item={filteredItems[0]}
+                                            isFeatured={true}
+                                            index={0}
+                                        />
+                                    )}
+                                </AnimatePresence>
+                            </m.div>
+                            
+                            {/* Sidebar Stack - Right 5 cols */}
+                            <div className="lg:col-span-5 flex flex-col gap-6 md:gap-8">
+                                <AnimatePresence mode="popLayout">
+                                    {filteredItems.slice(1, 3).map((item, idx) => (
+                                        <WorkCard
+                                            key={item.id}
+                                            item={item}
+                                            isFeatured={false}
+                                            index={idx + 1}
+                                        />
+                                    ))}
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                        
+                        {/* Remaining Cards - 3 column grid */}
+                        {filteredItems.length > 3 && (
+                            <m.div
+                                layout
+                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                            >
+                                <AnimatePresence mode="popLayout">
+                                    {filteredItems.slice(3).map((item, idx) => (
+                                        <WorkCard
+                                            key={item.id}
+                                            item={item}
+                                            isFeatured={false}
+                                            index={idx + 3}
+                                        />
+                                    ))}
+                                </AnimatePresence>
+                            </m.div>
+                        )}
+                    </div>
+                ) : (
+                    /* Filtered View: Standard 3-column grid */
+                    <m.div
+                        layout
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                    >
+                        <AnimatePresence mode="popLayout">
+                            {filteredItems.map((item, index) => (
+                                <WorkCard
+                                    key={item.id}
+                                    item={item}
+                                    isFeatured={false}
+                                    index={index}
+                                />
+                            ))}
+                        </AnimatePresence>
+                    </m.div>
+                )}
 
                 {/* Empty State */}
                 {filteredItems.length === 0 && (

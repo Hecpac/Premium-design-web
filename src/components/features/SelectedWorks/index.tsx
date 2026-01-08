@@ -9,25 +9,16 @@ import { SelectedWorksClient, WorkItem } from "./SelectedWorksClient";
 const WORKS_DATA: WorkItem[] = [
     {
         id: "01",
-        title: "Selected Works",
-        category: "Estates",
-        location: "Architecture Portfolio",
-        image: "/images/selected-works/portfolio-collage.webp",
-        year: "2024—2026",
-        slug: "selected-works-portfolio",
-        featured: true, // Will display as large card in "All" view
-    },
-    {
-        id: "02",
         title: "Villa Las Colinas",
         category: "Estates",
         location: "Las Colinas, TX",
         image: "/images/selected-works/villa-las-colinas.webp",
         year: "2024",
         slug: "villa-las-colinas",
+        featured: true, // Will display as large card in "All" view
     },
     {
-        id: "03",
+        id: "02",
         title: "Skyline Penthouse",
         category: "Interiors",
         location: "Uptown Dallas",
@@ -36,7 +27,7 @@ const WORKS_DATA: WorkItem[] = [
         slug: "skyline-penthouse",
     },
     {
-        id: "04",
+        id: "03",
         title: "Highland Park Estate",
         category: "Estates",
         location: "Highland Park",
@@ -45,7 +36,7 @@ const WORKS_DATA: WorkItem[] = [
         slug: "highland-park-estate",
     },
     {
-        id: "05",
+        id: "04",
         title: "Glass Residence",
         category: "Residences",
         location: "Preston Hollow",
@@ -54,7 +45,7 @@ const WORKS_DATA: WorkItem[] = [
         slug: "glass-residence",
     },
     {
-        id: "06",
+        id: "05",
         title: "Southlake Manor",
         category: "Estates",
         location: "Southlake, TX",
@@ -63,16 +54,16 @@ const WORKS_DATA: WorkItem[] = [
         slug: "southlake-manor",
     },
     {
-        id: "07",
-        title: "Modern Sanctuary",
+        id: "06",
+        title: "Lakeside Pavilion",
         category: "Residences",
-        location: "Dallas, TX",
-        image: "/images/selected-works/new-project.webp",
+        location: "Grapevine, TX",
+        image: "/images/selected-works/casa-dallas.webp",
         year: "2026",
-        slug: "modern-sanctuary",
+        slug: "lakeside-pavilion",
     },
     {
-        id: "08",
+        id: "07",
         title: "The Design Atelier",
         category: "Interiors",
         location: "Dallas HQ",
