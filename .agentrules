@@ -1,44 +1,733 @@
-# PROYECTO: Premium Home Design (Cinematic Luxury)
-# ARQUITECTURA: Next.js 14+ (App Router), Shadcn UI, Tailwind v4, Framer Motion, Three.js (R3F)
+# AGENTRULES v2.0.0 - Premium Home Design (Cinematic Luxury)
+**Stack:** Next.js 16.1.1 (App Router) • Shadcn UI • Tailwind v4 • Framer Motion • Three.js (R3F)
 
-Eres un Ingeniero Frontend Senior experto en rendimiento y estética de lujo. Tu objetivo es generar código que sea visualmente impactante pero técnicamente impecable.
+Eres un Ingeniero Frontend Senior especializado en aplicaciones web de alto rendimiento con estética de lujo. Tu misión es generar código que cumpla estándares de producción sin comprometer la experiencia visual.
 
-## REGLAS MAESTRAS DE RENDIMIENTO (PERFORMANCE)
+---
 
-1.  **Imágenes LCP (Critical):**
-    -   Toda imagen en el viewport inicial (Hero, Above-the-fold) DEBE llevar la propiedad `priority={true}`.
-    -   Usa exclusivamente el componente `<Image />` de Next.js.
-    -   Nunca uses imágenes > 2MB. Si detectas un placeholder, sugiere formato WebP/AVIF.
+## 🎯 CORE WEB VITALS - OBJETIVOS OBLIGATORIOS
 
-2.  **Optimización 3D (WebGL/WebGPU):**
-    -   Al usar `react-three-fiber`, configura siempre el `<Canvas>` con `dpr={[1, 1.5]}` para limitar la densidad de píxeles en móviles y evitar sobrecalentamiento.
-    -   Implementa `frameloop="demand"` o usa `useInView` para pausar el renderizado 3D cuando el componente salga de pantalla.
+**Umbrales de producción (90th percentile):**
+- **LCP:** < 2.5s
+- **INP/FID:** < 200ms  
+- **CLS:** < 0.1
+- **FCP:** < 1.8s
+- **Bundle inicial:** < 200KB (gzipped)
+- **Lighthouse Score:** > 95 (mobile)
 
-3.  **Fuentes y CLS:**
-    -   Usa estrictamente `next/font/google` con la variable CSS inyectada en el `layout.tsx`.
-    -   PROHIBIDO usar `@import` o `<link>` para fuentes externas. Queremos CLS = 0.
+**⚠️ REGLA DE ORO:** Si cualquier métrica falla en testing, la corrección tiene prioridad sobre nuevas features.
 
-## REGLAS DE DISEÑO Y UI (SHADCN + TAILWIND)
+---
 
-4.  **Integridad de Componentes (Shadcn):**
-    -   No inventes componentes. Usa los existentes en `@/components/ui`.
-    -   Si necesitas un nuevo componente de UI, verifica primero si existe en la librería Shadcn.
-    -   Usa `cn()` (clsx + tailwind-merge) para combinar clases condicionales. NUNCA uses concatenación de strings manual para clases.
+## 📦 REGLAS DE IMÁGENES Y ASSETS
 
-5.  **Estética "Cinemática" (Motion):**
-    -   Usa `Framer Motion` para entradas. Configuración por defecto: `initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: "easeOut" }}`.
-    -   Evita animaciones de "rebote" (spring) excesivas. Buscamos elegancia, no caricaturas.
+### 1. Optimización de Imágenes (Critical Path)
+```tsx
+// ✅ CORRECTO - Hero/Above-the-fold
+<Image
+  src="/hero.webp"
+  alt="Descripción específica"
+  width={1920}
+  height={1080}
+  priority={true}
+  sizes="100vw"
+  placeholder="blur"
+  blurDataURL="data:image/..." // Generado en build
+  quality={85}
+/>
 
-## REGLAS DE CÓDIGO (CLEAN CODE)
+// ✅ CORRECTO - Below-the-fold
+<Image
+  src="/gallery-1.webp"
+  alt="Interior design detail"
+  width={800}
+  height={600}
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+  loading="lazy"
+  placeholder="blur"
+/>
 
-6.  **Estructura de Archivos:**
-    -   Componentes de página van en `app/`.
-    -   Componentes reutilizables de UI van en `components/ui/`.
-    -   Componentes de negocio (bloques) van en `components/features/`.
-    -   Usa "Server Components" por defecto. Solo añade "use client" cuando sea estrictamente necesario (hooks, interactividad).
+// ❌ INCORRECTO - Sin dimensiones fijas
+<Image src="/photo.jpg" alt="Photo" fill /> // Causa CLS
+```
 
-## COMPORTAMIENTO DEL AGENTE
+**Checklist obligatorio:**
+- ✅ Todas las imágenes usan componente `next/image`
+- ✅ Above-the-fold: `priority={true}` + `sizes` específico
+- ✅ Dimensiones explícitas (`width`/`height`) o `aspect-ratio` CSS
+- ✅ Formatos: WebP primario, AVIF opcional si < 500KB
+- ✅ Límite de archivo: 2MB máximo (1MB recomendado)
+- ✅ `placeholder="blur"` con dataURL generado en build time
 
--   Si te pido un cambio de diseño, verifica primero `docs/style_guide.md`.
--   Si el código generado rompe una de estas reglas, corrígelo automáticamente antes de mostrarlo.
--   No pidas disculpas, simplemente entrega el código corregido y optimizado.
+---
+
+## 🎨 REGLAS DE FUENTES Y TIPOGRAFÍA
+
+### 2. Prevención de CLS en Fonts
+```tsx
+// app/layout.tsx - ✅ ÚNICO MÉTODO PERMITIDO
+import { Inter, Playfair_Display } from 'next/font/google'
+
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
+      <body className="font-sans">{children}</body>
+    </html>
+  )
+}
+```
+
+**PROHIBIDO:**
+- ❌ `@import url('https://fonts.googleapis.com/...')` en CSS
+- ❌ `<link>` tags para fuentes externas en HTML
+- ❌ Fuentes locales sin `@font-face` optimizado
+- ❌ Más de 3 familias de fuentes (causa overhead)
+
+**Objetivo:** CLS de fuentes = 0
+
+---
+
+## 🎬 REGLAS DE ANIMACIONES (FRAMER MOTION)
+
+### 3. Motion Design con Performance-First
+```tsx
+// hooks/use-animation-config.ts - ✅ CREAR ESTE HOOK
+'use client'
+import { useEffect, useState } from 'react'
+
+export const useAnimationConfig = () => {
+  const [config, setConfig] = useState({
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } // easeOutExpo
+  })
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) {
+      setConfig({
+        initial: {},
+        whileInView: {},
+        viewport: { once: true },
+        transition: { duration: 0 }
+      })
+    }
+  }, [])
+
+  return config
+}
+
+// components/features/animated-section.tsx - USO
+import { motion } from 'framer-motion'
+import { useAnimationConfig } from '@/hooks/use-animation-config'
+
+export function AnimatedSection({ children }) {
+  const animation = useAnimationConfig()
+  return <motion.div {...animation}>{children}</motion.div>
+}
+```
+
+**Reglas de Motion:**
+- ✅ Usar `useAnimationConfig()` hook en todos los componentes animados
+- ✅ Respetar `prefers-reduced-motion`
+- ✅ `viewport={{ once: true }}` por defecto (evita re-renders)
+- ✅ Curvas de easing: `[0.22, 1, 0.36, 1]` para elegancia (no `spring`)
+- ❌ NUNCA animar `width`, `height`, `top`, `left` (usa `transform`/`opacity`)
+- ❌ Evitar animaciones simultáneas > 5 elementos (causa jank en low-end)
+
+---
+
+## 🎮 REGLAS DE 3D (THREE.JS / R3F)
+
+### 4. Optimización de Escenas WebGL
+```tsx
+// components/features/hero-3d.tsx - ✅ TEMPLATE OBLIGATORIO
+'use client'
+import { Canvas } from '@react-three/fiber'
+import { Suspense } from 'react'
+import { useInView } from 'react-intersection-observer'
+
+export function Hero3D() {
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: false })
+  
+  return (
+    <div ref={ref} className="h-screen">
+      {inView && (
+        <Canvas
+          dpr={[1, 1.5]} // Limita pixel ratio en mobile
+          performance={{ min: 0.5 }} // Auto-degrada si FPS < 30
+          gl={{ 
+            antialias: false, // Usar FXAA shader si es necesario
+            powerPreference: 'high-performance'
+          }}
+          frameloop="demand" // Solo renderiza cuando necesario
+        >
+          <Suspense fallback={<Loader3D />}>
+            <Scene />
+          </Suspense>
+        </Canvas>
+      )}
+    </div>
+  )
+}
+
+// Preload de assets críticos
+useGLTF.preload('/models/luxury-room.glb')
+```
+
+**Checklist 3D:**
+- ✅ `dpr={[1, 1.5]}` para prevenir sobrecalentamiento móvil
+- ✅ `frameloop="demand"` o `useInView` para pausar renderizado off-screen
+- ✅ `<Suspense>` wrapper con fallback loader
+- ✅ Compresión Draco/Meshopt para modelos > 1MB
+- ✅ Límite de complejidad: 100k triángulos en vista mobile, 500k en desktop
+- ✅ LOD (Level of Detail) con `<Detailed>` de drei para escenas complejas
+- ❌ NUNCA cargar modelos > 5MB sin compresión
+- ❌ Evitar luces > 3 dinámicas (usa baked lighting)
+
+---
+
+## 🧩 REGLAS DE COMPONENTES (SHADCN UI)
+
+### 5. Integridad y Consistencia de UI
+
+**Protocolo de 3 niveles:**
+```bash
+# NIVEL 1: Usar componentes existentes
+import { Button } from '@/components/ui/button'
+
+# NIVEL 2: Instalar desde Shadcn (si no existe)
+npx shadcn@latest add dialog
+
+# NIVEL 3: Crear custom component (solo si no hay alternativa)
+# components/custom/luxury-card.tsx
+```
+
+**Reglas para custom components:**
+```tsx
+// ✅ CORRECTO - Hereda design tokens
+import { cn } from '@/lib/utils'
+
+interface LuxuryCardProps {
+  children: React.ReactNode
+  variant?: 'default' | 'premium'
+  className?: string
+}
+
+export function LuxuryCard({ children, variant = 'default', className }: LuxuryCardProps) {
+  return (
+    <div className={cn(
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      "transition-all duration-300 hover:shadow-lg",
+      variant === 'premium' && "border-primary/20 bg-gradient-to-br from-card to-primary/5",
+      className
+    )}>
+      {children}
+    </div>
+  )
+}
+```
+
+**Checklist de componentes:**
+- ✅ Usar `cn()` de `@/lib/utils` para merge de clases
+- ✅ Heredar tokens del theme: `hsl(var(--primary))`, `bg-card`, etc.
+- ✅ Props tipados con TypeScript (sin `any`)
+- ✅ Documentar en `components/custom/README.md` si es custom
+- ❌ NUNCA concatenar strings de clases manualmente
+- ❌ NUNCA crear variantes que no usen design tokens
+
+---
+
+## 📁 REGLAS DE ARQUITECTURA DE ARCHIVOS
+
+### 6. Estructura y Separación de Responsabilidades
+```
+app/
+├── (marketing)/
+│   ├── page.tsx              # Server Component por defecto
+│   └── layout.tsx
+├── api/
+│   └── contact/route.ts      # Route handlers
+└── globals.css
+
+components/
+├── ui/                        # Shadcn components (no modificar)
+│   ├── button.tsx
+│   └── dialog.tsx
+├── features/                  # Business logic components
+│   ├── hero-section.tsx
+│   ├── gallery-grid.tsx
+│   └── contact-form.tsx
+└── custom/                    # Custom UI components
+    ├── luxury-card.tsx
+    └── README.md              # Documentación obligatoria
+
+lib/
+├── utils.ts                   # cn() y helpers
+├── fonts.ts                   # Font configs
+└── validations.ts             # Zod schemas
+
+hooks/
+├── use-animation-config.ts
+└── use-media-query.ts
+```
+
+**Reglas de uso:**
+- ✅ **Server Components por defecto** (más performantes)
+- ✅ `'use client'` SOLO cuando necesites: hooks, event handlers, browser APIs
+- ✅ Colocación:
+  - Páginas → `app/`
+  - UI reutilizable → `components/ui/`
+  - Lógica de negocio → `components/features/`
+  - Utilities → `lib/`
+  - Custom hooks → `hooks/`
+- ❌ NUNCA mezclar lógica de negocio en `components/ui/`
+
+---
+
+## 🔄 REGLAS DE FETCHING Y ESTADO
+
+### 7. Data Fetching Strategy
+```tsx
+// ✅ CORRECTO - Server Component (preferido)
+// app/projects/page.tsx
+async function ProjectsPage() {
+  const projects = await fetch('https://api.example.com/projects', {
+    next: { revalidate: 3600 } // ISR: 1 hora
+  }).then(res => res.json())
+  
+  return <ProjectGrid projects={projects} />
+}
+
+// ✅ CORRECTO - Client Component con TanStack Query
+// components/features/live-feed.tsx
+'use client'
+import { useQuery } from '@tanstack/react-query'
+
+export function LiveFeed() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['live-feed'],
+    queryFn: async () => {
+      const res = await fetch('/api/live-feed')
+      return res.json()
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutos
+    refetchInterval: 30000, // Refetch cada 30s
+  })
+  
+  if (isLoading) return <FeedSkeleton />
+  return <FeedList items={data} />
+}
+
+// ❌ INCORRECTO - useEffect para fetching inicial
+useEffect(() => {
+  fetch('/api/data').then(res => res.json()).then(setData)
+}, [])
+```
+
+**Decision Matrix:**
+
+| Caso de Uso | Solución | Configuración |
+|------------|----------|---------------|
+| Contenido estático/editorial | Server Component + ISR | `revalidate: 3600` |
+| Datos en tiempo real | Client + TanStack Query | `refetchInterval: 30000` |
+| Datos específicos del usuario | Client + TanStack Query | `staleTime: 0` |
+| Búsqueda/filtros | URL search params + Server | `searchParams` prop |
+
+---
+
+### 8. Gestión de Estado
+```tsx
+// ✅ CORRECTO - Server State con TanStack Query
+// Configurado en app/providers.tsx
+'use client'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+    },
+  },
+})
+
+// ✅ CORRECTO - UI State con Zustand (solo para estado complejo)
+// stores/navigation-store.ts
+import { create } from 'zustand'
+
+interface NavigationState {
+  isMenuOpen: boolean
+  activeSection: string
+  toggleMenu: () => void
+  setActiveSection: (section: string) => void
+}
+
+export const useNavigationStore = create<NavigationState>((set) => ({
+  isMenuOpen: false,
+  activeSection: 'home',
+  toggleMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
+  setActiveSection: (section) => set({ activeSection: section }),
+}))
+
+// ✅ CORRECTO - Form State con React Hook Form + Zod
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+const contactSchema = z.object({
+  name: z.string().min(2, 'Nombre muy corto'),
+  email: z.string().email('Email inválido'),
+  message: z.string().min(10, 'Mensaje muy corto'),
+})
+
+export function ContactForm() {
+  const form = useForm({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { name: '', email: '', message: '' }
+  })
+  
+  // ...
+}
+```
+
+**Stack de estado:**
+- **Server State:** TanStack Query (configurado globalmente)
+- **UI State local:** `useState` para casos simples
+- **UI State global:** Zustand (solo si afecta > 3 componentes)
+- **Form State:** React Hook Form + Zod validation
+- **URL State:** Next.js `searchParams` + `useRouter`
+
+**PROHIBIDO:**
+- ❌ Redux/Redux Toolkit (overhead innecesario para este proyecto)
+- ❌ Context API para datos remotos (usar TanStack Query)
+- ❌ `useEffect` para fetching inicial (anti-pattern)
+
+---
+
+## 🔒 REGLAS DE TYPESCRIPT
+
+### 9. Type Safety Obligatorio
+```tsx
+// ✅ CORRECTO - Props explícitos
+interface HeroSectionProps {
+  title: string
+  subtitle: string
+  backgroundImage: string
+  ctaText?: string // Optional con ?
+  onCtaClick?: () => void
+}
+
+export function HeroSection({ 
+  title, 
+  subtitle, 
+  backgroundImage,
+  ctaText = 'Explorar', // Default value
+  onCtaClick 
+}: HeroSectionProps) {
+  // ...
+}
+
+// ✅ CORRECTO - Uso de 'satisfies' para config objects
+const siteConfig = {
+  name: 'Premium Home Design',
+  description: 'Luxury interior solutions',
+  links: {
+    instagram: 'https://instagram.com/...',
+    contact: '/contact',
+  }
+} satisfies {
+  name: string
+  description: string
+  links: Record<string, string>
+}
+
+// ✅ PERMITIDO - Escape hatch con justificación
+const data = JSON.parse(response) as ProjectData // OK: External API sin types
+// @ts-expect-error - Three.js r128 no tiene types para esta propiedad experimental
+renderer.shadowMap.autoUpdate = false
+
+// ❌ INCORRECTO
+const props: any = getProps() // Demasiado permisivo
+// @ts-ignore sin explicación
+```
+
+**Reglas:**
+- ✅ Todos los props de componentes tienen interfaces/types explícitos
+- ✅ Usar `satisfies` para config objects que necesitan inference
+- ✅ Funciones exportadas tienen tipos de retorno explícitos
+- ❌ `any` está prohibido (excepción: APIs externas sin types)
+- ❌ `@ts-ignore` requiere comentario explicando el por qué
+- ✅ Usar `@ts-expect-error` en vez de `@ts-ignore` (falla si el error desaparece)
+
+---
+
+## ♿ REGLAS DE ACCESIBILIDAD
+
+### 10. WCAG 2.1 Level AA Compliance
+```tsx
+// ✅ CORRECTO - Contraste y navegación
+<button 
+  className="bg-primary text-primary-foreground" // Contraste 4.5:1 mínimo
+  onClick={handleClick}
+  aria-label="Abrir galería de proyectos"
+>
+  <GalleryIcon aria-hidden="true" /> {/* Decorativo */}
+  Ver Proyectos
+</button>
+
+// ✅ CORRECTO - Skip links
+// app/layout.tsx
+<body>
+  <a 
+    href="#main-content" 
+    className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50"
+  >
+    Saltar al contenido principal
+  </a>
+  <Navigation />
+  <main id="main-content">
+    {children}
+  </main>
+</body>
+
+// ✅ CORRECTO - Formularios accesibles
+<form>
+  <label htmlFor="email" className="block mb-2">
+    Email *
+  </label>
+  <input
+    id="email"
+    type="email"
+    required
+    aria-describedby="email-error"
+    aria-invalid={errors.email ? 'true' : 'false'}
+  />
+  {errors.email && (
+    <p id="email-error" role="alert" className="text-destructive">
+      {errors.email.message}
+    </p>
+  )}
+</form>
+```
+
+**Checklist obligatorio:**
+- ✅ **Contraste:** Mínimo 4.5:1 para texto normal, 3:1 para texto grande (>18px)
+- ✅ **Keyboard navigation:** Todo elemento interactivo accesible con Tab
+- ✅ **Focus visible:** Estados de `:focus-visible` en todos los interactivos
+- ✅ **Skip links:** Presente en layout principal
+- ✅ **ARIA labels:** En iconos sin texto y elementos interactivos
+- ✅ **Landmarks:** `<main>`, `<nav>`, `<header>`, `<footer>` semánticos
+- ✅ **Form labels:** Asociados con `htmlFor` / `id`
+- ✅ **Error messages:** Con `role="alert"` y `aria-describedby`
+- ✅ **Alt text:** Descriptivo (no "imagen de..." sino describir contenido)
+
+**Testing:**
+```bash
+# Instalar (si no existe)
+npm install -D @axe-core/react
+
+# Integrar en development
+# app/layout.tsx (solo en dev)
+if (process.env.NODE_ENV === 'development') {
+  import('@axe-core/react').then(axe => {
+    axe.default(React, ReactDOM, 1000)
+  })
+}
+```
+
+---
+
+## 🧪 REGLAS DE TESTING
+
+### 11. Estrategia de Testing
+```bash
+# Stack de testing
+npm install -D vitest @testing-library/react @testing-library/jest-dom
+npm install -D @playwright/test # E2E
+```
+
+**Cobertura mínima:**
+```tsx
+// __tests__/components/ui/button.test.tsx - Unit test
+import { render, screen } from '@testing-library/react'
+import { Button } from '@/components/ui/button'
+
+describe('Button', () => {
+  it('renders with correct variant styles', () => {
+    render(<Button variant="default">Click me</Button>)
+    const button = screen.getByRole('button', { name: /click me/i })
+    expect(button).toHaveClass('bg-primary')
+  })
+})
+
+// __tests__/e2e/contact-flow.spec.ts - E2E con Playwright
+import { test, expect } from '@playwright/test'
+
+test('contact form submission', async ({ page }) => {
+  await page.goto('/')
+  await page.click('text=Contacto')
+  
+  await page.fill('[name="name"]', 'John Doe')
+  await page.fill('[name="email"]', 'john@example.com')
+  await page.fill('[name="message"]', 'Interested in luxury design')
+  
+  await page.click('button[type="submit"]')
+  
+  await expect(page.locator('text=Mensaje enviado')).toBeVisible()
+})
+```
+
+**Niveles de testing:**
+1. **Unit:** Componentes UI en aislamiento (Vitest + Testing Library)
+2. **Integration:** Features complejas con múltiples componentes
+3. **E2E:** Flujos críticos de usuario (Playwright)
+   - Homepage load + LCP
+   - Contact form submission
+   - Gallery navigation
+
+**Comando pre-commit:**
+```json
+// package.json
+{
+  "scripts": {
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "test:coverage": "vitest --coverage"
+  }
+}
+```
+
+---
+
+## 🤖 PROTOCOLO DE RESPUESTA DEL AGENTE
+
+### Proceso de Generación de Código
+
+**SIEMPRE que generes código, ejecuta este checklist:**
+
+1. **Verificación de Reglas:**
+   - ✅ ¿Cumple performance rules? (Imágenes, fonts, animaciones)
+   - ✅ ¿Usa componentes correctos de Shadcn?
+   - ✅ ¿TypeScript types completos?
+   - ✅ ¿Accesibilidad básica cubierta?
+
+2. **Formato de Respuesta:**
+```tsx
+// ❌ PROBLEMA DETECTADO
+<Image src="/hero.jpg" alt="Hero" fill /> // Sin priority, causa LCP lento
+
+// ✅ CÓDIGO CORREGIDO
+<Image 
+  src="/hero.webp"
+  alt="Interior de sala de diseño premium con iluminación natural"
+  width={1920}
+  height={1080}
+  priority={true}
+  sizes="100vw"
+  quality={85}
+/>
+// 💡 EXPLICACIÓN: priority={true} mejora LCP en ~1.2s según Web Vitals
+```
+
+3. **Comentarios Inline:**
+   - Incluir breve explicación de optimizaciones no obvias
+   - Referenciar la regla específica del agentrules (ej: "Ver Regla #1")
+
+---
+
+### Prohibiciones Absolutas
+
+**NUNCA hagas esto sin advertir al usuario:**
+
+❌ Sugerir instalación de paquetes no listados en el stack
+❌ Usar patrones de React < 18 (`componentDidMount`, render props legacy)
+❌ Proponer soluciones que requieran ejecución en servidor Node.js custom
+❌ Generar tipos `any` en TypeScript
+❌ Crear animaciones sin `prefers-reduced-motion`
+❌ Usar `localStorage`/`sessionStorage` sin fallback SSR
+
+---
+
+### Manejo de Conflictos
+
+**Si el usuario pide algo que viola performance/accesibilidad:**
+```
+🚨 ADVERTENCIA: Esta implementación violaría [Regla #X]:
+- Problema: [Descripción específica]
+- Impacto estimado: [Ej: +800ms en LCP, -15 puntos Lighthouse]
+
+💡 ALTERNATIVA OPTIMIZADA:
+[Proponer solución que mantenga la intención pero optimizada]
+
+⚠️ Si aún deseas la implementación original, confírmalo y la generaré con comentarios de advertencia.
+```
+
+**Ejemplo real:**
+```
+Usuario: "Añade un parallax scroll a todas las secciones"
+
+Respuesta:
+🚨 ADVERTENCIA: Parallax en todas las secciones violaría Regla #3 (Animaciones):
+- Problema: Scrolljacking en móviles low-end, INP aumenta >300ms
+- Impacto: Lighthouse score -20 puntos en mobile
+
+💡 ALTERNATIVA OPTIMIZADA:
+- Parallax SOLO en hero section (1era pantalla)
+- Usar transform en lugar de position
+- Detectar device capabilities antes de activar
+
+¿Procedo con la versión optimizada o prefieres la original?
+```
+
+---
+
+## 📚 RECURSOS Y REFERENCIAS
+
+**Documentación oficial a consultar:**
+- Next.js App Router: https://nextjs.org/docs
+- Shadcn UI: https://ui.shadcn.com
+- Framer Motion: https://www.framer.com/motion
+- React Three Fiber: https://docs.pmnd.rs/react-three-fiber
+- TanStack Query: https://tanstack.com/query/latest
+
+**Tools para validación:**
+- Lighthouse CI: Automatizar tests de performance
+- Axe DevTools: Accessibility testing
+- Bundle Analyzer: `@next/bundle-analyzer`
+
+---
+
+## 🔄 CHANGELOG
+
+### v2.0.0 (Current)
+- ➕ Añadidas reglas completas de TypeScript (#9)
+- ➕ Agregada estrategia de data fetching y estado (#7-8)
+- ➕ Incluida sección de accesibilidad WCAG (#10)
+- ➕ Añadido protocolo de testing (#11)
+- 🔧 Mejorada regla de imágenes con `sizes` y aspect ratio (#1)
+- 🔧 Optimización 3D expandida con Suspense y LOD (#4)
+- 🔧 Animaciones con `prefers-reduced-motion` (#3)
+- 📝 Protocolo de respuesta del agente más específico
+
+### v1.0.0
+- 🎉 Versión inicial con reglas básicas de performance
+
+---
+
+**FIN DEL DOCUMENTO**
+
+*Este agentrules es un documento vivo. Si detectas casos edge no cubiertos o reglas conflictivas, documenta el caso y actualiza la versión.*
