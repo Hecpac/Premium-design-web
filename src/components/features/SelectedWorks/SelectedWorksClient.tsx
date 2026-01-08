@@ -114,13 +114,20 @@ function WorkCard({
         >
             <Link
                 href={href}
-                className="block"
+                className={cn(
+                    "block transition-all duration-300 ease-out",
+                    "rounded-sm",
+                    !prefersReducedMotion && "hover:-translate-y-1",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                )}
                 aria-label={`View case study: ${item.title}`}
             >
                 {/* Image Container with Editorial Aspect Ratios */}
                 <div
                     className={cn(
                         "relative w-full overflow-hidden rounded-sm bg-zinc-900",
+                        "ring-1 ring-white/5 transition-all duration-300",
+                        "group-hover:ring-[hsl(var(--primary))]/20 group-hover:shadow-lg group-hover:shadow-[hsl(var(--primary))]/5",
                         isFeatured
                             ? "h-full min-h-full aspect-[16/10] md:aspect-auto"
                             : "aspect-[16/9]"

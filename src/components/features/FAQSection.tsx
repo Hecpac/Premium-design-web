@@ -6,8 +6,8 @@ import {
 } from "@/components/ui/accordion";
 
 // ============================================================================
-// FAQ DATA (Spanish - Luxury Construction)
-// Objection-handling focus, no risky ROI claims
+// FAQ DATA (English - Luxury Construction)
+// Objection-handling focus, no risky ROI claims, demo-safe
 // ============================================================================
 
 interface FAQItem {
@@ -17,64 +17,64 @@ interface FAQItem {
 
 const FAQ_DATA: FAQItem[] = [
     {
-        question: "¿Cómo es el proceso de consulta inicial?",
+        question: "What does the initial consultation process look like?",
         answer:
-            "Comenzamos con una sesión de descubrimiento de 90 minutos para analizar su visión, terreno y presupuesto preliminar. No es una simple venta; es una consultoría de factibilidad donde revisamos zonificación, topografía y expectativas de diseño antes de firmar cualquier contrato. Salimos de esta reunión con una hoja de ruta clara.",
+            "We begin with a 90-minute discovery session to understand your vision, evaluate your site, and discuss preliminary budget parameters. This isn't a sales pitch—it's a feasibility consultation where we review zoning, topography, and design expectations before any commitment.",
     },
     {
-        question: "¿Cuál es el tiempo promedio de construcción?",
+        question: "What is the typical timeline for a luxury custom build?",
         answer:
-            "Para residencias de lujo (4,000 - 12,000 sqft), el ciclo completo oscila entre 14 y 20 meses. Esto incluye 3-5 meses de diseño arquitectónico y permisos, y 11-15 meses de construcción física. Nuestro software de gestión nos permite mitigar retrasos por clima o cadena de suministro con proyecciones precisas.",
+            "For residences between 4,000 and 12,000 square feet, expect 14 to 20 months from design to completion. This includes 3-5 months of architectural design and permitting, followed by 11-15 months of construction. Our project management systems provide real-time timeline projections.",
     },
     {
-        question: "¿Cómo garantizan la transparencia en el presupuesto?",
+        question: "How do you ensure budget transparency?",
         answer:
-            "Eliminamos el misterio financiero. Operamos bajo un modelo de 'Cost-Plus' o 'Fixed Fee' transparente. Usted tiene acceso 24/7 a nuestro dashboard financiero donde ve cada factura, recibo y costo de mano de obra en tiempo real. Definimos 'allowances' realistas desde el día 1 para evitar sorpresas en acabados.",
+            "We eliminate financial uncertainty through either Cost-Plus or Fixed Fee models with complete transparency. You receive 24/7 access to our financial dashboard showing every invoice, receipt, and labor cost in real time. Realistic allowances are defined from day one.",
     },
     {
-        question: "¿Se encargan de los permisos y regulaciones locales?",
+        question: "Do you handle all permits and local regulations?",
         answer:
-            "Absolutamente. Tenemos amplia experiencia navegando la burocracia de Dallas, Highland Park, University Park, Westlake y Southlake. Gestionamos todas las inspecciones, ingeniería civil, estudios de suelo y aprobaciones de HOAs estrictas para que usted no tenga que lidiar con el ayuntamiento.",
+            "Completely. We have deep experience navigating municipal requirements across Dallas, Highland Park, University Park, Westlake, and Southlake. We manage all inspections, civil engineering, soil studies, and HOA approvals so you never deal with city hall.",
     },
     {
-        question: "¿Qué tipo de materiales y artesanía utilizan?",
+        question: "What caliber of materials and craftsmanship do you specify?",
         answer:
-            "Solo especificamos materiales de grado arquitectónico. Desde piedra caliza Lueders cortada a medida hasta carpintería de nogal sólido y sistemas de ventanas de perfil ultra-delgado. Nuestros artesanos son equipos dedicados que llevan años trabajando con nosotros, no subcontratistas rotativos de baja calidad.",
+            "We exclusively specify architectural-grade materials—from custom-cut Lueders limestone to solid walnut millwork and ultra-slim profile window systems. Our craftsmen are dedicated teams who've worked with us for years, not rotating subcontractors.",
     },
     {
-        question: "¿Pueden integrar tecnología Smart Home avanzada?",
+        question: "Can you integrate advanced smart home technology?",
         answer:
-            "Es nuestro estándar. Diseñamos la infraestructura de bajo voltaje desde los planos. Integramos iluminación Lutron Ketra, control climático Savant/Crestron, seguridad biométrica y audio distribuido invisible. Su casa no solo será inteligente, será intuitiva y a prueba de futuro.",
+            "It's our standard. We design low-voltage infrastructure into the plans from the start. Lutron Ketra lighting, Savant or Crestron climate control, biometric security, and invisible distributed audio are seamlessly integrated. Your home will be intuitive and future-proof.",
     },
     {
-        question: "¿Qué garantía y soporte ofrecen post-entrega?",
+        question: "What warranty and post-delivery support do you provide?",
         answer:
-            "Ofrecemos una garantía estructural de 10 años líder en la industria, más 2 años completos en instalaciones (el doble del estándar de 1 año). Además, incluimos un programa de 'Concierge' durante los primeros 12 meses para ajustes estacionales y mantenimiento preventivo sin costo adicional.",
+            "We offer an industry-leading 10-year structural warranty plus 2 full years on systems and finishes—double the standard 1-year coverage. A dedicated concierge program handles seasonal adjustments and preventive maintenance during your first 12 months at no additional cost.",
     },
     {
-        question: "¿Cómo manejan los cambios de diseño durante la obra?",
+        question: "How are design changes handled during construction?",
         answer:
-            "Los cambios son naturales en proyectos custom. Utilizamos un proceso formal de 'Change Order' digital. Antes de ejecutar cualquier cambio, usted recibe un desglose exacto del impacto en costo y tiempo para su aprobación inmediata en su teléfono. Nada se hace sin su autorización explícita.",
+            "Changes are natural in custom projects. We use a formal digital Change Order process. Before executing any modification, you receive an exact breakdown of cost and timeline impact for immediate approval on your phone. Nothing proceeds without your explicit authorization.",
     },
     {
-        question: "¿Cuál es la frecuencia de comunicación durante el proyecto?",
+        question: "How often will I receive project updates?",
         answer:
-            "Comunicación obsesiva. Recibirá un reporte ejecutivo cada viernes con fotos de progreso, hitos alcanzados y plan para la siguiente semana. Además, tendrá reuniones quincenales en sitio (o por Zoom) con su Project Manager dedicado para decisiones críticas.",
+            "Communication is obsessive by design. You'll receive an executive progress report every Friday with photos, completed milestones, and the upcoming week's plan. Biweekly on-site meetings with your dedicated Project Manager address critical decisions.",
     },
     {
-        question: "¿Qué diferencia a Premium Home Design de otros constructores?",
+        question: "What sets Premium Home Design apart from other builders?",
         answer:
-            "Unimos la disciplina de la ingeniería comercial con la estética del diseño de lujo. Donde otros ven 'caos de construcción', nosotros vemos logística de precisión. Nuestro enfoque en 'Confianza Operacional' significa que nunca tendrá que adivinar dónde está su dinero o cuándo terminará su casa.",
+            "We combine commercial-grade engineering discipline with luxury design aesthetics. Where others see construction chaos, we see precision logistics. Our Operational Confidence approach means you'll never guess where your money is going or when your home will be finished.",
     },
     {
-        question: "¿En qué áreas específicas de Dallas construyen?",
+        question: "Which Dallas areas do you serve?",
         answer:
-            "Nos enfocamos en el corredor inmobilario prime: Preston Hollow, Park Cities (Highland Park/University Park), Lakewood, Midway Hollow, y hacia el norte en Las Colinas, Southlake y Westlake. Conocemos los micro-mercados y regulaciones de cada uno de estos distritos exclusivos.",
+            "We focus on the prime real estate corridor: Preston Hollow, Park Cities (Highland Park and University Park), Lakewood, Midway Hollow, and north into Las Colinas, Southlake, and Westlake. We know the micro-markets and regulations of each exclusive district.",
     },
     {
-        question: "¿Qué incluye la visita agendada desde la web?",
+        question: "What does a scheduled site visit include?",
         answer:
-            "La visita 'Book a Visit' no es un tour de ventas. Es un recorrido privado por una de nuestras obras activas o recién terminadas. Verá lo que hay detrás de las paredes: la calidad del aislamiento, la limpieza del sitio, la organización del cableado y los detalles que las fotos no pueden mostrar.",
+            "Our 'Book a Visit' isn't a sales tour—it's a private walkthrough of an active or recently completed project. You'll see what's behind the walls: insulation quality, site organization, cable management, and the details photos simply cannot convey.",
     },
 ];
 
@@ -140,17 +140,17 @@ export function FAQSection() {
             {/* Section Header */}
             <div className="text-center mb-16">
                 <span className="text-label text-[hsl(var(--primary))] mb-4 block">
-                    Resolvemos sus dudas
+                    Common Questions
                 </span>
                 <h2
                     id="faq-heading"
                     className="text-white mb-4"
                 >
-                    Preguntas{" "}
-                    <span className="text-[hsl(var(--primary))] italic">Frecuentes</span>
+                    Frequently{" "}
+                    <span className="text-[hsl(var(--primary))] italic">Asked</span>
                 </h2>
                 <p className="text-zinc-400 max-w-2xl mx-auto">
-                    Todo lo que necesita saber antes de comenzar su proyecto de construcción de lujo en Dallas.
+                    Everything you need to know before starting your luxury custom build in Dallas.
                 </p>
             </div>
 
@@ -168,13 +168,13 @@ export function FAQSection() {
             <div className="mt-16 text-center">
                 <div className="thin-rule max-w-xs mx-auto mb-8 opacity-30" />
                 <p className="text-zinc-500 text-sm mb-4">
-                    ¿No encuentra su pregunta?
+                    Don't see your question?
                 </p>
                 <a
                     href="#contact"
                     className="text-[hsl(var(--primary))] hover:underline underline-offset-4 text-sm uppercase tracking-widest"
                 >
-                    Contáctenos directamente
+                    Contact Us Directly
                 </a>
             </div>
         </section>

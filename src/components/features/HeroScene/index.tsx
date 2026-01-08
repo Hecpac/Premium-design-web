@@ -84,15 +84,15 @@ export function HeroScene() {
                 <div className="md:col-span-4 flex justify-end">
                     <HeroFacts>
                         <div className="editorial-card min-w-[300px]">
-                            <div className="space-y-8">
+                        <div className="space-y-8">
                                 <div className="stat-block">
-                                    <StatsCounterClient value={14} duration={2.5} />
+                                    <StatsCounterClient value={18} duration={2.5} />
                                     <span className="stat-label">Months Avg. Build Time</span>
                                 </div>
                                 <div className="thin-rule border-white/20" />
                                 <div className="stat-block">
-                                    <StatsCounterClient value={62} prefix="$" suffix="M+" duration={3} />
-                                    <span className="stat-label">Value Delivered</span>
+                                    <StatsCounterClient value={42} prefix="$" suffix="M+" duration={3} />
+                                    <span className="stat-label">Portfolio Value (Demo)</span>
                                 </div>
                             </div>
                         </div>

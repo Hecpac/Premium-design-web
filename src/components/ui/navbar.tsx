@@ -102,7 +102,7 @@ function Navbar({ className, brandName = "Premium Home" }: NavbarProps) {
                 {/* Navigation Links */}
                 <div className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) => (
-                        <a
+                        <Link
                             key={link.href}
                             href={isHomePage ? link.href : `/${link.href}`}
                             onClick={(e) => handleSmoothScroll(e, link.targetId)}
@@ -112,11 +112,13 @@ function Navbar({ className, brandName = "Premium Home" }: NavbarProps) {
                                 "hover:text-[hsl(var(--foreground))]",
                                 "transition-colors duration-200",
                                 "tracking-tight",
-                                "cursor-pointer"
+                                "cursor-pointer",
+                                "rounded-sm px-2 py-1 -mx-2 -my-1",
+                                "focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]/50"
                             )}
                         >
                             {link.label}
-                        </a>
+                        </Link>
                     ))}
                 </div>
 
@@ -159,16 +161,20 @@ function Navbar({ className, brandName = "Premium Home" }: NavbarProps) {
                 <ul className="px-6 py-4 flex flex-col gap-4">
                     {navLinks.map((link) => (
                         <li key={link.href}>
-                            <a
+                            <Link
                                 href={isHomePage ? link.href : `/${link.href}`}
                                 onClick={(e) => {
                                     setIsMenuOpen(false);
                                     handleSmoothScroll(e, link.targetId);
                                 }}
-                                className="text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors duration-200 tracking-tight"
+                                className={cn(
+                                    "text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors duration-200 tracking-tight",
+                                    "rounded-sm px-2 py-1 -mx-2",
+                                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]/50"
+                                )}
                             >
                                 {link.label}
-                            </a>
+                            </Link>
                         </li>
                     ))}
                 </ul>

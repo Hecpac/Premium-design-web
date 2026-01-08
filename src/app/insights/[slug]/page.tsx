@@ -2,12 +2,12 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
-import { Navbar, Button } from "@/components/ui";
+import { Navbar } from "@/components/ui";
 import { getInsightBySlug, getAllInsightSlugs } from "@/lib/insights";
 import type { Metadata } from "next";
 
 interface PageProps {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 // 1. Generate Static Params for SSG/ISR
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
 
 // 2. Dynamic Metadata
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const article = getInsightBySlug(params.slug);
+    const { slug } = await params;
+    const article = getInsightBySlug(slug);
     if (!article) return {};
 
     return {
@@ -33,8 +34,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
 }
 
-export default function InsightPage({ params }: PageProps) {
-    const article = getInsightBySlug(params.slug);
+export default async function InsightPage({ params }: PageProps) {
+    const { slug } = await params;
+    const article = getInsightBySlug(slug);
 
     if (!article) {
         notFound();
@@ -106,9 +108,12 @@ export default function InsightPage({ params }: PageProps) {
                                 Back to Insights
                             </Link>
 
-                            <Button className="bg-[hsl(var(--primary))] text-black hover:bg-white transition-colors">
-                                Book a Consultation
-                            </Button>
+                            <Link
+                                href="/#contact"
+                                className="inline-flex items-center justify-center h-10 px-8 text-sm font-medium bg-[hsl(var(--primary))] text-black hover:bg-white transition-colors rounded-sm"
+                            >
+                                Start a Conversation
+                            </Link>
                         </div>
                     </div>
                 </article>
