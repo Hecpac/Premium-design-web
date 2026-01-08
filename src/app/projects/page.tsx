@@ -46,7 +46,7 @@ export default async function ProjectsPage({ searchParams }: PageProps) {
         <div className="min-h-screen bg-[hsl(var(--background))]">
             <Navbar brandName="Premium Home" />
 
-            <main className="pt-32 pb-20 px-6">
+            <main id="main-content" className="pt-32 pb-20 px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Header */}
                     <header className="mb-16">
@@ -100,8 +100,8 @@ export default async function ProjectsPage({ searchParams }: PageProps) {
 
                     {/* Projects Grid */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {filteredProjects.map((project) => (
-                            <ProjectCard key={project.slug} project={project} />
+                        {filteredProjects.map((project, index) => (
+                            <ProjectCard key={project.slug} project={project} index={index} />
                         ))}
                     </div>
 
@@ -134,7 +134,10 @@ export default async function ProjectsPage({ searchParams }: PageProps) {
 // PROJECT CARD COMPONENT
 // ============================================================================
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+    // Lazy loading inteligente: primeras 3 imágenes eager (above fold)
+    const isAboveFold = index < 3;
+    
     return (
         <article className="group flex flex-col h-full">
             <Link
@@ -147,9 +150,11 @@ function ProjectCard({ project }: { project: Project }) {
                         src={project.coverImage}
                         alt={`${project.title} - ${project.category} in ${project.location}`}
                         fill
-                        loading="lazy"
+                        loading={isAboveFold ? "eager" : "lazy"}
+                        priority={isAboveFold}
+                        quality={80}
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
 

@@ -73,6 +73,7 @@
 
   /* Typography */
   --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
   --font-display: var(--font-playfair);
 }
 
@@ -171,7 +172,7 @@ h4 {
 }
 
 .stat-value {
-  @apply font-[family-name:var(--font-playfair)] text-5xl md:text-7xl text-[hsl(var(--foreground))] font-light;
+  @apply font-[family-name:var(--font-playfair)] text-5xl md:text-7xl text-[hsl(var(--foreground))] font-normal;
 }
 
 .stat-label {

@@ -2,7 +2,14 @@ import Image from "next/image";
 
 export function TrustSignalSection() {
     return (
-        <section className="w-full py-16 border-y border-white/5 bg-black/40 backdrop-blur-sm">
+        <section
+            id="about"
+            aria-labelledby="about-heading"
+            className="w-full py-16 border-y border-white/5 bg-black/40 backdrop-blur-sm"
+        >
+            <h2 id="about-heading" className="sr-only">
+                About Premium Home Design
+            </h2>
             <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-12 items-center">
 
                 {/* Authority Logos (Left - Col 5) */}

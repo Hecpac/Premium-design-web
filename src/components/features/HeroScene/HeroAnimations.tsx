@@ -258,11 +258,17 @@ function Counter({
 }
 
 export function HeroFacts({ children }: { children: React.ReactNode }) {
+    const prefersReducedMotion = useReducedMotion();
+    
     return (
         <m.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
+            transition={{
+                duration: prefersReducedMotion ? 0 : 0.8,
+                delay: prefersReducedMotion ? 0 : 1.2,
+                ease: "easeOut"
+            }}
             className="hidden md:block"
         >
             {children}
@@ -275,17 +281,22 @@ export { Counter };
 
 // --- SCROLL CUE ---
 export function HeroScrollCue() {
+    const prefersReducedMotion = useReducedMotion();
+    
     return (
         <m.div
-            initial={{ opacity: 0 }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 1 }}
+            transition={{
+                delay: prefersReducedMotion ? 0 : 2,
+                duration: prefersReducedMotion ? 0 : 1
+            }}
             className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2"
         >
             <span className="text-[10px] uppercase tracking-[0.2em]">Scroll</span>
             <m.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={prefersReducedMotion ? {} : { y: [0, 8, 0] }}
+                transition={prefersReducedMotion ? {} : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             >
                 <ChevronDown className="w-4 h-4" />
             </m.div>

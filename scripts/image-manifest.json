@@ -1,0 +1,392 @@
+{
+  "generatedAt": "2026-01-08T05:31:46.711Z",
+  "config": {
+    "maxWidth": 1920,
+    "quality": 85
+  },
+  "images": {
+    "/images/bento-blueprints.webp": {
+      "original": {
+        "path": "images/bento-blueprints.png",
+        "size": 627043,
+        "sizeFormatted": "612.3 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/bento-blueprints.webp",
+        "publicPath": "/images/bento-blueprints.webp",
+        "size": 81246,
+        "sizeFormatted": "79.3 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAABwAQCdASoKAAoABUB8JZwAAk4sQAD+7qwjBeooA/342n+LCxA+SrzRGc4VVzCRmOAAAA==",
+      "savings": {
+        "bytes": 545797,
+        "percent": "87.0"
+      }
+    },
+    "/images/bento-concrete.webp": {
+      "original": {
+        "path": "images/bento-concrete.png",
+        "size": 859192,
+        "sizeFormatted": "839.1 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/bento-concrete.webp",
+        "publicPath": "/images/bento-concrete.webp",
+        "size": 181500,
+        "sizeFormatted": "177.2 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRjYAAABXRUJQVlA4ICoAAACwAQCdASoKAAoABUB8JZQAAucgFgAAAP7PfXIx7UqetnfuhL4W34EAAAA=",
+      "savings": {
+        "bytes": 677692,
+        "percent": "78.9"
+      }
+    },
+    "/images/bento-thermostat.webp": {
+      "original": {
+        "path": "images/bento-thermostat.png",
+        "size": 494311,
+        "sizeFormatted": "482.7 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/bento-thermostat.webp",
+        "publicPath": "/images/bento-thermostat.webp",
+        "size": 26150,
+        "sizeFormatted": "25.5 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAAAQAgCdASoKAAoABUB8JYwC7ADc+DHQ+XBwAP7s2W2hlgfXuBduPfQdl6xK0gKZAFkAAA==",
+      "savings": {
+        "bytes": 468161,
+        "percent": "94.7"
+      }
+    },
+    "/images/hero-twilight.webp": {
+      "original": {
+        "path": "images/hero-twilight.png",
+        "size": 805098,
+        "sizeFormatted": "786.2 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/hero-twilight.webp",
+        "publicPath": "/images/hero-twilight.webp",
+        "size": 136302,
+        "sizeFormatted": "133.1 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADwAQCdASoKAAoABUB8JbACdAEQ/SQCcAAA/nalGyAuF8bMS0F2w5Ju/9oFNLRlP9WtyMBVpYOuwAAA",
+      "savings": {
+        "bytes": 668796,
+        "percent": "83.1"
+      }
+    },
+    "/images/insights/concrete-light.webp": {
+      "original": {
+        "path": "images/insights/concrete-light.png",
+        "size": 766505,
+        "sizeFormatted": "748.5 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/insights/concrete-light.webp",
+        "publicPath": "/images/insights/concrete-light.webp",
+        "size": 111554,
+        "sizeFormatted": "108.9 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAACQAQCdASoKAAoABUB8JZwAAlRApCAA/tJkJhrC4n9BQ5VCEAKdUiEkdpQydNSICgRps7PrxbCl4AAA",
+      "savings": {
+        "bytes": 654951,
+        "percent": "85.4"
+      }
+    },
+    "/images/insights/cost-of-luxury.webp": {
+      "original": {
+        "path": "images/insights/cost-of-luxury.png",
+        "size": 812145,
+        "sizeFormatted": "793.1 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/insights/cost-of-luxury.webp",
+        "publicPath": "/images/insights/cost-of-luxury.webp",
+        "size": 133908,
+        "sizeFormatted": "130.8 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACQAQCdASoKAAoABUB8JQBOgBsYN1AA/sBqjR/g4i3uJv2PByCsMcDJSebrTODHp2ajt4hxTtjAAA==",
+      "savings": {
+        "bytes": 678237,
+        "percent": "83.5"
+      }
+    },
+    "/images/insights/smart-home.webp": {
+      "original": {
+        "path": "images/insights/smart-home.png",
+        "size": 635987,
+        "sizeFormatted": "621.1 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/insights/smart-home.webp",
+        "publicPath": "/images/insights/smart-home.webp",
+        "size": 72314,
+        "sizeFormatted": "70.6 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoKAAoABUB8JYwCdADdoFKxoAD+5SLtNOSpUXzDHanCfEjIUkQdhiOTdYyUjYWgfOXHIAAA",
+      "savings": {
+        "bytes": 563673,
+        "percent": "88.6"
+      }
+    },
+    "/images/parallax-mansion.webp": {
+      "original": {
+        "path": "images/parallax-mansion.png",
+        "size": 740917,
+        "sizeFormatted": "723.6 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/parallax-mansion.webp",
+        "publicPath": "/images/parallax-mansion.webp",
+        "size": 83984,
+        "sizeFormatted": "82.0 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADQAQCdASoKAAoABUB8JZwAAxeVxP4cAAD+7DqoNcGQZNEHWsVuLlWV/SpAAA==",
+      "savings": {
+        "bytes": 656933,
+        "percent": "88.7"
+      }
+    },
+    "/images/selected-works/architect-office-tools.webp": {
+      "original": {
+        "path": "images/selected-works/architect-office-tools.png",
+        "size": 732804,
+        "sizeFormatted": "715.6 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/architect-office-tools.webp",
+        "publicPath": "/images/selected-works/architect-office-tools.webp",
+        "size": 106060,
+        "sizeFormatted": "103.6 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoKAAoABUB8JYgCdH8AE0gZbgAA/qnJsdkxBdHQQ/cWY/UahVSOOsbCTGn0cXjO9bDb0IEvekBHH7yEhSbX2/YAAAA=",
+      "savings": {
+        "bytes": 626744,
+        "percent": "85.5"
+      }
+    },
+    "/images/selected-works/casa-dallas.webp": {
+      "original": {
+        "path": "images/selected-works/casa-dallas.png",
+        "size": 805201,
+        "sizeFormatted": "786.3 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/casa-dallas.webp",
+        "publicPath": "/images/selected-works/casa-dallas.webp",
+        "size": 146020,
+        "sizeFormatted": "142.6 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAwAgCdASoKAAoABUB8JZgCdGuAAoZLsoxFCAD+5bQoihcMF+AwXk1QJ3VwkBgNGqammn0DyOBPe6ChfCoQNjhGjPAAAA==",
+      "savings": {
+        "bytes": 659181,
+        "percent": "81.9"
+      }
+    },
+    "/images/selected-works/estate-highland-park.webp": {
+      "original": {
+        "path": "images/selected-works/estate-highland-park.png",
+        "size": 849297,
+        "sizeFormatted": "829.4 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/estate-highland-park.webp",
+        "publicPath": "/images/selected-works/estate-highland-park.webp",
+        "size": 162146,
+        "sizeFormatted": "158.3 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoKAAoABUB8JYgCdAD0kHXh9BQAAP5zIP6F/HOYnI4uuu9yVc4aMBZ1c3W510wL8VmWh8GSZW2eGHgQAAA=",
+      "savings": {
+        "bytes": 687151,
+        "percent": "80.9"
+      }
+    },
+    "/images/selected-works/mansion-southlake.webp": {
+      "original": {
+        "path": "images/selected-works/mansion-southlake.png",
+        "size": 833388,
+        "sizeFormatted": "813.9 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/mansion-southlake.webp",
+        "publicPath": "/images/selected-works/mansion-southlake.webp",
+        "size": 151858,
+        "sizeFormatted": "148.3 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoKAAoABUB8JYgCdAEOeUgwAAD+PJFzW7S3JwHyplBWghA1JorkcVtg+j7xNJIdE7rrjnaAAAA=",
+      "savings": {
+        "bytes": 681530,
+        "percent": "81.8"
+      }
+    },
+    "/images/selected-works/new-project.webp": {
+      "original": {
+        "path": "images/selected-works/new-project.png",
+        "size": 334364,
+        "sizeFormatted": "326.5 KB",
+        "width": 1024,
+        "height": 550
+      },
+      "optimized": {
+        "path": "images/selected-works/new-project.webp",
+        "publicPath": "/images/selected-works/new-project.webp",
+        "size": 41240,
+        "sizeFormatted": "40.3 KB",
+        "width": 1024,
+        "height": 550
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAACwAQCdASoKAAUABUB8JaQAAu18O2vAAP7vWfCM2pMGnxGgwAAAAA==",
+      "savings": {
+        "bytes": 293124,
+        "percent": "87.7"
+      }
+    },
+    "/images/selected-works/penthouse-uptown.webp": {
+      "original": {
+        "path": "images/selected-works/penthouse-uptown.png",
+        "size": 646985,
+        "sizeFormatted": "631.8 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/penthouse-uptown.webp",
+        "publicPath": "/images/selected-works/penthouse-uptown.webp",
+        "size": 82386,
+        "sizeFormatted": "80.5 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAABQAQCdASoKAAoABUB8JZwABDOAAP7vhGSG8qdS5MHTZyOvRGqnPTRDkzpSr3z4AAA=",
+      "savings": {
+        "bytes": 564599,
+        "percent": "87.3"
+      }
+    },
+    "/images/selected-works/portfolio-collage.webp": {
+      "original": {
+        "path": "images/selected-works/portfolio-collage.png",
+        "size": 864235,
+        "sizeFormatted": "844.0 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/portfolio-collage.webp",
+        "publicPath": "/images/selected-works/portfolio-collage.webp",
+        "size": 156430,
+        "sizeFormatted": "152.8 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoKAAoABUB8JZQAAl1UKoAA/nWNguKxvtzbHy2SU4Yytf8Drnq527k0gBEgAA==",
+      "savings": {
+        "bytes": 707805,
+        "percent": "81.9"
+      }
+    },
+    "/images/selected-works/residence-preston-hollow.webp": {
+      "original": {
+        "path": "images/selected-works/residence-preston-hollow.png",
+        "size": 985091,
+        "sizeFormatted": "962.0 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/residence-preston-hollow.webp",
+        "publicPath": "/images/selected-works/residence-preston-hollow.webp",
+        "size": 220494,
+        "sizeFormatted": "215.3 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADwAQCdASoKAAoABUB8JYwCw7ELX9HFpAAA/uVwrZaV04CG/qaDdaOkPXSAAA==",
+      "savings": {
+        "bytes": 764597,
+        "percent": "77.6"
+      }
+    },
+    "/images/selected-works/villa-las-colinas.webp": {
+      "original": {
+        "path": "images/selected-works/villa-las-colinas.png",
+        "size": 987457,
+        "sizeFormatted": "964.3 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/selected-works/villa-las-colinas.webp",
+        "publicPath": "/images/selected-works/villa-las-colinas.webp",
+        "size": 242478,
+        "sizeFormatted": "236.8 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAgCdASoKAAoABUB8JYgCdAEXfnYVDELAAP7csRX/QoEPpRk7fSBpVjvTMIszvTggJQH0Yfr6AAAA",
+      "savings": {
+        "bytes": 744979,
+        "percent": "75.4"
+      }
+    }
+  },
+  "summary": {
+    "totalOriginalSize": 12780020,
+    "totalOptimizedSize": 2136070,
+    "totalSavings": 10643950,
+    "totalOriginalSizeFormatted": "12.19 MB",
+    "totalOptimizedSizeFormatted": "2.04 MB",
+    "totalSavingsFormatted": "10.15 MB",
+    "totalSavingsPercent": "83.3"
+  }
+}

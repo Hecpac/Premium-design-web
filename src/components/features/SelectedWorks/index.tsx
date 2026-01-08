@@ -3,6 +3,7 @@ import { SelectedWorksClient, WorkItem } from "./SelectedWorksClient";
 // ============================================================================
 // DEMO DATA - Typed Work Items
 // Images located in /public/images/selected-works/
+// Agentrules v2.0.0 Regla #1: All images converted to WebP format
 // ============================================================================
 
 const WORKS_DATA: WorkItem[] = [
@@ -11,7 +12,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "Selected Works",
         category: "Estates",
         location: "Architecture Portfolio",
-        image: "/images/selected-works/portfolio-collage.png",
+        image: "/images/selected-works/portfolio-collage.webp",
         year: "2024—2026",
         slug: "selected-works-portfolio",
         featured: true, // Will display as large card in "All" view
@@ -21,7 +22,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "Villa Las Colinas",
         category: "Estates",
         location: "Las Colinas, TX",
-        image: "/images/selected-works/villa-las-colinas.png",
+        image: "/images/selected-works/villa-las-colinas.webp",
         year: "2024",
         slug: "villa-las-colinas",
     },
@@ -30,7 +31,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "Skyline Penthouse",
         category: "Interiors",
         location: "Uptown Dallas",
-        image: "/images/selected-works/penthouse-uptown.png",
+        image: "/images/selected-works/penthouse-uptown.webp",
         year: "2025",
         slug: "skyline-penthouse",
     },
@@ -39,7 +40,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "Highland Park Estate",
         category: "Estates",
         location: "Highland Park",
-        image: "/images/selected-works/estate-highland-park.png",
+        image: "/images/selected-works/estate-highland-park.webp",
         year: "2024",
         slug: "highland-park-estate",
     },
@@ -48,7 +49,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "Glass Residence",
         category: "Residences",
         location: "Preston Hollow",
-        image: "/images/selected-works/residence-preston-hollow.png",
+        image: "/images/selected-works/residence-preston-hollow.webp",
         year: "2025",
         slug: "glass-residence",
     },
@@ -57,7 +58,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "Southlake Manor",
         category: "Estates",
         location: "Southlake, TX",
-        image: "/images/selected-works/mansion-southlake.png",
+        image: "/images/selected-works/mansion-southlake.webp",
         year: "2024",
         slug: "southlake-manor",
     },
@@ -66,7 +67,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "Modern Sanctuary",
         category: "Residences",
         location: "Dallas, TX",
-        image: "/images/selected-works/new-project.png",
+        image: "/images/selected-works/new-project.webp",
         year: "2026",
         slug: "modern-sanctuary",
     },
@@ -75,7 +76,7 @@ const WORKS_DATA: WorkItem[] = [
         title: "The Design Atelier",
         category: "Interiors",
         location: "Dallas HQ",
-        image: "/images/selected-works/architect-office-tools.png",
+        image: "/images/selected-works/architect-office-tools.webp",
         year: "2026",
         slug: "design-atelier",
     },

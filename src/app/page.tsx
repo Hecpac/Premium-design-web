@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic";
-import { Navbar, BentoCard, Button } from "@/components/ui";
+import { Navbar, BentoCard, Button, BackToTop } from "@/components/ui";
 import { HeroScene } from "@/components/features/HeroScene";
 import { ProjectGallerySkeleton } from "@/components/features/ProjectGallerySkeleton";
 import { FAQSection } from "@/components/features/FAQSection";
 import { TrustSignalSection } from "@/components/features/TrustSignalSection";
 import { ContactCapture } from "@/components/features/ContactCapture";
 import { InsightBrief } from "@/components/features/InsightBrief";
-// Bento Grid is rendered inline below
 import Image from "next/image";
+import { IMAGES } from "@/lib/image-data";
 
 import { SelectedWorks } from "@/components/features/SelectedWorks";
 
@@ -16,9 +16,11 @@ export default function Home() {
     <div className="min-h-screen bg-[hsl(var(--background))] selection:bg-[hsl(var(--primary))/0.3]">
       <Navbar brandName="Premium Home" />
 
-      <main className="px-0 relative">
+      <main id="main-content" className="px-0 relative">
         {/* 1. HERO - Definition */}
-        <HeroScene />
+        <header aria-labelledby="hero-title">
+          <HeroScene />
+        </header>
 
         {/* 2. PROOF (Trust Signals) */}
         <TrustSignalSection />
@@ -26,11 +28,15 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto px-6">
 
           {/* 3. METHOD (Bento Grid) - Inline for simplicity or component */}
-          <section className="section-spacing">
+          <section
+            id="process"
+            className="section-spacing"
+            aria-labelledby="process-heading"
+          >
             <div className="mb-20 grid md:grid-cols-12 gap-6 items-end">
               <div className="md:col-span-8">
                 <span className="text-label mb-4 block">Our Philosophy</span>
-                <h2 className="text-white">
+                <h2 id="process-heading" className="text-white">
                   The <span className="text-[hsl(var(--primary))] italic">Art</span> of <br />
                   Precision.
                 </h2>
@@ -43,15 +49,18 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Bento Grid - Agentrules #1: WebP images with blur placeholders */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px] md:auto-rows-[500px]">
-              {/* Card 01 */}
+              {/* Card 01 - Engineering */}
               <BentoCard className="md:col-span-8 relative group">
                 <Image
-                  src="/images/bento-concrete.png"
-                  alt="Raw concrete texture details"
+                  src={IMAGES.bentoConcrete.src}
+                  alt="Raw concrete texture showing premium construction materials and craftsmanship details in luxury home building"
                   fill
                   className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 opacity-80 group-hover:opacity-60"
                   sizes="(max-width: 768px) 100vw, 66vw"
+                  placeholder="blur"
+                  blurDataURL={IMAGES.bentoConcrete.blurDataURL}
                 />
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10">
                   <div className="flex justify-between items-start">
@@ -71,13 +80,16 @@ export default function Home() {
 
               {/* Stacked Right Column */}
               <div className="md:col-span-4 flex flex-col gap-6 h-full">
+                {/* Card 02 - Planning */}
                 <BentoCard className="flex-1 relative min-h-[240px] group">
                   <Image
-                    src="/images/bento-blueprints.png"
-                    alt="Architectural blueprints"
+                    src={IMAGES.bentoBlueprints.src}
+                    alt="Detailed architectural blueprints and construction planning documents for custom luxury home design"
                     fill
                     className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 opacity-60 group-hover:opacity-40"
                     sizes="(max-width: 768px) 100vw, 33vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGES.bentoBlueprints.blurDataURL}
                   />
                   <div className="absolute inset-0 p-6 flex flex-col justify-end z-10">
                     <span className="text-label text-[hsl(var(--primary))] mb-2">02 — Planning</span>
@@ -85,14 +97,17 @@ export default function Home() {
                   </div>
                 </BentoCard>
 
+                {/* Card 03 - Systems */}
                 <BentoCard className="flex-1 relative min-h-[240px] group">
                   <div className="absolute inset-0 bg-neutral-900 z-0" />
                   <Image
-                    src="/images/bento-thermostat.png"
-                    alt="Smart home interface"
+                    src={IMAGES.bentoThermostat.src}
+                    alt="Smart home thermostat and automation interface showcasing integrated technology systems in modern luxury homes"
                     fill
                     className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 opacity-80 mix-blend-overlay"
                     sizes="(max-width: 768px) 100vw, 33vw"
+                    placeholder="blur"
+                    blurDataURL={IMAGES.bentoThermostat.blurDataURL}
                   />
                   <div className="absolute inset-0 p-6 flex flex-col z-10">
                     <div className="flex justify-between items-start mb-auto">
@@ -112,19 +127,27 @@ export default function Home() {
         {/* 4. EVIDENCE (Gallery) */}
         <SelectedWorks />
 
-        {/* PARALLAX BREAK */}
-        <section className="relative w-full h-[60vh] overflow-hidden my-20">
+        {/* PARALLAX BREAK - Agentrules #1: WebP with blur placeholder */}
+        <section
+          className="relative w-full h-[60vh] overflow-hidden my-20"
+          aria-labelledby="monumental-heading"
+        >
           <Image
-            src="/images/parallax-mansion.png"
-            alt="Brutalist Mansion Facade"
+            src={IMAGES.parallaxMansion.src}
+            alt="Brutalist mansion facade with dramatic concrete architecture and geometric design elements showcasing contemporary luxury residential construction"
             fill
             className="object-cover"
             sizes="100vw"
-            quality={90}
+            quality={85}
+            placeholder="blur"
+            blurDataURL={IMAGES.parallaxMansion.blurDataURL}
           />
           <div className="absolute inset-0 bg-black/20" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <h2 className="font-[family-name:var(--font-playfair)] text-5xl md:text-8xl text-white/90 tracking-widest uppercase text-center mix-blend-overlay">
+            <h2
+              id="monumental-heading"
+              className="font-[family-name:var(--font-playfair)] text-5xl md:text-8xl text-white/90 tracking-widest uppercase text-center mix-blend-overlay"
+            >
               Monumental
             </h2>
           </div>
@@ -144,6 +167,9 @@ export default function Home() {
           <p>© 2026 Premium Home Design. Dallas, TX.</p>
         </footer>
       </main>
+
+      {/* Back to Top Button */}
+      <BackToTop threshold={400} />
     </div>
   );
 }

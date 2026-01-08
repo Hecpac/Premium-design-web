@@ -14,33 +14,34 @@ interface Project {
     year: string;
 }
 
+// Agentrules v2.0.0 Regla #1: All images converted to WebP format
 const projects: Project[] = [
     {
         id: "01",
         title: "The Midnight Villa",
         category: "Residential",
-        image: "/images/hero-twilight.png",
+        image: "/images/hero-twilight.webp",
         year: "2025"
     },
     {
         id: "02",
         title: "Brutalist Cliff",
         category: "Architecture",
-        image: "/images/parallax-mansion.png",
+        image: "/images/parallax-mansion.webp",
         year: "2024"
     },
     {
         id: "03",
         title: "Carbon & Gold",
         category: "Interior",
-        image: "/images/bento-concrete.png",
+        image: "/images/bento-concrete.webp",
         year: "2025"
     },
     {
         id: "04",
         title: "Azure Smart Home",
         category: "Technology",
-        image: "/images/bento-thermostat.png",
+        image: "/images/bento-thermostat.webp",
         year: "2024"
     }
 ];
@@ -96,11 +97,14 @@ export function ProjectGallery() {
             ref={containerRef}
             onMouseMove={handleMouseMove}
             className="relative w-full py-20 overflow-hidden"
-            aria-label="Selected Projects"
+            aria-labelledby="project-gallery-heading"
         >
             <div className="max-w-7xl mx-auto px-6">
                 <header className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-end gap-6">
-                    <h2 className="font-[family-name:var(--font-playfair)] text-4xl md:text-6xl text-white">
+                    <h2
+                        id="project-gallery-heading"
+                        className="font-[family-name:var(--font-playfair)] text-4xl md:text-6xl text-white"
+                    >
                         Selected Works
                     </h2>
                     <div className="hidden md:block text-label text-right">

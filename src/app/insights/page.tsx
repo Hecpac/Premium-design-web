@@ -16,7 +16,7 @@ export default function InsightsPage() {
         <div className="min-h-screen bg-[hsl(var(--background))]">
             <Navbar brandName="Premium Home" />
 
-            <main className="pt-32 pb-20 px-6">
+            <main id="main-content" className="pt-32 pb-20 px-6">
                 <div className="max-w-7xl mx-auto">
                     <header className="mb-20">
                         <h1 className="text-white font-[family-name:var(--font-playfair)] text-5xl md:text-7xl mb-6">

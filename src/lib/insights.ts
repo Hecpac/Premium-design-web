@@ -52,7 +52,7 @@ What you're really paying for isn't materials or labor alone. It's the synthesis
 
 A well-designed luxury home in Dallas appreciates differently than tract housing. Custom builds in premium locations have historically outperformed the market by 2-3% annually, making them not just homes but legacy assets.
     `,
-        coverImage: "/images/insights/cost-of-luxury.png",
+        coverImage: "/images/insights/cost-of-luxury.webp",
         author: "Premium Home Design Team",
         publishedDate: "2026-01-05",
     },
@@ -107,7 +107,7 @@ What separates amateur installations from professional systems is the backbone. 
 
 Technology evolves rapidly. Smart home infrastructure must be designed for upgrade paths—conduit for future cabling, power at strategic locations, and open protocols that won't lock you into obsolete ecosystems.
     `,
-        coverImage: "/images/insights/smart-home.png",
+        coverImage: "/images/insights/smart-home.webp",
         author: "Premium Home Design Team",
         publishedDate: "2026-01-02",
     },
@@ -161,7 +161,7 @@ There's something profoundly grounding about concrete architecture. Its permanen
 
 The Texas sun is brutalist architecture's greatest ally. Long shadows, intense light, dramatic sunsets—our climate rewards bold forms and honest materials in ways that temperate regions cannot.
     `,
-        coverImage: "/images/insights/concrete-light.png",
+        coverImage: "/images/insights/concrete-light.webp",
         author: "Premium Home Design Team",
         publishedDate: "2025-12-28",
     },

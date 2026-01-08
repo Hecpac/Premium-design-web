@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Providers } from "@/components/providers";
 import { WebVitals } from "@/components/web-vitals";
+import { AxeDevtools } from "@/components/axe-devtools";
 import "./globals.css";
 
 /**
@@ -13,7 +14,8 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600"],
+  preload: true,
+  weight: ["300", "400", "500", "600", "700"],
   adjustFontFallback: true,
 });
 
@@ -21,6 +23,7 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
   weight: ["400", "700"],
   style: ["normal", "italic"],
   adjustFontFallback: true,
@@ -192,7 +195,14 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased font-sans">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-primary-foreground focus:px-6 focus:py-3 focus:rounded-md focus:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          Skip to main content
+        </a>
         <Providers>
+          <AxeDevtools />
           <WebVitals />
           {children}
         </Providers>

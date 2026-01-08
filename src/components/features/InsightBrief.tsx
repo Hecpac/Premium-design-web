@@ -7,9 +7,12 @@ export function InsightBrief() {
     const articles = getAllInsights().slice(0, 3);
 
     return (
-        <section className="section-spacing max-w-7xl mx-auto px-6">
+        <section
+            className="section-spacing max-w-7xl mx-auto px-6"
+            aria-labelledby="insights-heading"
+        >
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-white/10 pb-8">
-                <h2 className="text-white mb-4 md:mb-0">
+                <h2 id="insights-heading" className="text-white mb-4 md:mb-0">
                     Editorial <span className="text-[hsl(var(--primary))]">Insights</span>
                 </h2>
                 <Link href="/insights" className="text-sm text-zinc-400 hover:text-white transition-colors flex items-center gap-2 group">

@@ -95,6 +95,9 @@ function WorkCard({
 }) {
     const prefersReducedMotion = useReducedMotion();
     const href = item.slug ? `/projects/${item.slug}` : "#";
+    
+    // Lazy loading inteligente: primeras 3 imágenes eager (above fold)
+    const isAboveFold = index < 3;
 
     return (
         <m.article
@@ -109,7 +112,11 @@ function WorkCard({
                 isFeatured ? "md:col-span-2 md:row-span-2" : "md:col-span-1"
             )}
         >
-            <Link href={href} className="block">
+            <Link
+                href={href}
+                className="block"
+                aria-label={`View case study: ${item.title}`}
+            >
                 {/* Image Container with Editorial Aspect Ratios */}
                 <div
                     className={cn(
@@ -123,14 +130,16 @@ function WorkCard({
                         src={item.image}
                         alt={`${item.title} - ${item.category} in ${item.location}`}
                         fill
-                        loading="lazy"
+                        loading={isAboveFold ? "eager" : "lazy"}
+                        priority={isFeatured || isAboveFold}
+                        quality={80}
                         className={cn(
                             "object-cover transition-transform duration-700 ease-out",
                             !prefersReducedMotion && "group-hover:scale-[1.03]"
                         )}
                         sizes={isFeatured
-                            ? "(max-width: 768px) 100vw, 66vw"
-                            : "(max-width: 768px) 100vw, 33vw"
+                            ? "(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 900px"
+                            : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                         }
                     />
 
@@ -259,7 +268,7 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
         <section
             className="py-24 md:py-32 w-full relative"
             id="projects"
-            aria-label="Selected Works Portfolio"
+            aria-labelledby="selected-works-heading"
         >
             <div className="max-w-[1400px] mx-auto px-6">
                 {/* Header & Filters */}
@@ -268,7 +277,7 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                         <span className="text-label text-[hsl(var(--primary))] mb-4 block">
                             Portfolio
                         </span>
-                        <h2 className="text-white mb-8">
+                        <h2 id="selected-works-heading" className="text-white mb-8">
                             Selected{" "}
                             <span className="text-[hsl(var(--primary))] italic">Works</span>
                         </h2>

@@ -10,24 +10,42 @@ import {
 } from "./HeroAnimations";
 import { StatsCounterClient } from "@/components/features/StatsCounterClient";
 import { FloorPlanOverlay } from "@/components/features/FloorPlanOverlay";
+import { IMAGES } from "@/lib/image-data";
 
+/**
+ * HeroScene Component
+ *
+ * Agentrules v2.0.0 Regla #1 Compliance:
+ * - WebP format for hero image (83% size reduction)
+ * - priority={true} for LCP optimization
+ * - Explicit width/height to prevent CLS
+ * - sizes="100vw" for full-viewport hero
+ * - placeholder="blur" with blurDataURL for perceived performance
+ * - quality={85} as per Agentrules specification
+ * - Descriptive alt text (15+ words) for accessibility and SEO
+ */
 export function HeroScene() {
     return (
         <div className="relative min-h-[95vh] flex flex-col justify-center overflow-hidden w-full">
-            {/* 
-        CRITICAL LCP ELEMENT: Background Image
-        - Priority: Preloads immediately.
-      */}
+            {/*
+             * CRITICAL LCP ELEMENT: Background Image
+             * - priority={true}: Preloads immediately, bypasses lazy loading
+             * - WebP format: 133KB vs 786KB PNG (83% savings)
+             * - blurDataURL: Shows low-res placeholder while loading
+             */}
             <HeroAnimator className="absolute inset-0 z-0 select-none pointer-events-none w-full h-full">
                 <div className="relative w-full h-full">
                     <Image
-                        src="/images/hero-twilight.png"
-                        alt="Luxury Villa Twilight - Architectural Design in Dallas"
-                        fill
-                        priority
-                        quality={90}
-                        className="object-cover"
+                        src={IMAGES.heroTwilight.src}
+                        alt="Stunning modern luxury villa at twilight with warm interior lighting, floor-to-ceiling windows, and contemporary architectural design showcasing Premium Home Design craftsmanship in Dallas Texas"
+                        width={IMAGES.heroTwilight.width}
+                        height={IMAGES.heroTwilight.height}
+                        priority={true}
+                        quality={85}
+                        className="object-cover w-full h-full"
                         sizes="100vw"
+                        placeholder="blur"
+                        blurDataURL={IMAGES.heroTwilight.blurDataURL}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30" />
                     {/* Architectural Layer */}
@@ -39,7 +57,10 @@ export function HeroScene() {
                 {/* Content Left (Col 8) */}
                 <div className="md:col-span-8 text-left">
                     <HeroTitle>
-                        <h1 className="text-balance text-white mb-8 font-[family-name:var(--font-playfair)] text-7xl md:text-9xl tracking-[-0.05em] leading-[1.1] drop-shadow-2xl">
+                        <h1
+                            id="hero-title"
+                            className="text-balance text-white mb-8 font-[family-name:var(--font-playfair)] text-7xl md:text-9xl tracking-[-0.05em] leading-[1.1] drop-shadow-2xl"
+                        >
                             <TitleWord>Luxury</TitleWord> <TitleWord>Living,</TitleWord>
                             <br />
                             <span className="text-[hsl(var(--primary))] italic">
