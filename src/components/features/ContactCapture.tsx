@@ -101,7 +101,10 @@ function SuccessState({ onReset }: { onReset: () => void }) {
             aria-live="polite"
         >
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
-            <h3 className="text-3xl font-[family-name:var(--font-playfair)] text-white mb-4">
+            <h3
+                id="contact-success-heading"
+                className="text-3xl font-[family-name:var(--font-playfair)] text-white mb-4"
+            >
                 Message Received.
             </h3>
             <p className="text-zinc-400 mb-8">
@@ -169,7 +172,11 @@ export function ContactCapture() {
     // Success state
     if (submitStatus === "success") {
         return (
-            <section id="contact" className="w-full max-w-2xl mx-auto px-6 py-24">
+            <section
+                id="contact"
+                className="w-full max-w-2xl mx-auto px-6 py-24"
+                aria-labelledby="contact-success-heading"
+            >
                 <SuccessState onReset={handleReset} />
             </section>
         );

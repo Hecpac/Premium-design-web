@@ -184,6 +184,12 @@ h4 {
   text-wrap: balance;
 }
 
+/* Focus Visibility */
+:where(a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
 /* Optimal Noise Overlay: Fixed, Static, Pointer-events none */
 body::after {
   content: "";
