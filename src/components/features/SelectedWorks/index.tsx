@@ -8,12 +8,12 @@ import { SelectedWorksClient, WorkItem } from "./SelectedWorksClient";
 const WORKS_DATA: WorkItem[] = [
     {
         id: "01",
-        title: "The Design Atelier",
-        category: "Interiors",
-        location: "Dallas HQ",
-        image: "/images/selected-works/architect-office-tools.png",
-        year: "2026",
-        slug: "design-atelier",
+        title: "Selected Works",
+        category: "Estates",
+        location: "Architecture Portfolio",
+        image: "/images/selected-works/portfolio-collage.png",
+        year: "2024—2026",
+        slug: "selected-works-portfolio",
         featured: true, // Will display as large card in "All" view
     },
     {
@@ -69,6 +69,15 @@ const WORKS_DATA: WorkItem[] = [
         image: "/images/selected-works/new-project.png",
         year: "2026",
         slug: "modern-sanctuary",
+    },
+    {
+        id: "08",
+        title: "The Design Atelier",
+        category: "Interiors",
+        location: "Dallas HQ",
+        image: "/images/selected-works/architect-office-tools.png",
+        year: "2026",
+        slug: "design-atelier",
     },
 ];
 
