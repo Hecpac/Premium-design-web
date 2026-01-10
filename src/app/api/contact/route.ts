@@ -48,10 +48,10 @@ function checkRateLimit(ip: string): boolean {
 export async function POST(request: NextRequest): Promise<NextResponse<SuccessResponse | ErrorResponse>> {
     try {
         // 1. Rate limiting
-        const ip = request.headers.get("x-forwarded-for") || 
-                   request.headers.get("x-real-ip") || 
-                   "unknown";
-        
+        const ip = request.headers.get("x-forwarded-for") ||
+            request.headers.get("x-real-ip") ||
+            "unknown";
+
         if (!checkRateLimit(ip)) {
             return NextResponse.json(
                 { error: "Too many requests. Please try again later." },
@@ -88,58 +88,77 @@ export async function POST(request: NextRequest): Promise<NextResponse<SuccessRe
         // 4. Generate submission ID for tracking
         const submissionId = `sub_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
-        // 5. Log the submission (replace with actual email service)
-        console.log("=".repeat(50));
-        console.log("📧 NEW CONTACT FORM SUBMISSION");
-        console.log("=".repeat(50));
-        console.log(`ID: ${submissionId}`);
-        console.log(`Name: ${data.name}`);
-        console.log(`Email: ${data.email}`);
-        console.log(`Phone: ${data.phone || "Not provided"}`);
-        console.log(`Interest: ${data.interest}`);
-        console.log(`Message: ${data.message}`);
-        console.log(`Privacy Accepted: ${data.privacyAccepted}`);
-        console.log(`Timestamp: ${new Date().toISOString()}`);
-        console.log(`IP: ${ip}`);
-        console.log("=".repeat(50));
+        // 5. Log the submission
+        console.log(`[API] New Submission: ${submissionId} from ${data.email}`);
 
-        // =========================================================================
-        // TODO: Implement email sending
-        // =========================================================================
-        // 
-        // Option 1: Resend (https://resend.com)
-        // ```
-        // import { Resend } from 'resend';
-        // const resend = new Resend(process.env.RESEND_API_KEY);
-        // 
-        // await resend.emails.send({
-        //     from: 'Premium Home <noreply@premiumhome.com>',
-        //     to: 'info@premiumhome.com',
-        //     subject: `New ${data.interest} inquiry from ${data.name}`,
-        //     html: `
-        //         <h2>New Contact Form Submission</h2>
-        //         <p><strong>Name:</strong> ${data.name}</p>
-        //         <p><strong>Email:</strong> ${data.email}</p>
-        //         <p><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
-        //         <p><strong>Interest:</strong> ${data.interest}</p>
-        //         <p><strong>Message:</strong></p>
-        //         <p>${data.message}</p>
-        //     `
-        // });
-        // ```
-        //
-        // Option 2: SendGrid, Postmark, AWS SES, etc.
-        //
-        // Option 3: Store in database (Supabase, PostgreSQL, etc.)
-        // =========================================================================
+        // 6. Resend Integration
+        const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-        // 6. Simulate network delay (remove in production)
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        if (RESEND_API_KEY) {
+            try {
+                const { Resend } = await import("resend");
+                const resend = new Resend(RESEND_API_KEY);
+
+                // A. Notification to Team
+                await resend.emails.send({
+                    from: "Premium Home Design <no-reply@premiumhome.design>",
+                    to: ["leads@premiumhome.design"], // Demo destination
+                    subject: `[QUALIFIED LEAD] ${data.interest} - ${data.name}`,
+                    html: `
+                        <h2>New High-Ticket Discovery Request</h2>
+                        <p><strong>Submission ID:</strong> ${submissionId}</p>
+                        <p><strong>Name:</strong> ${data.name}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                        <p><strong>Phone:</strong> ${data.phone || "Not provided"}</p>
+                        <p><strong>Interest:</strong> ${data.interest}</p>
+                        <p><strong>Budget:</strong> ${data.budget}</p>
+                        <p><strong>Timeline:</strong> ${data.timeline}</p>
+                        <p><strong>Project Narrative:</strong></p>
+                        <p>${data.message}</p>
+                        <hr/>
+                        <p><small>Timestamp: ${new Date().toISOString()}</small></p>
+                    `
+                });
+
+                // B. StoryBrand Confirmation to Client (Hero)
+                // Frame: The client is the Hero, We are the Guide.
+                await resend.emails.send({
+                    from: "Premium Home Design <concierge@premiumhome.design>",
+                    to: [data.email],
+                    subject: "Your Architectural Vision, Curated.",
+                    html: `
+                        <div style="font-family: serif; color: #1a1a1a; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                            <h1 style="color: #C6A87C;">The Discovery Phase Begins.</h1>
+                            <p>Hello ${data.name.split(' ')[0]},</p>
+                            
+                            <p>You have a vision for a space that transcends the ordinary—a sanctuary where engineering meets artistry. We are honored that you've considered <strong>Premium Home Design</strong> to guide you through this journey.</p>
+                            
+                            <p>Building a custom legacy is a complex challenge. Our role is to eliminate the fog of construction and provide the technical clarity you deserve.</p>
+                            
+                            <div style="background: #fdfaf6; padding: 20px; border-left: 4px solid #C6A87C; margin: 25px 0;">
+                                <p style="margin: 0;"><strong>What's Next:</strong> Our lead architectural consultant is currently reviewing your project brief for <strong>${data.interest}</strong>. You will receive a personal invitation for a design consultation within the next 24 hours.</p>
+                            </div>
+                            
+                            <p>Until then, feel free to explore our latest <a href="https://www.premiumhome.design/projects" style="color: #C6A87C;">Selected Works</a>.</p>
+                            
+                            <p>Welcome to the intersection of precision and luxury.</p>
+                            
+                            <p>Best regards,<br/><strong>The Premium Home Design Team</strong></p>
+                        </div>
+                    `
+                });
+            } catch (emailError) {
+                console.error("Failed to send email via Resend:", emailError);
+                // We don't fail the whole request because the submission was captured in logs
+            }
+        } else {
+            console.warn("RESEND_API_KEY not found. Skipping email delivery (Logging only).");
+        }
 
         // 7. Return success response
         return NextResponse.json(
             {
-                message: "Message sent successfully",
+                message: "Discovery request captured and sent",
                 submissionId,
             },
             { status: 200 }

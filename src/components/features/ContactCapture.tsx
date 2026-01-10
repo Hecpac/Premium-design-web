@@ -10,6 +10,8 @@ import {
     contactSchema,
     type ContactFormData,
     INTEREST_OPTIONS,
+    BUDGET_OPTIONS,
+    TIMELINE_OPTIONS,
     contactFormDefaults,
 } from "@/lib/validations/contact-schema";
 import { cn } from "@/lib/utils";
@@ -86,6 +88,53 @@ function FieldInput({
 }
 
 // ============================================================================
+// RADIO GROUP COMPONENT (Reusable)
+// ============================================================================
+
+interface RadioGroupProps {
+    label: string;
+    name: keyof ContactFormData;
+    options: readonly { value: string; label: string }[];
+    register: ReturnType<typeof useForm<ContactFormData>>["register"];
+    error?: string;
+}
+
+function RadioGroup({ label, name, options, register, error }: RadioGroupProps) {
+    return (
+        <fieldset className="space-y-4">
+            <legend className="text-label text-zinc-500 mb-2">{label}</legend>
+            <div className="flex flex-wrap gap-3">
+                {options.map((option) => {
+                    const inputId = `contact-${name}-${option.value}`;
+                    return (
+                        <div key={option.value}>
+                            <input
+                                {...register(name)}
+                                id={inputId}
+                                type="radio"
+                                value={option.value}
+                                className="peer sr-only"
+                            />
+                            <label
+                                htmlFor={inputId}
+                                className="px-5 py-2.5 rounded-sm border text-sm tracking-wider uppercase transition-all duration-300 cursor-pointer text-zinc-500 border-white/10 hover:border-white/40 peer-checked:bg-[hsl(var(--primary))] peer-checked:text-black peer-checked:border-[hsl(var(--primary))] peer-focus-visible:ring-2 peer-focus-visible:ring-white/50"
+                            >
+                                {option.label}
+                            </label>
+                        </div>
+                    );
+                })}
+            </div>
+            {error && (
+                <p role="alert" className="text-red-400 text-xs tracking-widest uppercase">
+                    {error}
+                </p>
+            )}
+        </fieldset>
+    );
+}
+
+// ============================================================================
 // SUCCESS STATE COMPONENT
 // ============================================================================
 
@@ -122,19 +171,35 @@ function SuccessState({ onReset }: { onReset: () => void }) {
 // ============================================================================
 
 export function ContactCapture() {
+    const [step, setStep] = useState(0);
     const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
     const [serverError, setServerError] = useState<string | null>(null);
+    const prefersReducedMotion = useReducedMotion();
 
     const {
         register,
         handleSubmit,
+        trigger,
         formState: { errors, isSubmitting },
         reset,
     } = useForm<ContactFormData>({
         resolver: zodResolver(contactSchema),
         defaultValues: contactFormDefaults,
-        mode: "onBlur", // Validate on blur for better UX
+        mode: "onBlur",
     });
+
+    const nextStep = async () => {
+        const fieldsByStep: (keyof ContactFormData)[][] = [
+            ["interest", "budget"],
+            ["name", "email", "phone"],
+            ["timeline", "message", "privacyAccepted"],
+        ];
+
+        const isValid = await trigger(fieldsByStep[step]);
+        if (isValid) setStep((s) => s + 1);
+    };
+
+    const prevStep = () => setStep((s) => s - 1);
 
     const onSubmit = async (data: ContactFormData) => {
         setSubmitStatus("submitting");
@@ -164,6 +229,7 @@ export function ContactCapture() {
     };
 
     const handleReset = () => {
+        setStep(0);
         setSubmitStatus("idle");
         setServerError(null);
         reset();
@@ -172,11 +238,7 @@ export function ContactCapture() {
     // Success state
     if (submitStatus === "success") {
         return (
-            <section
-                id="contact"
-                className="w-full max-w-2xl mx-auto px-6 py-24"
-                aria-labelledby="contact-success-heading"
-            >
+            <section id="contact" className="w-full max-w-2xl mx-auto px-6 py-24 text-center">
                 <SuccessState onReset={handleReset} />
             </section>
         );
@@ -190,239 +252,187 @@ export function ContactCapture() {
         >
             {/* Header */}
             <div className="text-center mb-16">
-                <span className="text-label block mb-4">Contact</span>
+                <span className="text-label block mb-4">Lead Discovery</span>
                 <h2 id="contact-heading" className="text-white mb-6">
-                    Let's Build.
+                    {step === 0 && "Your Vision."}
+                    {step === 1 && "Identity."}
+                    {step === 2 && "Timeline & Scope."}
                 </h2>
-                <p className="text-lead text-base max-w-md mx-auto">
-                    Begin the conversation. No obligations, just clarity.
-                </p>
+                <div className="flex justify-center gap-2 mb-8">
+                    {[0, 1, 2].map((i) => (
+                        <div
+                            key={i}
+                            className={cn(
+                                "h-1 w-12 transition-all duration-500",
+                                i <= step ? "bg-[hsl(var(--primary))]" : "bg-white/10"
+                            )}
+                        />
+                    ))}
+                </div>
             </div>
 
             {/* Form */}
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="space-y-10"
-                noValidate // We handle validation with Zod
-            >
-                {/* Name */}
-                <FieldInput
-                    id="contact-name"
-                    label="Full Name"
-                    placeholder="Your Name *"
-                    error={errors.name?.message}
-                    required
-                    register={register}
-                    fieldName="name"
-                />
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-12" noValidate>
+                <AnimatePresence mode="wait">
+                    {step === 0 && (
+                        <m.div
+                            key="step0"
+                            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
+                            className="space-y-10"
+                        >
+                            <RadioGroup
+                                label="I am interested in: *"
+                                name="interest"
+                                options={INTEREST_OPTIONS}
+                                register={register}
+                                error={errors.interest?.message}
+                            />
+                            <RadioGroup
+                                label="Expected Investment Range: *"
+                                name="budget"
+                                options={BUDGET_OPTIONS}
+                                register={register}
+                                error={errors.budget?.message}
+                            />
+                            <div className="pt-6">
+                                <Button type="button" onClick={nextStep} className="w-full py-6 text-lg rounded-sm bg-[hsl(var(--primary))] text-black hover:bg-[hsl(var(--primary))]/90">
+                                    Continue to Identity
+                                </Button>
+                            </div>
+                        </m.div>
+                    )}
 
-                {/* Email */}
-                <FieldInput
-                    id="contact-email"
-                    label="Email Address"
-                    type="email"
-                    placeholder="Email Address *"
-                    error={errors.email?.message}
-                    required
-                    register={register}
-                    fieldName="email"
-                />
+                    {step === 1 && (
+                        <m.div
+                            key="step1"
+                            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
+                            className="space-y-10"
+                        >
+                            <FieldInput
+                                id="contact-name"
+                                label="Full Name"
+                                placeholder="Your Name *"
+                                error={errors.name?.message}
+                                register={register}
+                                fieldName="name"
+                            />
+                            <FieldInput
+                                id="contact-email"
+                                label="Email Address"
+                                type="email"
+                                placeholder="Email Address *"
+                                error={errors.email?.message}
+                                register={register}
+                                fieldName="email"
+                            />
+                            <FieldInput
+                                id="contact-phone"
+                                label="Phone Number"
+                                type="tel"
+                                placeholder="Phone Number (optional)"
+                                error={errors.phone?.message}
+                                register={register}
+                                fieldName="phone"
+                            />
+                            <div className="pt-6 flex gap-4">
+                                <Button type="button" variant="outline" onClick={prevStep} className="flex-1 py-6 text-lg rounded-sm border-white/20 text-white hover:bg-white/5">
+                                    Back
+                                </Button>
+                                <Button type="button" onClick={nextStep} className="flex-[2] py-6 text-lg rounded-sm bg-[hsl(var(--primary))] text-black hover:bg-[hsl(var(--primary))]/90">
+                                    Continue to Briefing
+                                </Button>
+                            </div>
+                        </m.div>
+                    )}
 
-                {/* Phone (Optional) */}
-                <FieldInput
-                    id="contact-phone"
-                    label="Phone Number"
-                    type="tel"
-                    placeholder="Phone Number (optional)"
-                    error={errors.phone?.message}
-                    register={register}
-                    fieldName="phone"
-                />
+                    {step === 2 && (
+                        <m.div
+                            key="step2"
+                            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
+                            className="space-y-10"
+                        >
+                            <RadioGroup
+                                label="Anticipated Timeline: *"
+                                name="timeline"
+                                options={TIMELINE_OPTIONS}
+                                register={register}
+                                error={errors.timeline?.message}
+                            />
+                            <div className="relative group">
+                                <label htmlFor="contact-message" className="sr-only">
+                                    Your Message
+                                </label>
+                                <textarea
+                                    id="contact-message"
+                                    placeholder="Tell us about your project... *"
+                                    rows={4}
+                                    {...register("message")}
+                                    className={cn(
+                                        "w-full bg-transparent border-b py-4 text-lg text-white resize-none",
+                                        "placeholder:text-zinc-700 outline-none transition-colors duration-200",
+                                        "focus:border-[hsl(var(--primary))]",
+                                        errors.message ? "border-red-500/50" : "border-white/20"
+                                    )}
+                                />
+                                {errors.message && (
+                                    <p className="text-red-400 text-xs mt-2 tracking-widest uppercase">
+                                        {errors.message.message}
+                                    </p>
+                                )}
+                            </div>
 
-                {/* Interest Selection */}
-                <fieldset className="space-y-4" aria-required="true">
-                    <legend id="contact-interest-label" className="text-label text-zinc-500">
-                        I am interested in: *
-                    </legend>
-                    <div
-                        className="flex flex-wrap gap-3"
-                        role="radiogroup"
-                        aria-labelledby="contact-interest-label"
-                    >
-                        {INTEREST_OPTIONS.map((option) => {
-                            const inputId = `contact-interest-${option.value}`;
-                            return (
-                                <div key={option.value}>
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
                                     <input
-                                        {...register("interest")}
-                                        id={inputId}
-                                        type="radio"
-                                        value={option.value}
-                                        required
-                                        aria-required="true"
-                                        aria-invalid={errors.interest ? "true" : "false"}
-                                        aria-describedby={errors.interest ? "contact-interest-error" : undefined}
-                                        className="peer sr-only"
+                                        id="contact-privacy"
+                                        type="checkbox"
+                                        {...register("privacyAccepted")}
+                                        className="mt-1 w-5 h-5 rounded border-2 bg-transparent checked:bg-[hsl(var(--primary))] cursor-pointer"
                                     />
-                                    <label
-                                        htmlFor={inputId}
-                                        className="px-5 py-2.5 rounded-full border text-sm tracking-wider uppercase transition-all duration-300 cursor-pointer text-zinc-500 border-white/10 hover:border-white/40 peer-checked:bg-white peer-checked:text-black peer-checked:border-white peer-focus-visible:ring-2 peer-focus-visible:ring-white/50"
-                                    >
-                                        {option.label}
+                                    <label htmlFor="contact-privacy" className="text-sm text-zinc-400 cursor-pointer">
+                                        I accept the privacy policy and consent to being contacted. *
                                     </label>
                                 </div>
-                            );
-                        })}
-                    </div>
-                    {errors.interest && (
-                        <p
-                            id="contact-interest-error"
-                            role="alert"
-                            className="text-red-400 text-xs tracking-widest uppercase"
-                        >
-                            {errors.interest.message}
-                        </p>
-                    )}
-                </fieldset>
+                                {errors.privacyAccepted && (
+                                    <p className="text-red-400 text-xs tracking-widest uppercase">
+                                        {errors.privacyAccepted.message}
+                                    </p>
+                                )}
+                            </div>
 
-                {/* Message */}
-                <div className="relative group">
-                    <label htmlFor="contact-message" className="sr-only">
-                        Your Message
-                    </label>
-                    <textarea
-                        id="contact-message"
-                        placeholder="Tell us about your project... *"
-                        rows={4}
-                        required
-                        aria-invalid={errors.message ? "true" : "false"}
-                        aria-describedby={errors.message ? "message-error" : undefined}
-                        aria-required="true"
-                        {...register("message")}
-                        className={cn(
-                            "w-full bg-transparent border-b py-4 text-lg text-white resize-none",
-                            "placeholder:text-zinc-700 outline-none transition-colors duration-200",
-                            "focus:border-[hsl(var(--primary))]",
-                            errors.message ? "border-red-500/50" : "border-white/20"
-                        )}
-                    />
-                    <AnimatePresence mode="wait">
-                        {errors.message && (
-                            <m.p
-                                id="message-error"
-                                role="alert"
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                className="text-red-400 text-xs mt-2 tracking-widest uppercase flex items-center gap-1"
-                            >
-                                <AlertCircle className="w-3 h-3" />
-                                {errors.message.message}
-                            </m.p>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* Privacy Checkbox */}
-                <div className="space-y-2">
-                    <div className="flex items-start gap-3">
-                        <input
-                            id="contact-privacy"
-                            type="checkbox"
-                            required
-                            aria-required="true"
-                            aria-invalid={errors.privacyAccepted ? "true" : "false"}
-                            aria-describedby={
-                                errors.privacyAccepted ? "privacy-error" : undefined
-                            }
-                            {...register("privacyAccepted")}
-                            className={cn(
-                                "mt-1 w-5 h-5 rounded border-2 bg-transparent",
-                                "checked:bg-[hsl(var(--primary))] checked:border-[hsl(var(--primary))]",
-                                "focus:ring-2 focus:ring-[hsl(var(--primary))]/50",
-                                "transition-colors cursor-pointer",
-                                errors.privacyAccepted
-                                    ? "border-red-500/50"
-                                    : "border-white/20"
+                            {submitStatus === "error" && serverError && (
+                                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-sm">
+                                    <p className="text-red-400 text-sm flex items-center gap-2">
+                                        <AlertCircle className="w-4 h-4" />
+                                        {serverError}
+                                    </p>
+                                </div>
                             )}
-                        />
-                        <label
-                            htmlFor="contact-privacy"
-                            className="text-sm text-zinc-400 cursor-pointer"
-                        >
-                            I accept the{" "}
-                            <a
-                                href="/privacy"
-                                className="text-[hsl(var(--primary))] hover:underline underline-offset-2"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                privacy policy
-                            </a>{" "}
-                            and consent to being contacted about my inquiry. *
-                        </label>
-                    </div>
-                    <AnimatePresence mode="wait">
-                        {errors.privacyAccepted && (
-                            <m.p
-                                id="privacy-error"
-                                role="alert"
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                className="text-red-400 text-xs tracking-widest uppercase flex items-center gap-1 ml-8"
-                            >
-                                <AlertCircle className="w-3 h-3" />
-                                {errors.privacyAccepted.message}
-                            </m.p>
-                        )}
-                    </AnimatePresence>
-                </div>
 
-                {/* Server Error */}
-                <AnimatePresence mode="wait">
-                    {submitStatus === "error" && serverError && (
-                        <m.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            className="p-4 bg-red-500/10 border border-red-500/30 rounded-sm"
-                            role="alert"
-                        >
-                            <p className="text-red-400 text-sm flex items-center gap-2">
-                                <AlertCircle className="w-4 h-4" />
-                                {serverError}
-                            </p>
+                            <div className="pt-6 flex gap-4">
+                                <Button type="button" variant="outline" onClick={prevStep} className="flex-1 py-6 text-lg rounded-sm border-white/20 text-white hover:bg-white/5">
+                                    Back
+                                </Button>
+                                <Button type="submit" disabled={isSubmitting || submitStatus === "submitting"} className="flex-[2] py-6 text-lg rounded-sm bg-[hsl(var(--primary))] text-black hover:bg-[hsl(var(--primary))]/90">
+                                    {isSubmitting || submitStatus === "submitting" ? (
+                                        <span className="flex items-center gap-2 justify-center">
+                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            Sending...
+                                        </span>
+                                    ) : (
+                                        "Submit Discovery Request"
+                                    )}
+                                </Button>
+                            </div>
                         </m.div>
                     )}
                 </AnimatePresence>
-
-                {/* Submit Button */}
-                <div className="pt-4 text-center">
-                    <Button
-                        type="submit"
-                        size="lg"
-                        disabled={isSubmitting || submitStatus === "submitting"}
-                        className={cn(
-                            "w-full md:w-auto px-12 py-6 text-lg rounded-sm transition-all",
-                            "bg-[hsl(var(--primary))] text-black",
-                            "hover:bg-[hsl(var(--primary))]/90",
-                            "disabled:opacity-50 disabled:cursor-not-allowed"
-                        )}
-                    >
-                        {isSubmitting || submitStatus === "submitting" ? (
-                            <span className="flex items-center gap-2">
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                Sending...
-                            </span>
-                        ) : (
-                            "Send Message"
-                        )}
-                    </Button>
-                    <p className="mt-4 text-xs text-zinc-600">
-                        Privacy protected. Zero spam. Response within 24 hours.
-                    </p>
-                </div>
             </form>
         </section>
     );

@@ -10,6 +10,7 @@ import {
 } from "./HeroAnimations";
 import { StatsCounterClient } from "@/components/features/StatsCounterClient";
 import { FloorPlanOverlay } from "@/components/features/FloorPlanOverlay";
+import { Hero3D } from "@/components/features/Hero3D";
 import { IMAGES } from "@/lib/image-data";
 
 /**
@@ -50,6 +51,8 @@ export function HeroScene() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30" />
                     {/* Architectural Layer */}
                     <FloorPlanOverlay opacity={0.06} />
+                    {/* Cinematic 3D Layer */}
+                    <Hero3D />
                 </div>
             </HeroAnimator>
 
@@ -61,10 +64,10 @@ export function HeroScene() {
                             id="hero-title"
                             className="text-balance text-white mb-8 font-[family-name:var(--font-playfair)] text-7xl md:text-9xl tracking-[-0.05em] leading-[1.1] drop-shadow-2xl"
                         >
-                            <TitleWord>Luxury</TitleWord> <TitleWord>Living,</TitleWord>
+                            <TitleWord>Luxury</TitleWord> <TitleWord>Meets</TitleWord>
                             <br />
                             <span className="text-[hsl(var(--primary))] italic">
-                                <TitleWord>Redefined.</TitleWord>
+                                <TitleWord>Meaning.</TitleWord>
                             </span>
                         </h1>
                     </HeroTitle>
@@ -84,15 +87,15 @@ export function HeroScene() {
                 <div className="md:col-span-4 flex justify-end">
                     <HeroFacts>
                         <div className="editorial-card min-w-[300px]">
-                        <div className="space-y-8">
+                            <div className="space-y-8">
                                 <div className="stat-block">
-                                    <StatsCounterClient value={18} duration={2.5} />
+                                    <StatsCounterClient value={12} duration={2.5} />
                                     <span className="stat-label">Months Avg. Build Time</span>
                                 </div>
                                 <div className="thin-rule border-white/20" />
                                 <div className="stat-block">
-                                    <StatsCounterClient value={42} prefix="$" suffix="M+" duration={3} />
-                                    <span className="stat-label">Portfolio Value (Demo)</span>
+                                    <StatsCounterClient value={25} prefix="$" suffix="M+" duration={3} />
+                                    <span className="stat-label">Portfolio Value</span>
                                 </div>
                             </div>
                         </div>

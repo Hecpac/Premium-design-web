@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# AI Agent Specific Directives (GEO Optimization)
+User-agent: GPTBot
+Allow: /insights/
+Allow: /projects/
+
+User-agent: ChatGPT-User
+Allow: /insights/
+Allow: /projects/
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://www.premiumhome.design/sitemap.xml

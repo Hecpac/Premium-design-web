@@ -16,7 +16,22 @@ export const INTEREST_OPTIONS = [
     { value: "consultation", label: "General Consultation" },
 ] as const;
 
+export const BUDGET_OPTIONS = [
+    { value: "under-500k", label: "< $500k" },
+    { value: "500k-1m", label: "$500k - $1M" },
+    { value: "1m-5m", label: "$1M - $5M" },
+    { value: "above-5m", label: "$5M+" },
+] as const;
+
+export const TIMELINE_OPTIONS = [
+    { value: "immediate", label: "< 6 Months" },
+    { value: "medium", label: "6 - 12 Months" },
+    { value: "long", label: "12+ Months" },
+] as const;
+
 export type InterestType = (typeof INTEREST_OPTIONS)[number]["value"];
+export type BudgetType = (typeof BUDGET_OPTIONS)[number]["value"];
+export type TimelineType = (typeof TIMELINE_OPTIONS)[number]["value"];
 
 /**
  * Schema de validación para el formulario de contacto
@@ -42,6 +57,14 @@ export const contactSchema = z.object({
 
     interest: z.enum(["new-build", "renovation", "investment", "consultation"], {
         message: "Please select an option",
+    }),
+
+    budget: z.enum(["under-500k", "500k-1m", "1m-5m", "above-5m"], {
+        message: "Please select a budget range",
+    }),
+
+    timeline: z.enum(["immediate", "medium", "long"], {
+        message: "Please select a timeline",
     }),
 
     message: z
@@ -76,6 +99,8 @@ export const contactFormDefaults: ContactFormData = {
     email: "",
     phone: "",
     interest: "new-build",
+    budget: "under-500k",
+    timeline: "medium",
     message: "",
     privacyAccepted: false,
 };

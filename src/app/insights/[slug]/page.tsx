@@ -42,8 +42,38 @@ export default async function InsightPage({ params }: PageProps) {
         notFound();
     }
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": article.title,
+        "description": article.excerpt,
+        "image": [article.coverImage],
+        "datePublished": article.publishedDate,
+        "author": [{
+            "@type": "Organization",
+            "name": "Premium Home Design",
+            "url": "https://www.premiumhome.design"
+        }],
+        "publisher": {
+            "@type": "Organization",
+            "name": "Premium Home Design",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.premiumhome.design/images/logo.png"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://www.premiumhome.design/insights/${article.slug}`
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[hsl(var(--background))] selection:bg-[hsl(var(--primary))/0.3]">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <Navbar brandName="Premium Home" />
 
             <main id="main-content" className="pt-32 pb-20">
