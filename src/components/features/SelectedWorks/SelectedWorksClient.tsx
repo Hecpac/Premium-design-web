@@ -381,7 +381,7 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                                 </AnimatePresence>
                             </m.div>
                         )}
-                    </div>
+                    </m.div>
                 ) : (
                     /* Filtered View: Standard 3-column grid - Compact */
                     <m.div
