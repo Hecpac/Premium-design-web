@@ -34,18 +34,30 @@ interface SelectedWorksClientProps {
 
 const FILTERS: Array<"All" | WorkCategory> = ["All", "Residences", "Estates", "Interiors"];
 
-// Card animation variants
+// Card animation variants with Stagger
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2
+        }
+    }
+};
+
 const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20, scale: 0.98 },
     visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
+        scale: 1,
+        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
     },
     exit: {
         opacity: 0,
-        scale: 0.96,
-        transition: { duration: 0.3 }
+        scale: 0.95,
+        transition: { duration: 0.2 }
     }
 };
 
@@ -95,7 +107,7 @@ function WorkCard({
 }) {
     const prefersReducedMotion = useReducedMotion();
     const href = item.slug ? `/projects/${item.slug}` : "#";
-    
+
     // Lazy loading: first 3 images eager (above fold), rest lazy
     const isAboveFold = index < 3;
 
@@ -119,13 +131,14 @@ function WorkCard({
                 )}
                 aria-label={`View case study: ${item.title}`}
             >
-                {/* Image Container with Editorial Aspect Ratios */}
+                {/* Image Container with Cinematic Compact Ratios */}
                 <div
                     className={cn(
-                        "relative w-full overflow-hidden rounded-sm bg-zinc-900",
-                        "ring-1 ring-white/5 transition-all duration-300",
-                        "group-hover:ring-[hsl(var(--primary))]/20 group-hover:shadow-lg group-hover:shadow-[hsl(var(--primary))]/5",
-                        isFeatured ? "aspect-[16/10]" : "aspect-[16/9]"
+                        "relative w-full overflow-hidden rounded-sm bg-neutral-900/50", // Darker bg to prevent flashing
+                        "transition-all duration-300",
+                        // Removed borders for cleaner look, added subtle shadow
+                        "group-hover:shadow-2xl group-hover:shadow-black/50",
+                        isFeatured ? "aspect-[16/9] md:aspect-[21/9]" : "aspect-[4/3] md:aspect-[3/2]" // Tighter ratios
                     )}
                 >
                     <Image
@@ -134,14 +147,14 @@ function WorkCard({
                         fill
                         loading={isAboveFold ? "eager" : "lazy"}
                         priority={isFeatured || isAboveFold}
-                        quality={80}
+                        quality={90}
                         className={cn(
-                            "object-cover transition-transform duration-700 ease-out",
-                            !prefersReducedMotion && "group-hover:scale-[1.03]"
+                            "object-cover transition-transform duration-700 ease-out will-change-transform",
+                            !prefersReducedMotion && "group-hover:scale-[1.05]"
                         )}
                         sizes={isFeatured
-                            ? "(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 900px"
-                            : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                            ? "(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px" // Optimized sizes
+                            : "(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 500px"
                         }
                     />
 
@@ -308,16 +321,20 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                     </div>
                 </div>
 
-                {/* Editorial Grid Layout */}
+                {/* Editorial Grid Layout - Compact Gap */}
                 {activeFilter === "All" && filteredItems.length > 0 ? (
-                    /* Featured Layout: Hero card left, stack right, then grid below */
-                    <div className="space-y-8">
+                    <m.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="space-y-4 md:space-y-6" // Reduced spacing
+                    >
                         {/* Top Row: Featured + Sidebar */}
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
-                            {/* Featured Card - Left 7 cols */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
+                            {/* Featured Card - Left 8 cols for more dominance */}
                             <m.div
                                 layout
-                                className="lg:col-span-7"
+                                className="lg:col-span-8"
                             >
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems[0] && (
@@ -330,9 +347,9 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                                     )}
                                 </AnimatePresence>
                             </m.div>
-                            
-                            {/* Sidebar Stack - Right 5 cols */}
-                            <div className="lg:col-span-5 flex flex-col gap-6 md:gap-8">
+
+                            {/* Sidebar Stack - Right 4 cols */}
+                            <div className="lg:col-span-4 flex flex-col gap-4 md:gap-6">
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems.slice(1, 3).map((item, idx) => (
                                         <WorkCard
@@ -345,12 +362,12 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                                 </AnimatePresence>
                             </div>
                         </div>
-                        
+
                         {/* Remaining Cards - 3 column grid */}
                         {filteredItems.length > 3 && (
                             <m.div
                                 layout
-                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
                             >
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems.slice(3).map((item, idx) => (
@@ -366,10 +383,13 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                         )}
                     </div>
                 ) : (
-                    /* Filtered View: Standard 3-column grid */
+                    /* Filtered View: Standard 3-column grid - Compact */
                     <m.div
                         layout
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredItems.map((item, index) => (

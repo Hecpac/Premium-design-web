@@ -1,0 +1,71 @@
+---
+description: "High-Ticket Architecture & Design System Rules"
+globs: ["**/*.tsx", "**/*.ts", "**/*.css"]
+---
+
+# Premium Home Design - Architectural Standards v1.0
+
+This file serves as the SINGLE SOURCE OF TRUTH for all design, engineering, and content decisions. Any deviation requires Principal Architect approval.
+
+## 1. High-Ticket Aesthetics & 'Zero Black Gaps'
+
+**Objective:** Maintain a $5,000+ USD premium visual value.
+
+*   **Zero Black Gaps Protocol:**
+    *   **Prohibited:** Accidental black backgrounds, layout shifting that reveals the body background, or unhandled image loading states.
+    *   **Mandatory:** ALL images must use `object-cover`.
+    *   **Structure:** Use strictly defined aspect ratios in Bento Grids (e.g., `aspect-[4/3]`, `aspect-[16/9]`, `aspect-[21/9]`) to ensure absolute visual consistency.
+    *   **Fallback:** Skeleton states must match the exact dimensions of the loading content.
+
+*   **Visual Hierarchy (Typography):**
+    *   **Authority (Serif):** Use `Playfair Display` for all Headings (H1-H3), Pull quotes, and "Monumental" text elements. This communicates legacy and trust.
+    *   **Readability (Sans-Serif):** Use `Inter` for body copy, UI elements, navigation, and technical specifications.
+    *   **Micro-Typography:** Use `tracking-widest` uppercase for labels, kickers, and overlines.
+
+## 2. Performance Engineering 2026
+
+**Objective:** Instant interactivity and technical longevity.
+
+*   **Interaction to Next Paint (INP) Priority:**
+    *   Debounce all heavy input handlers.
+    *   Use `useTransition` for state updates that trigger re-renders.
+    *   Defer non-critical JavaScript using `next/dynamic` or `React.lazy`.
+
+*   **3D/WebGL Discipline:**
+    *   **Lifecycle Management:** ALL Three.js/R3F scenes MUST implement `useInView`.
+    *   **Behavior:** When elements are off-screen, the rendering loop must PAUSE (`frameloop="demand"` or manual stopping) to save Client CPU/GPU.
+    *   **Future-Proofing:** Prioritize `WebGPURenderer` over traditional `WebGLRenderer` for all new 3D implementations to ensure compatibility with next-gen browser standards.
+
+## 3. Generative Engine Optimization (GEO)
+
+**Objective:** dominate AI Search (Perplexity, SearchGPT, Gemini).
+
+*   **Entity Identity (JSON-LD):**
+    *   Every page MUST include specific JSON-LD schemas.
+    *   Home: `Organization`, `LocalBusiness`.
+    *   Project Details: `Product` or `RealEstateListing`.
+    *   Insights: `NewsArticle` or `BlogPosting` with explicit `author` and `publisher` identifying "Premium Home Design".
+
+*   **Silo Architecture:**
+    *   **Depth Limit:** No content page shall be more than 3-4 clicks from the Homepage.
+    *   **Structure:** Homepage -> Hub (e.g., /projects) -> Spoke (e.g., /projects/villa-las-colinas).
+    *   **Internal Linking:** Contextual links between related "Spokes" are mandatory.
+
+*   **Extractable Content (LLM-Friendly):**
+    *   **Pattern:** Articles must begin with "Direct Response" definition paragraphs.
+    *   **Formatting:** Use semantic HTML (`<dl>`, `<strong>`, `<table>`) to structure data for easy extraction by bots.
+    *   **Clarity:** Avoid fluff. Answers to "What is X?" should be the first sentence of a section.
+
+## 4. Operational Quality Protocol
+
+**Objective:** Flawless execution and code hygiene.
+
+*   **Accessibility (A11y) Validation:**
+    *   **Standard:** WCAG 2.1 Level AA is the minimum baseline.
+    *   **Requirement:** All interactive elements need `aria-label` if no visible text exists.
+    *   **Focus:** Visible focus states (`focus-visible`) are mandatory for keyboard navigation.
+
+*   **Code Consitency & Hygiene:**
+    *   **Prohibited:** Inline styles (`style={{...}}`). Use Tailwind utility classes or defined CSS variables.
+    *   **DRY Principle:** Do not create duplicate components. Search `src/components/ui` and `src/components/features` BEFORE proposing new UI elements.
+    *   **Hallucination Prevention:** The agent must verify file existence via `list_dir` or `find_by_name` before referencing imports.

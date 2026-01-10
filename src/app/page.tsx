@@ -133,14 +133,13 @@ export default function Home() {
           aria-labelledby="monumental-heading"
         >
           <Image
-            src={IMAGES.parallaxMansion.src}
-            alt="Brutalist mansion facade with dramatic concrete architecture and geometric design elements showcasing contemporary luxury residential construction"
+            src="/dallas-aerial.png"
+            alt="Panoramic aerial view of Dallas skyline at twilight featuring modern architecture and urban luxury context"
             fill
             className="object-cover"
             sizes="100vw"
-            quality={85}
-            placeholder="blur"
-            blurDataURL={IMAGES.parallaxMansion.blurDataURL}
+            quality={90}
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-black/20" />
           <div className="absolute inset-0 flex items-center justify-center">

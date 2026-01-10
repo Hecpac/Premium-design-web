@@ -74,9 +74,9 @@ export function HeroScene() {
 
                     <HeroSubtitle>
                         <p className="max-w-xl text-zinc-200 text-lg md:text-xl font-light mb-12 tracking-wide leading-relaxed drop-shadow-md">
-                            Diseño arquitectónico premium en Dallas y Las Colinas.
+                            Premium architectural design in Dallas and Las Colinas.
                             <br className="hidden md:block" />
-                            Transparencia radical y tecnología de construcción avanzada.
+                            Radical transparency and advanced construction technology.
                         </p>
                     </HeroSubtitle>
 
