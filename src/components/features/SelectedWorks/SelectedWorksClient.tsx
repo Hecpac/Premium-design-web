@@ -99,11 +99,13 @@ function FilterChip({
 function WorkCard({
     item,
     isFeatured,
-    index
+    index,
+    fillHeight = false
 }: {
     item: WorkItem;
     isFeatured: boolean;
     index: number;
+    fillHeight?: boolean;
 }) {
     const prefersReducedMotion = useReducedMotion();
     const href = item.slug ? `/projects/${item.slug}` : "#";
@@ -119,7 +121,7 @@ function WorkCard({
             animate="visible"
             exit="exit"
             transition={{ delay: index * 0.08 }}
-            className="relative group"
+            className={cn("relative group", fillHeight && "h-full")}
         >
             <Link
                 href={href}
@@ -127,7 +129,8 @@ function WorkCard({
                     "block transition-all duration-300 ease-out",
                     "rounded-sm",
                     !prefersReducedMotion && "hover:-translate-y-1",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
+                    fillHeight && "h-full"
                 )}
                 aria-label={`View case study: ${item.title}`}
             >
@@ -138,7 +141,12 @@ function WorkCard({
                         "transition-all duration-300",
                         // Removed borders for cleaner look, added subtle shadow
                         "group-hover:shadow-2xl group-hover:shadow-black/50",
-                        isFeatured ? "aspect-[16/9] md:aspect-[21/9]" : "aspect-[4/3] md:aspect-[3/2]" // Tighter ratios
+                        // Use h-full for grid-controlled height, otherwise use aspect ratios
+                        fillHeight
+                            ? "h-full min-h-[180px]"
+                            : isFeatured
+                                ? "aspect-[16/9] md:aspect-[21/9]"
+                                : "aspect-[4/3] md:aspect-[3/2]"
                     )}
                 >
                     <Image
@@ -348,8 +356,8 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                                 </AnimatePresence>
                             </m.div>
 
-                            {/* Sidebar Stack - Right 4 cols */}
-                            <div className="lg:col-span-4 flex flex-col gap-4 md:gap-6">
+                            {/* Sidebar Stack - Right 4 cols - Fills featured card height */}
+                            <div className="lg:col-span-4 grid grid-rows-2 gap-4 md:gap-6">
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems.slice(1, 3).map((item, idx) => (
                                         <WorkCard
@@ -357,6 +365,7 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                                             item={item}
                                             isFeatured={false}
                                             index={idx + 1}
+                                            fillHeight
                                         />
                                     ))}
                                 </AnimatePresence>
