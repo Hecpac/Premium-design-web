@@ -341,7 +341,10 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                         className="space-y-4 md:space-y-6" // Reduced spacing
                     >
                         {/* Top Row: Featured + Sidebar - Dense packing for Bento look */}
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6" style={{ gridAutoFlow: 'dense' }}>
+                        <div
+                            className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6"
+                            style={{ gridAutoFlow: "row dense" }}
+                        >
                             {/* Featured Card - Left 8 cols for more dominance */}
                             <m.div
                                 layout
@@ -379,16 +382,17 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                         {filteredItems.length > 3 && (
                             <m.div
                                 layout
-                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+                                className="columns-1 md:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-0"
                             >
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems.slice(3).map((item, idx) => (
-                                        <WorkCard
-                                            key={item.id}
-                                            item={item}
-                                            isFeatured={false}
-                                            index={idx + 3}
-                                        />
+                                        <div key={item.id} className="mb-4 md:mb-6 break-inside-avoid">
+                                            <WorkCard
+                                                item={item}
+                                                isFeatured={false}
+                                                index={idx + 3}
+                                            />
+                                        </div>
                                     ))}
                                 </AnimatePresence>
                             </m.div>
@@ -405,7 +409,7 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredItems.map((item, index) => (
-                                <div key={item.id} className="mb-4 md:mb-6">
+                                <div key={item.id} className="mb-4 md:mb-6 break-inside-avoid">
                                     <WorkCard
                                         item={item}
                                         isFeatured={false}

@@ -24,7 +24,7 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
   preload: true,
-  weight: ["400", "700"],
+  weight: ["400", "700", "900"],
   style: ["normal", "italic"],
   adjustFontFallback: true,
 });
