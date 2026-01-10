@@ -127,26 +127,27 @@ export default function Home() {
         {/* 4. EVIDENCE (Gallery) */}
         <SelectedWorks />
 
-        {/* PARALLAX BREAK - Agentrules #1: WebP with blur placeholder */}
+        {/* PARALLAX BREAK - Panoramic Monumental Section */}
         <section
-          className="relative w-full h-[60vh] overflow-hidden my-20"
+          className="relative w-full aspect-[21/9] min-h-[300px] max-h-[600px] overflow-hidden my-20"
           aria-labelledby="monumental-heading"
         >
           <Image
             src="/dallas-aerial.png"
             alt="Panoramic aerial view of Dallas skyline at twilight featuring modern architecture and urban luxury context"
             fill
-            className="object-cover"
+            className="object-cover object-[center_30%]"
             sizes="100vw"
             quality={90}
             loading="lazy"
           />
-          {/* Dark gradient overlay for text contrast - accessibility compliant */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30" />
+          {/* Premium gradient overlay for maximum text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/40" />
           <div className="absolute inset-0 flex items-center justify-center">
             <h2
               id="monumental-heading"
-              className="font-[family-name:var(--font-playfair)] text-5xl md:text-8xl text-white tracking-widest uppercase text-center drop-shadow-[0_4px_24px_rgba(0,0,0,0.5)]"
+              className="font-[family-name:var(--font-playfair)] text-5xl md:text-8xl lg:text-9xl font-black text-white tracking-[0.3em] uppercase text-center drop-shadow-[0_4px_32px_rgba(0,0,0,0.8)]"
+              style={{ textShadow: '0 4px 24px rgba(0,0,0,0.6), 0 8px 48px rgba(0,0,0,0.4)' }}
             >
               Monumental
             </h2>

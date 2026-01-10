@@ -121,7 +121,10 @@ function WorkCard({
             animate="visible"
             exit="exit"
             transition={{ delay: index * 0.08 }}
-            className={cn("relative group", fillHeight && "h-full")}
+            className={cn(
+                "relative group break-inside-avoid-column",
+                fillHeight && "h-full"
+            )}
         >
             <Link
                 href={href}
@@ -337,8 +340,8 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                         animate="visible"
                         className="space-y-4 md:space-y-6" // Reduced spacing
                     >
-                        {/* Top Row: Featured + Sidebar */}
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
+                        {/* Top Row: Featured + Sidebar - Dense packing for Bento look */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6" style={{ gridAutoFlow: 'dense' }}>
                             {/* Featured Card - Left 8 cols for more dominance */}
                             <m.div
                                 layout
@@ -392,22 +395,23 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                         )}
                     </m.div>
                 ) : (
-                    /* Filtered View: Standard 3-column grid - Compact */
+                    /* Filtered View: CSS Columns Masonry for seamless gap-free packing */
                     <m.div
                         layout
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+                        className="columns-1 md:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-0"
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredItems.map((item, index) => (
-                                <WorkCard
-                                    key={item.id}
-                                    item={item}
-                                    isFeatured={false}
-                                    index={index}
-                                />
+                                <div key={item.id} className="mb-4 md:mb-6">
+                                    <WorkCard
+                                        item={item}
+                                        isFeatured={false}
+                                        index={index}
+                                    />
+                                </div>
                             ))}
                         </AnimatePresence>
                     </m.div>
