@@ -1,10 +1,12 @@
-import { Navbar, BentoCard, BackToTop } from "@/components/ui";
+import { TechnicalNavbar, TechnicalFooter, BentoCard, BackToTop } from "@/components/ui";
 import { HeroScene } from "@/components/features/HeroScene";
 import { FAQSection } from "@/components/features/FAQSection";
 import { TrustSignalSection } from "@/components/features/TrustSignalSection";
 import { ContactCapture } from "@/components/features/ContactCapture";
 import { InsightBrief } from "@/components/features/InsightBrief";
 import { MonumentalSection } from "@/components/features/MonumentalSection";
+import { TechnicalProcessTimeline } from "@/components/features/TechnicalProcessTimeline";
+import { TechnicalServiceList } from "@/components/features/TechnicalServiceList";
 import Image from "next/image";
 import { IMAGES } from "@/lib/image-data";
 
@@ -13,9 +15,9 @@ import { SelectedWorks } from "@/components/features/SelectedWorks";
 export default function Home() {
   return (
     <div className="min-h-screen bg-[hsl(var(--background))] selection:bg-[hsl(var(--primary))/0.3]">
-      <Navbar brandName="Premium Home" />
+      <TechnicalNavbar />
 
-      <main id="main-content" className="px-0 relative">
+      <main id="main-content" className="px-0 relative pt-14">
         {/* 1. HERO - Definition */}
         <header aria-labelledby="hero-title">
           <HeroScene />
@@ -28,14 +30,14 @@ export default function Home() {
 
           {/* 3. METHOD (Bento Grid) - Inline for simplicity or component */}
           <section
-            id="process"
-            className="section-spacing"
-            aria-labelledby="process-heading"
+            id="philosophy"
+            className="section-spacing scroll-mt-20"
+            aria-labelledby="philosophy-heading"
           >
             <div className="mb-20 grid md:grid-cols-12 gap-6 items-end">
               <div className="md:col-span-8">
                 <span className="text-label mb-4 block">Our Philosophy</span>
-                <h2 id="process-heading" className="text-white">
+                <h2 id="philosophy-heading" className="text-white">
                   The <span className="text-[hsl(var(--primary))] italic">Art</span> of <br />
                   Precision.
                 </h2>
@@ -123,6 +125,16 @@ export default function Home() {
 
         </div>
 
+        {/* TECHNICAL PROCESS TIMELINE */}
+        <div id="process" className="scroll-mt-20">
+          <TechnicalProcessTimeline />
+        </div>
+
+        {/* TECHNICAL CAPABILITIES */}
+        <div id="capabilities" className="scroll-mt-20">
+          <TechnicalServiceList />
+        </div>
+
         {/* 4. EVIDENCE (Gallery) */}
         <SelectedWorks />
 
@@ -130,7 +142,9 @@ export default function Home() {
         <MonumentalSection />
 
         {/* 5. AUTHORITY (Insights) */}
-        <InsightBrief />
+        <div id="journal" className="scroll-mt-20">
+          <InsightBrief />
+        </div>
 
         {/* 6. AEO (FAQ) */}
         <FAQSection />
@@ -138,13 +152,7 @@ export default function Home() {
         {/* 7. ACTION (Contact) */}
         <ContactCapture />
 
-        <footer className="py-20 text-center text-zinc-600 text-sm">
-          <div className="thin-rule max-w-xs mx-auto mb-8 opacity-50" />
-          <p>© 2026 Premium Home Design. Dallas, TX.</p>
-          <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
-            Concept demo — not a real business.
-          </p>
-        </footer>
+        <TechnicalFooter />
       </main>
 
       {/* Back to Top Button */}
