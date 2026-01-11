@@ -225,45 +225,36 @@ function WorkCard({
                             </div>
                         </div>
                     )}
-                </div>
 
-                {/* Info Block (For non-featured cards) */}
-                {!isFeatured && (
-                    <div className="mt-5 px-1">
-                        <div
-                            className={cn(
-                                "transition-transform duration-300",
-                                !prefersReducedMotion && "group-hover:-translate-y-1.5"
-                            )}
-                        >
-                            {/* Meta line */}
-                            <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                <span className="text-xs font-mono text-[hsl(var(--primary))] uppercase tracking-widest">
-                                    {item.category}
-                                </span>
-                                <span className="text-zinc-600">·</span>
-                                <span className="text-xs text-zinc-500">
-                                    {item.location}
-                                </span>
-                                <span className="text-zinc-600">·</span>
-                                <span className="text-numeral text-xs text-zinc-600">
-                                    {item.year}
+                    {/* Bottom Content Overlay (For non-featured cards) */}
+                    {!isFeatured && (
+                        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                            <div
+                                className={cn(
+                                    "transition-transform duration-300",
+                                    !prefersReducedMotion && "group-hover:-translate-y-1"
+                                )}
+                            >
+                                <div className="flex items-center gap-2 mb-2 flex-wrap">
+                                    <span className="text-xs font-mono text-[hsl(var(--primary))] uppercase tracking-widest">
+                                        {item.category}
+                                    </span>
+                                    <span className="text-zinc-500">·</span>
+                                    <span className="text-xs text-zinc-400">
+                                        {item.location}
+                                    </span>
+                                </div>
+                                <h3 className="font-[family-name:var(--font-playfair)] text-lg md:text-xl text-white group-hover:text-zinc-200 transition-colors mb-2">
+                                    {item.title}
+                                </h3>
+                                <span className="inline-flex items-center gap-1.5 text-xs text-zinc-400 group-hover:text-white transition-colors uppercase tracking-widest">
+                                    View Case Study
+                                    <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                                 </span>
                             </div>
-
-                            {/* Title */}
-                            <h3 className="font-[family-name:var(--font-playfair)] text-xl md:text-2xl text-white group-hover:text-zinc-200 transition-colors mb-3">
-                                {item.title}
-                            </h3>
-
-                            {/* CTA */}
-                            <span className="inline-flex items-center gap-1.5 text-xs text-zinc-400 group-hover:text-white transition-colors uppercase tracking-widest">
-                                View Case Study
-                                <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                            </span>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </Link>
         </m.article>
     );
