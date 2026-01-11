@@ -13,76 +13,76 @@ import { Hero3DGate } from "./Hero3DGate";
 import { CinematicAerial } from "./CinematicAerial";
 
 /**
- * HeroScene Component
- *
- * Agentrules v2.0.0 Regla #1 Compliance:
- * - WebP format for hero image (83% size reduction)
- * - priority={true} for LCP optimization
- * - Explicit width/height to prevent CLS
- * - sizes="100vw" for full-viewport hero
- * - placeholder="blur" with blurDataURL for perceived performance
- * - quality={85} as per Agentrules specification
- * - Descriptive alt text (15+ words) for accessibility and SEO
+ * HeroScene Component — Web Premium 2026 Refactor
+ * 
+ * Design: Brutalist "ARCHFORM" inspired layout.
+ * Typography: Massive scale, uppercase, bottom-anchored.
+ * Motion: Spring physics, staggered reveal, non-blocking.
+ * A11y: WCAG 2.2 AA compliant contrast.
  */
 export function HeroScene() {
     return (
-        <div className="relative min-h-[95vh] flex flex-col justify-center overflow-hidden w-full">
-            {/*
-             * CRITICAL LCP ELEMENT: Background Image
-             * - priority={true}: Preloads immediately, bypasses lazy loading
-             * - WebP format: 133KB vs 786KB PNG (83% savings)
-             * - blurDataURL: Shows low-res placeholder while loading
-             */}
+        <div className="relative min-h-[100dvh] flex flex-col justify-end w-full overflow-hidden bg-black text-white">
+            
+            {/* BACKGROUND LAYER (Fixed/Parallax) */}
             <HeroAnimator className="absolute inset-0 z-0 select-none pointer-events-none w-full h-full">
                 <div className="relative w-full h-full">
                     <CinematicAerial />
-                    {/* Architectural Layer */}
-                    <FloorPlanOverlay opacity={0.06} />
-                    {/* Cinematic 3D Layer (deferred + capability-gated) */}
+                    <FloorPlanOverlay opacity={0.08} />
                     <Hero3DGate />
+                    {/* Extra gradient for text legibility at bottom */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
                 </div>
             </HeroAnimator>
 
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-12 items-center mt-20">
-                {/* Content Left (Col 8) */}
-                <div className="md:col-span-8 text-left">
-                    <HeroTitle>
-                        <h1
-                            id="hero-title"
-                            className="text-balance text-white mb-8 font-[family-name:var(--font-playfair)] text-7xl md:text-9xl tracking-[-0.05em] leading-[1.1] drop-shadow-2xl"
-                        >
-                            <TitleWord>Luxury</TitleWord> <TitleWord>Meets</TitleWord>
-                            <br />
-                            <span className="text-[hsl(var(--primary))] italic">
-                                <TitleWord>Meaning.</TitleWord>
-                            </span>
-                        </h1>
-                    </HeroTitle>
-
-                    <HeroSubtitle>
-                        <p className="max-w-xl text-zinc-200 text-lg md:text-xl font-light mb-12 tracking-wide leading-relaxed drop-shadow-md">
-                            Premium architectural design in Dallas and Las Colinas.
-                            <br className="hidden md:block" />
-                            Radical transparency and advanced construction technology.
-                        </p>
-                    </HeroSubtitle>
-
-                    <HeroActions />
-                </div>
-
-                {/* Facts Card Right (Col 4) */}
-                <div className="md:col-span-4 flex justify-end">
-                    <HeroFacts>
-                        <div className="editorial-card min-w-[300px]">
-                            <div className="space-y-8">
-                                <div className="stat-block">
-                                    <StatsCounterClient value={12} />
-                                    <span className="stat-label">Months Avg. Build Time</span>
+            {/* CONTENT LAYER (Bottom Anchored) */}
+            <div className="relative z-10 w-full max-w-[90rem] mx-auto px-6 pb-12 md:pb-20">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                    
+                    {/* TYPOGRAPHY (Left) */}
+                    <div className="flex-1 max-w-5xl">
+                        <HeroTitle className="mb-6 md:mb-8">
+                            <h1 
+                                id="hero-title"
+                                className="font-[family-name:var(--font-inter)] font-bold text-[clamp(3.5rem,9vw,9.5rem)] leading-[0.85] tracking-[-0.04em] uppercase text-white"
+                            >
+                                <div className="overflow-hidden">
+                                    <TitleWord>Luxury</TitleWord>
+                                    <TitleWord className="text-white/50">Meets</TitleWord>
                                 </div>
-                                <div className="thin-rule border-white/20" />
-                                <div className="stat-block">
-                                    <StatsCounterClient value={25} prefix="$" suffix="M+" />
-                                    <span className="stat-label">Portfolio Value</span>
+                                <div className="overflow-hidden mt-2 md:mt-4">
+                                    <TitleWord className="text-[hsl(var(--primary))]">Meaning.</TitleWord>
+                                </div>
+                            </h1>
+                        </HeroTitle>
+
+                        <HeroSubtitle className="max-w-xl">
+                            <p className="text-zinc-300 text-lg md:text-xl font-light tracking-wide leading-relaxed text-balance">
+                                Premium architectural design in Dallas and Las Colinas. 
+                                <span className="hidden sm:inline"> Radical transparency and advanced construction technology.</span>
+                            </p>
+                        </HeroSubtitle>
+
+                        <HeroActions className="mt-8 md:mt-10" />
+                    </div>
+
+                    {/* STATS (Right / Bottom) */}
+                    <HeroFacts>
+                         <div className="backdrop-blur-md bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm min-w-[280px]">
+                            <div className="space-y-6">
+                                <div>
+                                    <div className="flex items-baseline gap-1">
+                                        <StatsCounterClient value={12} />
+                                        <span className="text-sm uppercase tracking-wider text-white/50">Months</span>
+                                    </div>
+                                    <p className="text-xs text-white/40 uppercase tracking-widest mt-1">Avg. Build Time</p>
+                                </div>
+                                <div className="w-full h-px bg-white/10" />
+                                <div>
+                                    <div className="flex items-baseline gap-1">
+                                        <StatsCounterClient value={25} prefix="$" suffix="M+" />
+                                    </div>
+                                    <p className="text-xs text-white/40 uppercase tracking-widest mt-1">Portfolio Value</p>
                                 </div>
                             </div>
                         </div>

@@ -1,22 +1,35 @@
 "use client";
 
-import { m, useScroll, useTransform, useSpring, useInView, useMotionValue, useReducedMotion, animate } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { m, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
-// --- PARALLAX WRAPPER (Cinematic Subtle: Max 15px) ---
+// ============================================================================
+// MOTION CONSTANTS (Spring Physics)
+// ============================================================================
+const SPRING_TRANSITION = {
+    type: "spring" as const,
+    stiffness: 100,
+    damping: 20,
+    mass: 1
+};
+
+const STAGGER_DELAY = 0.05;
+
+// ============================================================================
+// PARALLAX WRAPPER
+// ============================================================================
 export function HeroAnimator({ children, className }: { children: React.ReactNode; className?: string }) {
     const ref = useRef(null);
     const { scrollY } = useScroll();
     const prefersReducedMotion = useReducedMotion();
 
-    // Cinematic parallax: subtle 15px max shift for premium feel
-    const y = useTransform(scrollY, [0, 600], [0, prefersReducedMotion ? 0 : 15]);
-    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+    // Cinematic parallax: subtle movement
+    const y = useTransform(scrollY, [0, 800], [0, prefersReducedMotion ? 0 : 150]);
+    const opacity = useTransform(scrollY, [0, 600], [1, 0]);
 
-    // Smooth spring for buttery animation
-    const springConfig = { stiffness: 120, damping: 25, mass: 0.5 };
-    const ySpring = useSpring(y, springConfig);
+    // Smooth spring for buttery interaction, distinct from linear scroll
+    const ySpring = useSpring(y, { stiffness: 60, damping: 20 });
 
     return (
         <m.div
@@ -29,20 +42,23 @@ export function HeroAnimator({ children, className }: { children: React.ReactNod
     );
 }
 
-// --- STAGGERED TITLE (Cinematic Word-by-Word Reveal) ---
-export function HeroTitle({ children }: { children: React.ReactNode }) {
+// ============================================================================
+// STAGGERED TITLE (Character/Word Reveal)
+// ============================================================================
+export function HeroTitle({ children, className }: { children: React.ReactNode; className?: string }) {
     const prefersReducedMotion = useReducedMotion();
 
     return (
         <m.div
-            initial={prefersReducedMotion ? "visible" : "hidden"}
+            className={className}
+            initial="hidden"
             animate="visible"
             variants={{
                 hidden: {},
                 visible: {
                     transition: {
-                        staggerChildren: 0.12, // Slightly slower for cinematic feel
-                        delayChildren: 0.3
+                        staggerChildren: prefersReducedMotion ? 0 : 0.08,
+                        delayChildren: 0.2
                     }
                 }
             }}
@@ -52,49 +68,42 @@ export function HeroTitle({ children }: { children: React.ReactNode }) {
     );
 }
 
-/**
- * TitleWord - Performance-optimized word reveal
- * Only uses opacity + translateY (no blur/filter for GPU efficiency)
- */
 export function TitleWord({ children, className }: { children: React.ReactNode, className?: string }) {
-    const prefersReducedMotion = useReducedMotion();
-
+    // If children is a string, split it for character animations? 
+    // For now, keeping word-level for cleaner DOM, but with spring physics.
+    
     return (
         <m.span
-            className={className}
+            className={`inline-block mr-[0.2em] whitespace-nowrap ${className}`}
             variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                        duration: 0.7,
-                        ease: [0.22, 1, 0.36, 1] // easeOutExpo for premium deceleration
-                    }
+                hidden: { y: "100%", opacity: 0, rotateZ: 5 },
+                visible: { 
+                    y: 0, 
+                    opacity: 1, 
+                    rotateZ: 0,
+                    transition: SPRING_TRANSITION 
                 }
-            }}
-            style={{
-                display: "inline-block",
-                marginRight: "0.25em",
-                willChange: prefersReducedMotion ? "auto" : "opacity, transform"
             }}
         >
             {children}
         </m.span>
-    )
+    );
 }
 
-// --- FADE UP SUBTITLE (Cinematic Reveal) ---
-export function HeroSubtitle({ children }: { children: React.ReactNode }) {
+// ============================================================================
+// SUBTITLE & ACTIONS
+// ============================================================================
+export function HeroSubtitle({ children, className }: { children: React.ReactNode; className?: string }) {
     const prefersReducedMotion = useReducedMotion();
 
     return (
         <m.div
-            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+            className={className}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-                duration: 0.9,
-                delay: prefersReducedMotion ? 0 : 0.9,
+                delay: prefersReducedMotion ? 0 : 0.8,
+                duration: 0.8,
                 ease: [0.22, 1, 0.36, 1]
             }}
         >
@@ -103,12 +112,33 @@ export function HeroSubtitle({ children }: { children: React.ReactNode }) {
     );
 }
 
-// --- BUTTONS (Premium Micro-Interactions) ---
-/**
- * HeroCTA - Individual button with hover lift + glow
- * Uses CSS transforms for 60fps performance
- * Uses native anchors for proper link semantics
- */
+export function HeroActions({ className }: { className?: string }) {
+    const prefersReducedMotion = useReducedMotion();
+
+    return (
+        <m.div
+            className={`flex flex-col sm:flex-row gap-4 items-start ${className}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                delay: prefersReducedMotion ? 0 : 1.0,
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1]
+            }}
+        >
+             <HeroCTA variant="primary" href="#contact">
+                Book a Visit
+            </HeroCTA>
+            <HeroCTA variant="secondary" href="#projects">
+                View Portfolio
+            </HeroCTA>
+        </m.div>
+    );
+}
+
+// ============================================================================
+// CTA BUTTONS
+// ============================================================================
 function HeroCTA({
     children,
     variant = "primary",
@@ -119,189 +149,55 @@ function HeroCTA({
     href?: string;
 }) {
     const prefersReducedMotion = useReducedMotion();
-
-    if (variant === "primary") {
-        return (
-            <m.a
-                href={href}
-                className="relative group inline-flex items-center justify-center"
-                whileHover={prefersReducedMotion ? {} : { y: -2 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            >
-                {/* Animated glow backdrop */}
-                <m.div
-                    className="absolute -inset-1 bg-gradient-to-r from-[hsl(var(--primary))] via-amber-500 to-[hsl(var(--primary))] rounded-full blur-md pointer-events-none"
-                    initial={{ opacity: 0.4 }}
-                    whileHover={{ opacity: 0.8, scale: 1.02 }}
-                    transition={{ duration: 0.3 }}
-                />
-                <span className="relative h-12 px-8 text-base bg-black text-white hover:bg-black/90 border border-white/10 overflow-hidden shadow-2xl rounded-full inline-flex items-center justify-center font-medium">
-                    <span className="relative z-10 flex items-center">
-                        {children}
-                        <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </span>
-                    {/* Shine sweep effect */}
-                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
-                </span>
-            </m.a>
-        );
-    }
+    const isPrimary = variant === "primary";
 
     return (
         <m.a
             href={href}
-            className="inline-flex items-center justify-center h-12 px-8 text-base text-white border border-white/20 hover:bg-white/10 hover:border-white/40 backdrop-blur-md transition-all duration-300 rounded-full font-medium"
-            whileHover={prefersReducedMotion ? {} : { y: -2 }}
-            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className={`
+                relative group inline-flex items-center justify-center px-8 h-12 rounded-full font-medium text-sm tracking-wide transition-all
+                ${isPrimary 
+                    ? "bg-white text-black border border-transparent hover:scale-105" 
+                    : "bg-transparent text-white border border-white/20 hover:bg-white/10 hover:border-white/40"}
+            `}
+            whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+            transition={SPRING_TRANSITION}
         >
             {children}
+            {isPrimary && <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />}
         </m.a>
     );
 }
 
-export function HeroActions() {
-    const prefersReducedMotion = useReducedMotion();
-
-    return (
-        <m.div
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: prefersReducedMotion ? 0 : 1.1, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row gap-6 items-start"
-        >
-            <HeroCTA variant="primary" href="#contact">
-                Book a Consultation
-            </HeroCTA>
-
-            <HeroCTA variant="secondary" href="#projects">
-                View Projects
-            </HeroCTA>
-        </m.div>
-    )
-}
-
-// --- ANIMATED STATS (Performance Optimized) ---
-/**
- * Counter Component - Performance Engineering Requirements:
- * 1. Zero CLS: Uses min-width based on final value character count
- * 2. prefers-reduced-motion: Respects user accessibility preferences
- * 3. Viewport-triggered: Only animates when entering viewport (useInView)
- * 4. Efficient: Uses Framer Motion's useMotionValue + animate (no heavy libs)
- */
-function Counter({
-    value,
-    prefix = "",
-    suffix = "",
-    duration = 2
-}: {
-    value: number;
-    prefix?: string;
-    suffix?: string;
-    duration?: number;
-}) {
-    const nodeRef = useRef<HTMLSpanElement>(null);
-    const inView = useInView(nodeRef, { once: true, margin: "-50px" });
-    const motionValue = useMotionValue(0);
-    const [hasAnimated, setHasAnimated] = useState(false);
-
-    // Respect prefers-reduced-motion
-    const prefersReducedMotion = useReducedMotion();
-
-    // Calculate min-width to prevent CLS (ch unit = width of "0" character)
-    const finalText = `${prefix}${value}${suffix}`;
-    const minWidth = `${finalText.length}ch`;
-
-    useEffect(() => {
-        if (!inView || hasAnimated) return;
-
-        // If user prefers reduced motion, show final value immediately
-        if (prefersReducedMotion) {
-            if (nodeRef.current) {
-                nodeRef.current.textContent = finalText;
-            }
-
-            // Avoid setState synchronously inside effects (react-hooks/set-state-in-effect)
-            const id = window.setTimeout(() => setHasAnimated(true), 0);
-            return () => window.clearTimeout(id);
-        }
-
-        // Animate using Framer Motion's performant animate function
-        const controls = animate(motionValue, value, {
-            duration: duration,
-            ease: [0.22, 1, 0.36, 1], // Custom easeOutExpo for premium feel
-            onUpdate: (latest) => {
-                if (nodeRef.current) {
-                    nodeRef.current.textContent = `${prefix}${Math.round(latest)}${suffix}`;
-                }
-            },
-            onComplete: () => setHasAnimated(true)
-        });
-
-        return () => controls.stop();
-    }, [inView, hasAnimated, prefersReducedMotion, motionValue, value, duration, prefix, suffix, finalText]);
-
-    // Render final value initially to prevent CLS, CSS will handle the visual
-    return (
-        <span
-            ref={nodeRef}
-            className="stat-value tabular-nums"
-            style={{
-                minWidth,
-                display: "inline-block",
-                // Start at 0 visually but reserve space for final value
-            }}
-            aria-label={finalText}
-        >
-            {prefersReducedMotion ? finalText : `${prefix}0${suffix}`}
-        </span>
-    );
-}
-
-export function HeroFacts({ children }: { children: React.ReactNode }) {
-    const prefersReducedMotion = useReducedMotion();
-    
-    return (
-        <m.div
-            initial={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-                duration: prefersReducedMotion ? 0 : 0.8,
-                delay: prefersReducedMotion ? 0 : 1.2,
-                ease: "easeOut"
-            }}
-            className="hidden md:block"
-        >
-            {children}
-        </m.div>
-    )
-}
-
-// Expose Counter for usage in index
-export { Counter };
-
-// --- SCROLL CUE ---
+// ============================================================================
+// SCROLL CUE
+// ============================================================================
 export function HeroScrollCue() {
     const prefersReducedMotion = useReducedMotion();
     
     return (
         <m.div
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{
-                delay: prefersReducedMotion ? 0 : 2,
-                duration: prefersReducedMotion ? 0 : 1
-            }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2"
+            transition={{ delay: 1.5, duration: 1 }}
+            className="absolute bottom-8 right-8 z-20 flex items-center gap-3 text-white/60 hidden md:flex"
         >
-            <span className="text-[10px] uppercase tracking-[0.2em]">Scroll</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Scroll Down</span>
             <m.div
-                animate={prefersReducedMotion ? {} : { y: [0, 8, 0] }}
-                transition={prefersReducedMotion ? {} : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={prefersReducedMotion ? {} : { y: [0, 5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
                 <ChevronDown className="w-4 h-4" />
             </m.div>
         </m.div>
     )
+}
+
+// ============================================================================
+// STATS / FACTS
+// ============================================================================
+export function HeroFacts({ children }: { children: React.ReactNode }) {
+    // Keeping it simple for now, can be expanded
+    return <div className="hidden md:block absolute top-24 right-8 z-20">{children}</div>;
 }
