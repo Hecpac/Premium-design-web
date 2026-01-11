@@ -45,7 +45,7 @@ export const IMAGES = {
 
   // New cinematic aerial background
   heroAerialCinematic: {
-    src: "/images/hero-aerial-cinematic.webp",
+    src: "/images/hero-volumetric.png",
     width: 1024,
     height: 1024,
     blurDataURL: "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAgCdASoKAAoABUB8JYgCdAD0SCymWAAAAPujbzfMJheMl89mIKB/Y13aVteytCtMZPezMcBY50AA",
