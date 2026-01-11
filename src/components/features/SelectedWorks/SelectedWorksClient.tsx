@@ -340,49 +340,49 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                         animate="visible"
                         className="space-y-4 md:space-y-6" // Reduced spacing
                     >
-                        {/* Top Row: Featured + Sidebar - Dense packing for Bento look */}
-                        <div
-                            className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6"
-                            style={{ gridAutoFlow: "row dense" }}
-                        >
-                            {/* Featured Card - Left 8 cols for more dominance */}
+                        {/* Top Row: Featured + Sidebar - Explicit height matching */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 auto-rows-fr">
+                            {/* Featured Card - Left 8 cols */}
                             <m.div
                                 layout
-                                className="lg:col-span-8"
+                                className="lg:col-span-8 lg:row-span-2"
                             >
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems[0] && (
-                                        <WorkCard
-                                            key={filteredItems[0].id}
-                                            item={filteredItems[0]}
-                                            isFeatured={true}
-                                            index={0}
-                                        />
+                                        <div className="h-full">
+                                            <WorkCard
+                                                key={filteredItems[0].id}
+                                                item={filteredItems[0]}
+                                                isFeatured={true}
+                                                index={0}
+                                                fillHeight
+                                            />
+                                        </div>
                                     )}
                                 </AnimatePresence>
                             </m.div>
 
-                            {/* Sidebar Stack - Right 4 cols - Fills featured card height */}
-                            <div className="lg:col-span-4 grid grid-rows-2 gap-4 md:gap-6">
-                                <AnimatePresence mode="popLayout">
-                                    {filteredItems.slice(1, 3).map((item, idx) => (
+                            {/* Sidebar Stack - Right 4 cols - Each card gets equal row height */}
+                            <AnimatePresence mode="popLayout">
+                                {filteredItems.slice(1, 3).map((item, idx) => (
+                                    <m.div key={item.id} layout className="lg:col-span-4">
                                         <WorkCard
-                                            key={item.id}
                                             item={item}
                                             isFeatured={false}
                                             index={idx + 1}
                                             fillHeight
                                         />
-                                    ))}
-                                </AnimatePresence>
-                            </div>
+                                    </m.div>
+                                ))}
+                            </AnimatePresence>
                         </div>
 
-                        {/* Remaining Cards - Uniform 3-column grid with equal heights */}
+                        {/* Remaining Cards - Uniform 3-column grid with equal fixed heights */}
                         {filteredItems.length > 3 && (
                             <m.div
                                 layout
                                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+                                style={{ gridAutoRows: '320px' }}
                             >
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems.slice(3).map((item, idx) => (
@@ -391,6 +391,7 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                                             item={item}
                                             isFeatured={false}
                                             index={idx + 3}
+                                            fillHeight
                                         />
                                     ))}
                                 </AnimatePresence>
