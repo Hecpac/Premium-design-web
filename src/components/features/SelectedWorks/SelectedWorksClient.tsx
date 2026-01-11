@@ -144,12 +144,12 @@ function WorkCard({
                         "transition-all duration-300",
                         // Removed borders for cleaner look, added subtle shadow
                         "group-hover:shadow-2xl group-hover:shadow-black/50",
-                        // Use h-full for grid-controlled height, otherwise use aspect ratios
+                        // Use h-full for grid-controlled height, otherwise use fixed aspect ratio
                         fillHeight
                             ? "h-full min-h-[180px]"
                             : isFeatured
                                 ? "aspect-[16/9] md:aspect-[21/9]"
-                                : "aspect-[4/3] md:aspect-[3/2]"
+                                : "aspect-[4/3]"
                     )}
                 >
                     <Image
@@ -378,44 +378,42 @@ export function SelectedWorksClient({ items }: SelectedWorksClientProps) {
                             </div>
                         </div>
 
-                        {/* Remaining Cards - 3 column grid */}
+                        {/* Remaining Cards - Uniform 3-column grid with equal heights */}
                         {filteredItems.length > 3 && (
                             <m.div
                                 layout
-                                className="columns-1 md:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-0"
+                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
                             >
                                 <AnimatePresence mode="popLayout">
                                     {filteredItems.slice(3).map((item, idx) => (
-                                        <div key={item.id} className="mb-4 md:mb-6 break-inside-avoid">
-                                            <WorkCard
-                                                item={item}
-                                                isFeatured={false}
-                                                index={idx + 3}
-                                            />
-                                        </div>
+                                        <WorkCard
+                                            key={item.id}
+                                            item={item}
+                                            isFeatured={false}
+                                            index={idx + 3}
+                                        />
                                     ))}
                                 </AnimatePresence>
                             </m.div>
                         )}
                     </m.div>
                 ) : (
-                    /* Filtered View: CSS Columns Masonry for seamless gap-free packing */
+                    /* Filtered View: Uniform CSS Grid for perfect alignment */
                     <m.div
                         layout
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
-                        className="columns-1 md:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-0"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredItems.map((item, index) => (
-                                <div key={item.id} className="mb-4 md:mb-6 break-inside-avoid">
-                                    <WorkCard
-                                        item={item}
-                                        isFeatured={false}
-                                        index={index}
-                                    />
-                                </div>
+                                <WorkCard
+                                    key={item.id}
+                                    item={item}
+                                    isFeatured={false}
+                                    index={index}
+                                />
                             ))}
                         </AnimatePresence>
                     </m.div>
