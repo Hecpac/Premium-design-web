@@ -23,7 +23,11 @@ export function StatsCounterClient({
     suffix?: string;
     duration?: number;
 }) {
-    const [displayValue, setDisplayValue] = useState(0);
+    // Never start at 0 for premium-first perception (demo polish)
+    // Start slightly below the final value, then count up subtly.
+    const initialValue = Math.max(0, value - Math.max(1, Math.round(value * 0.15)));
+
+    const [displayValue, setDisplayValue] = useState(initialValue);
     const [hasAnimated, setHasAnimated] = useState(false);
     const ref = useRef<HTMLSpanElement>(null);
 
@@ -44,9 +48,12 @@ export function StatsCounterClient({
         const shouldReduceMotion = mediaQuery.matches;
 
         if (shouldReduceMotion) {
-            setDisplayValue(value);
-            setHasAnimated(true);
-            return;
+            // Avoid setState synchronously inside effects (react-hooks/set-state-in-effect)
+            const id = window.setTimeout(() => {
+                setDisplayValue(value);
+                setHasAnimated(true);
+            }, 0);
+            return () => window.clearTimeout(id);
         }
 
         // 2. Observer for Viewport Entry
@@ -63,8 +70,9 @@ export function StatsCounterClient({
         observer.observe(element);
 
         // 3. Animation Logic (RAF)
+        const startFrom = initialValue;
         let startTime: number | null = null;
-        let animationFrameId: number;
+        let animationFrameId: number | null = null;
 
         const startAnimation = () => {
             const animate = (timestamp: number) => {
@@ -73,10 +81,9 @@ export function StatsCounterClient({
                 const progressRatio = Math.min(progress / (duration * 1000), 1);
 
                 // Ease Out Expo for premium feel
-                // 1 - Math.pow(2, -10 * progressRatio)
                 const easeValue = progressRatio === 1 ? 1 : 1 - Math.pow(2, -10 * progressRatio);
 
-                const currentCount = Math.round(easeValue * value);
+                const currentCount = Math.round(startFrom + easeValue * (value - startFrom));
                 setDisplayValue(currentCount);
 
                 if (progressRatio < 1) {
@@ -93,7 +100,7 @@ export function StatsCounterClient({
             observer.disconnect();
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
         };
-    }, [value, duration, hasAnimated]);
+    }, [value, duration, hasAnimated, initialValue]);
 
     // Initial render: show 0 (or final if pre-rendered/hydrated late)
     // We use tabular-nums to ensure character width consistency

@@ -7,6 +7,9 @@ import { WebVitals } from "@/components/web-vitals";
 import { AxeDevtools } from "@/components/axe-devtools";
 import "./globals.css";
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://premium-home-web.vercel.app";
+
 /**
  * FONT OPTIMIZATION (CLS/FOUT Prevention)
  */
@@ -36,13 +39,13 @@ const playfair = Playfair_Display({
  * - Robots/Canonical handled by Next.js defaults
  */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.premiumhome.design"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Premium Home Design | Luxury Custom Homes in Dallas",
     template: "%s | Premium Home",
   },
   description:
-    "Construimos casas de lujo personalizadas en Dallas y Las Colinas. Diseño arquitectónico premium, transparencia radical y tecnología de construcción avanzada.",
+    "Luxury architectural design in Dallas and Las Colinas. Radical transparency, premium materials, and construction technology—crafted as a cinematic concept demo.",
   keywords: [
     "luxury homes Dallas",
     "custom home builder",
@@ -59,17 +62,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.premiumhome.design",
+    url: SITE_URL,
     siteName: "Premium Home Design",
     title: "Premium Home Design | Luxury Custom Homes in Dallas",
     description:
-      "Arquitectura de lujo personalizada en Dallas. Transparencia radical, materiales premium y tecnología de construcción avanzada.",
+      "Luxury architectural design in Dallas—precision engineering, premium materials, and a radically transparent process.",
     images: [
       {
-        url: "/images/og-hero.jpg", // Should be 1200x630
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Luxury Villa at Twilight by Premium Home Design",
+        alt: "Premium Home Design — Luxury Meets Meaning",
       },
     ],
   },
@@ -79,9 +82,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Premium Home Design | Luxury Custom Homes",
     description:
-      "Arquitectura de lujo en Dallas. Diseño, construcción y smart home integration.",
-    images: ["/images/og-hero.jpg"],
-    creator: "@premiumhome",
+      "Luxury architectural design in Dallas—precision engineering, premium materials, and a radically transparent process.",
+    images: ["/twitter-image"],
   },
 
   // Robots
@@ -109,12 +111,12 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://www.premiumhome.design/#organization",
+      "@id": `${SITE_URL}/#organization`,
       name: "Premium Home Design",
-      url: "https://www.premiumhome.design",
+      url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: "https://www.premiumhome.design/images/logo.png",
+        url: `${SITE_URL}/icon.svg`,
         width: 512,
         height: 512,
       },
@@ -127,54 +129,16 @@ const jsonLd = {
         "@type": "ContactPoint",
         telephone: "+1-214-555-0100",
         contactType: "sales",
-        areaServed: ["Dallas", "Las Colinas", "Highland Park", "Plano"],
-        availableLanguage: ["English", "Spanish"],
+        availableLanguage: ["English"],
       },
     },
     {
       "@type": "WebSite",
-      "@id": "https://www.premiumhome.design/#website",
-      url: "https://www.premiumhome.design",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
       name: "Premium Home Design",
       publisher: {
-        "@id": "https://www.premiumhome.design/#organization",
-      },
-      potentialAction: {
-        "@type": "SearchAction",
-        target: "https://www.premiumhome.design/search?q={search_term_string}",
-        "query-input": "required name=search_term_string",
-      },
-    },
-    {
-      "@type": ["LocalBusiness", "HomeBuilder", "GeneralContractor"],
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "1234 Luxury Lane",
-        addressLocality: "Dallas",
-        addressRegion: "TX",
-        postalCode: "75201",
-        addressCountry: "US",
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: 32.7767,
-        longitude: -96.797,
-      },
-      url: "https://www.premiumhome.design",
-      telephone: "+1-214-555-0100",
-      priceRange: "$$$",
-      openingHoursSpecification: [
-        {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          opens: "09:00",
-          closes: "18:00",
-        },
-      ],
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        reviewCount: "47",
+        "@id": `${SITE_URL}/#organization`,
       },
     },
   ],

@@ -168,7 +168,7 @@ export function FAQSection() {
             <div className="mt-16 text-center">
                 <div className="thin-rule max-w-xs mx-auto mb-8 opacity-30" />
                 <p className="text-zinc-500 text-sm mb-4">
-                    Don't see your question?
+                    Don&apos;t see your question?
                 </p>
                 <a
                     href="#contact"

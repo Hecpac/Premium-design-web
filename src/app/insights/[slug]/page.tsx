@@ -6,6 +6,9 @@ import { Navbar } from "@/components/ui";
 import { getInsightBySlug, getAllInsightSlugs } from "@/lib/insights";
 import type { Metadata } from "next";
 
+const SITE_URL =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://premium-home-web.vercel.app";
+
 interface PageProps {
     params: Promise<{ slug: string }>;
 }
@@ -47,24 +50,24 @@ export default async function InsightPage({ params }: PageProps) {
         "@type": "NewsArticle",
         "headline": article.title,
         "description": article.excerpt,
-        "image": [article.coverImage],
+        "image": [new URL(article.coverImage, SITE_URL).toString()],
         "datePublished": article.publishedDate,
         "author": [{
             "@type": "Organization",
             "name": "Premium Home Design",
-            "url": "https://www.premiumhome.design"
+            "url": SITE_URL
         }],
         "publisher": {
             "@type": "Organization",
             "name": "Premium Home Design",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://www.premiumhome.design/images/logo.png"
+                "url": `${SITE_URL}/icon.svg`
             }
         },
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": `https://www.premiumhome.design/insights/${article.slug}`
+            "@id": `${SITE_URL}/insights/${article.slug}`
         }
     };
 
@@ -151,6 +154,9 @@ export default async function InsightPage({ params }: PageProps) {
 
             <footer className="py-20 text-center text-zinc-600 text-sm border-t border-white/5">
                 <p>© 2026 Premium Home Design. Dallas, TX.</p>
+                <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
+                    Concept demo — not a real business.
+                </p>
             </footer>
         </div>
     );

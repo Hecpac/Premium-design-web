@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
     HeroAnimator,
     HeroTitle,
@@ -10,7 +9,7 @@ import {
 } from "./HeroAnimations";
 import { StatsCounterClient } from "@/components/features/StatsCounterClient";
 import { FloorPlanOverlay } from "@/components/features/FloorPlanOverlay";
-import { Hero3D } from "@/components/features/Hero3D";
+import { Hero3DGate } from "./Hero3DGate";
 import { CinematicAerial } from "./CinematicAerial";
 
 /**
@@ -39,8 +38,8 @@ export function HeroScene() {
                     <CinematicAerial />
                     {/* Architectural Layer */}
                     <FloorPlanOverlay opacity={0.06} />
-                    {/* Cinematic 3D Layer */}
-                    <Hero3D />
+                    {/* Cinematic 3D Layer (deferred + capability-gated) */}
+                    <Hero3DGate />
                 </div>
             </HeroAnimator>
 

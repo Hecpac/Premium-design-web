@@ -87,6 +87,9 @@ export default function InsightsPage() {
             <footer className="py-20 text-center text-zinc-600 text-sm border-t border-white/5 mt-20">
                 <div className="thin-rule max-w-xs mx-auto mb-8 opacity-50" />
                 <p>© 2026 Premium Home Design. Dallas, TX.</p>
+                <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
+                    Concept demo — not a real business.
+                </p>
             </footer>
         </div>
     );

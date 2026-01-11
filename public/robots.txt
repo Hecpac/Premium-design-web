@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-# AI Agent Specific Directives (GEO Optimization)
+# AI Agent Specific Directives (Demo Optimization)
 User-agent: GPTBot
 Allow: /insights/
 Allow: /projects/
@@ -17,4 +17,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://www.premiumhome.design/sitemap.xml
+Sitemap: https://premium-home-web.vercel.app/sitemap.xml

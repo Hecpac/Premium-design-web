@@ -3,7 +3,7 @@
 import * as React from "react";
 import { m, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Menu, X } from "lucide-react";
@@ -26,6 +26,7 @@ const SCROLL_OFFSET = 80;
 
 function Navbar({ className, brandName = "Premium Home" }: NavbarProps) {
     const pathname = usePathname();
+    const router = useRouter();
     const prefersReducedMotion = useReducedMotion();
     const isHomePage = pathname === "/";
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -72,6 +73,34 @@ function Navbar({ className, brandName = "Premium Home" }: NavbarProps) {
         },
         [isHomePage, prefersReducedMotion]
     );
+
+    const handleCtaClick = React.useCallback(() => {
+        // Close menu if open (mobile)
+        setIsMenuOpen(false);
+
+        // On homepage: scroll to contact with the same offset logic
+        if (isHomePage) {
+            const targetId = "contact";
+            const element = document.getElementById(targetId);
+            if (!element) {
+                console.warn(`[Navbar] Section #${targetId} not found`);
+                return;
+            }
+
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - SCROLL_OFFSET;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: prefersReducedMotion ? "auto" : "smooth",
+            });
+            window.history.pushState({}, "", `#${targetId}`);
+            return;
+        }
+
+        // Other pages: route to homepage + hash
+        router.push("/#contact");
+    }, [isHomePage, prefersReducedMotion, router]);
 
     return (
         <m.nav
@@ -145,6 +174,8 @@ function Navbar({ className, brandName = "Premium Home" }: NavbarProps) {
                     variant="outline"
                     size="sm"
                     aria-label="Book a visit consultation with Premium Home Design"
+                    onClick={handleCtaClick}
+                    type="button"
                 >
                     Book a Visit
                 </Button>

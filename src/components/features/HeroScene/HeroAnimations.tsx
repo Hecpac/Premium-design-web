@@ -221,8 +221,10 @@ function Counter({
             if (nodeRef.current) {
                 nodeRef.current.textContent = finalText;
             }
-            setHasAnimated(true);
-            return;
+
+            // Avoid setState synchronously inside effects (react-hooks/set-state-in-effect)
+            const id = window.setTimeout(() => setHasAnimated(true), 0);
+            return () => window.clearTimeout(id);
         }
 
         // Animate using Framer Motion's performant animate function

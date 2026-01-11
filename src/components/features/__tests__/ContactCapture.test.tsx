@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from "react";
 import { render, screen } from "@testing-library/react";
 import { ContactCapture } from "@/components/features/ContactCapture";
 import { describe, it, expect, vi } from "vitest";
@@ -15,14 +16,14 @@ vi.mock("framer-motion", () => ({
         p: "p",
         span: "span",
     },
-    AnimatePresence: ({ children }: any) => <>{children}</>,
+    AnimatePresence: ({ children }: PropsWithChildren) => <>{children}</>,
     useReducedMotion: () => false,
 }));
 
 describe("ContactCapture Component", () => {
     it("renders the first step of the lead discovery form", () => {
         render(<ContactCapture />);
-        expect(screen.getByText(/Lead Discovery/i)).toBeInTheDocument();
+        expect(screen.getByText(/Private Discovery/i)).toBeInTheDocument();
         expect(screen.getByText(/Your Vision/i)).toBeInTheDocument();
         expect(screen.getByText(/I am interested in:/i)).toBeInTheDocument();
         expect(screen.getByText(/Expected Investment Range:/i)).toBeInTheDocument();

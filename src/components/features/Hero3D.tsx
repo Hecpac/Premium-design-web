@@ -17,11 +17,18 @@ import { Float, Points, PointMaterial } from "@react-three/drei";
 
 function DustParticles({ count = 500 }) {
     const points = useMemo(() => {
+        // Deterministic pseudo-random (avoids Math.random() during render)
+        const rand01 = (n: number) => {
+            const x = Math.sin(n) * 10000;
+            return x - Math.floor(x);
+        };
+
         const p = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
-            p[i * 3] = (Math.random() - 0.5) * 10;
-            p[i * 3 + 1] = (Math.random() - 0.5) * 10;
-            p[i * 3 + 2] = (Math.random() - 0.5) * 10;
+            const base = i * 3;
+            p[base] = (rand01(base + 1) - 0.5) * 10;
+            p[base + 1] = (rand01(base + 2) - 0.5) * 10;
+            p[base + 2] = (rand01(base + 3) - 0.5) * 10;
         }
         return p;
     }, [count]);

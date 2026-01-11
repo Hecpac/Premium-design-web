@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -154,10 +155,10 @@ function SuccessState({ onReset }: { onReset: () => void }) {
                 id="contact-success-heading"
                 className="text-3xl font-[family-name:var(--font-playfair)] text-white mb-4"
             >
-                Message Received.
+                Request Received.
             </h3>
             <p className="text-zinc-400 mb-8">
-                We will be in touch strictly within 24 hours.
+                A concierge will reply within 24 hours.
             </p>
             <Button variant="outline" onClick={onReset}>
                 Send another message
@@ -252,7 +253,7 @@ export function ContactCapture() {
         >
             {/* Header */}
             <div className="text-center mb-16">
-                <span className="text-label block mb-4">Lead Discovery</span>
+                <span className="text-label block mb-4">Private Discovery</span>
                 <h2 id="contact-heading" className="text-white mb-6">
                     {step === 0 && "Your Vision."}
                     {step === 1 && "Identity."}
@@ -298,7 +299,7 @@ export function ContactCapture() {
                             />
                             <div className="pt-6">
                                 <Button type="button" onClick={nextStep} className="w-full py-6 text-lg rounded-sm bg-[hsl(var(--primary))] text-black hover:bg-[hsl(var(--primary))]/90">
-                                    Continue to Identity
+                                    Continue
                                 </Button>
                             </div>
                         </m.div>
@@ -343,7 +344,7 @@ export function ContactCapture() {
                                     Back
                                 </Button>
                                 <Button type="button" onClick={nextStep} className="flex-[2] py-6 text-lg rounded-sm bg-[hsl(var(--primary))] text-black hover:bg-[hsl(var(--primary))]/90">
-                                    Continue to Briefing
+                                    Continue
                                 </Button>
                             </div>
                         </m.div>
@@ -395,8 +396,16 @@ export function ContactCapture() {
                                         {...register("privacyAccepted")}
                                         className="mt-1 w-5 h-5 rounded border-2 bg-transparent checked:bg-[hsl(var(--primary))] cursor-pointer"
                                     />
-                                    <label htmlFor="contact-privacy" className="text-sm text-zinc-400 cursor-pointer">
-                                        I accept the privacy policy and consent to being contacted. *
+                                    <label htmlFor={"contact-privacy"} className={"text-sm text-zinc-400 cursor-pointer"}>
+                                        I accept the{" "}
+                                        <Link
+                                            href="/privacy"
+                                            className="text-[hsl(var(--primary))] hover:underline underline-offset-4"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            privacy policy
+                                        </Link>
+                                        {" "}and consent to being contacted. *
                                     </label>
                                 </div>
                                 {errors.privacyAccepted && (
@@ -426,7 +435,7 @@ export function ContactCapture() {
                                             Sending...
                                         </span>
                                     ) : (
-                                        "Submit Discovery Request"
+                                        "Request Private Consultation"
                                     )}
                                 </Button>
                             </div>

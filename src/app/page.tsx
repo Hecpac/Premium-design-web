@@ -1,7 +1,5 @@
-import dynamic from "next/dynamic";
-import { Navbar, BentoCard, Button, BackToTop } from "@/components/ui";
+import { Navbar, BentoCard, BackToTop } from "@/components/ui";
 import { HeroScene } from "@/components/features/HeroScene";
-import { ProjectGallerySkeleton } from "@/components/features/ProjectGallerySkeleton";
 import { FAQSection } from "@/components/features/FAQSection";
 import { TrustSignalSection } from "@/components/features/TrustSignalSection";
 import { ContactCapture } from "@/components/features/ContactCapture";
@@ -166,6 +164,9 @@ export default function Home() {
         <footer className="py-20 text-center text-zinc-600 text-sm">
           <div className="thin-rule max-w-xs mx-auto mb-8 opacity-50" />
           <p>© 2026 Premium Home Design. Dallas, TX.</p>
+          <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
+            Concept demo — not a real business.
+          </p>
         </footer>
       </main>
 

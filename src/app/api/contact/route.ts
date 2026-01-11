@@ -122,6 +122,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<SuccessRe
 
                 // B. StoryBrand Confirmation to Client (Hero)
                 // Frame: The client is the Hero, We are the Guide.
+                const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://premium-home-web.vercel.app";
+
                 await resend.emails.send({
                     from: "Premium Home Design <concierge@premiumhome.design>",
                     to: [data.email],
@@ -139,7 +141,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SuccessRe
                                 <p style="margin: 0;"><strong>What's Next:</strong> Our lead architectural consultant is currently reviewing your project brief for <strong>${data.interest}</strong>. You will receive a personal invitation for a design consultation within the next 24 hours.</p>
                             </div>
                             
-                            <p>Until then, feel free to explore our latest <a href="https://www.premiumhome.design/projects" style="color: #C6A87C;">Selected Works</a>.</p>
+                            <p>Until then, feel free to explore our latest <a href="${SITE_URL}/projects" style="color: #C6A87C;">Selected Works</a>.</p>
                             
                             <p>Welcome to the intersection of precision and luxury.</p>
                             
