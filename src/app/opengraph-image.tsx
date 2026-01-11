@@ -4,7 +4,21 @@ export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+function getHostLabel(): string {
+  const url =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "premium-home-web.vercel.app");
+
+  try {
+    return new URL(url).host;
+  } catch {
+    return url.replace(/^https?:\/\//, "");
+  }
+}
+
 export default function OpenGraphImage() {
+  const host = getHostLabel();
+
   return new ImageResponse(
     (
       <div
@@ -100,7 +114,7 @@ export default function OpenGraphImage() {
               textTransform: "uppercase",
             }}
           >
-            premium-home-web.vercel.app
+            {host}
           </div>
         </div>
       </div>

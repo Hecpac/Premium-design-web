@@ -4,7 +4,21 @@ export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+function getHostLabel(): string {
+  const url =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "premium-home-web.vercel.app");
+
+  try {
+    return new URL(url).host;
+  } catch {
+    return url.replace(/^https?:\/\//, "");
+  }
+}
+
 export default function TwitterImage() {
+  const host = getHostLabel();
+
   // Keep the same dimensions as OG for maximum compatibility
   return new ImageResponse(
     (
@@ -89,7 +103,7 @@ export default function TwitterImage() {
               textTransform: "uppercase",
             }}
           >
-            premium-home-web.vercel.app
+            {host}
           </div>
         </div>
       </div>

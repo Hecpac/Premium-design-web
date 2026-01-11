@@ -76,12 +76,12 @@ export function HeroScene() {
                         <div className="editorial-card min-w-[300px]">
                             <div className="space-y-8">
                                 <div className="stat-block">
-                                    <StatsCounterClient value={12} duration={2.5} />
+                                    <StatsCounterClient value={12} />
                                     <span className="stat-label">Months Avg. Build Time</span>
                                 </div>
                                 <div className="thin-rule border-white/20" />
                                 <div className="stat-block">
-                                    <StatsCounterClient value={25} prefix="$" suffix="M+" duration={3} />
+                                    <StatsCounterClient value={25} prefix="$" suffix="M+" />
                                     <span className="stat-label">Portfolio Value</span>
                                 </div>
                             </div>

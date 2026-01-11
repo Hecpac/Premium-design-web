@@ -122,7 +122,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<SuccessRe
 
                 // B. StoryBrand Confirmation to Client (Hero)
                 // Frame: The client is the Hero, We are the Guide.
-                const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://premium-home-web.vercel.app";
+                const SITE_URL =
+                    process.env.NEXT_PUBLIC_SITE_URL ??
+                    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
                 await resend.emails.send({
                     from: "Premium Home Design <concierge@premiumhome.design>",

@@ -3,7 +3,8 @@ import { getAllProjectSlugs } from "@/lib/projects";
 import { getAllInsightSlugs } from "@/lib/insights";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://premium-home-web.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

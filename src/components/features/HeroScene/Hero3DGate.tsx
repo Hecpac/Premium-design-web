@@ -26,41 +26,23 @@ export function Hero3DGate() {
 
   useEffect(() => {
     // Compute eligibility on the client only (avoids SSR/window issues).
-    if (prefersReducedMotion) {
-      setAllowed(false);
-      return;
-    }
-
-    // Disable on coarse pointers (most touch devices)
-    if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
-      setAllowed(false);
-      return;
-    }
-
-    // Respect Save-Data / slow connections when available
     const nav = navigator as unknown as {
       connection?: { saveData?: boolean; effectiveType?: string };
       deviceMemory?: number;
     };
 
-    if (nav.connection?.saveData) {
-      setAllowed(false);
-      return;
-    }
-
     const effectiveType = nav.connection?.effectiveType;
-    if (effectiveType && (effectiveType === "slow-2g" || effectiveType.endsWith("2g"))) {
-      setAllowed(false);
-      return;
-    }
 
-    // Conservative memory guard (undefined on many browsers)
-    if (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4) {
-      setAllowed(false);
-      return;
-    }
+    const nextAllowed =
+      !prefersReducedMotion &&
+      !(window.matchMedia && window.matchMedia("(pointer: coarse)").matches) &&
+      !nav.connection?.saveData &&
+      !(effectiveType && (effectiveType === "slow-2g" || effectiveType.endsWith("2g"))) &&
+      !(typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4);
 
-    setAllowed(true);
+    // Avoid setState synchronously inside effects (react-hooks/set-state-in-effect)
+    const id = window.setTimeout(() => setAllowed(nextAllowed), 0);
+    return () => window.clearTimeout(id);
   }, [prefersReducedMotion]);
 
   useEffect(() => {

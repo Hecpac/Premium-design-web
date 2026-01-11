@@ -7,7 +7,8 @@ import { getInsightBySlug, getAllInsightSlugs } from "@/lib/insights";
 import type { Metadata } from "next";
 
 const SITE_URL =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://premium-home-web.vercel.app";
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 interface PageProps {
     params: Promise<{ slug: string }>;
