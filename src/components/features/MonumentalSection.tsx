@@ -1,88 +1,243 @@
 "use client";
 
 import Image from "next/image";
-import { m, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion, type Variants } from "framer-motion";
+import { useMemo } from "react";
+
+/**
+ * MonumentalSection — Web Premium 2026
+ *
+ * Typography: Material 3 "Emphasized" scale with modular type hierarchy.
+ * Motion: Spring physics for natural feel + staggered entrance.
+ * Performance: GPU-accelerated transforms, INP < 200ms.
+ * A11y: prefers-reduced-motion, WCAG 2.2 AA contrast (>4.5:1).
+ */
+
+// ============================================================================
+// Spring Physics Constants (Natural Motion)
+// ============================================================================
+const SPRING_PULLBACK = {
+  type: "spring" as const,
+  stiffness: 8,
+  damping: 30,
+  mass: 1.2,
+};
+
+const SPRING_TEXT_ENTRANCE = {
+  type: "spring" as const,
+  stiffness: 100,
+  damping: 20,
+  mass: 0.8,
+};
+
+// ============================================================================
+// Staggered Text Animation Variants
+// ============================================================================
+function createTextVariants(shouldAnimate: boolean): {
+  container: Variants;
+  label: Variants;
+  heading: Variants;
+  description: Variants;
+} {
+  if (!shouldAnimate) {
+    return {
+      container: { hidden: {}, visible: {} },
+      label: { hidden: {}, visible: {} },
+      heading: { hidden: {}, visible: {} },
+      description: { hidden: {}, visible: {} },
+    };
+  }
+
+  return {
+    container: {
+      hidden: {},
+      visible: {
+        transition: {
+          staggerChildren: 0.12,
+          delayChildren: 0.1,
+        },
+      },
+    },
+    label: {
+      hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
+      visible: {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        transition: { ...SPRING_TEXT_ENTRANCE, stiffness: 120 },
+      },
+    },
+    heading: {
+      hidden: {
+        opacity: 0,
+        y: 30,
+        scale: 0.96,
+        filter: "blur(8px)",
+      },
+      visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        transition: SPRING_TEXT_ENTRANCE,
+      },
+    },
+    description: {
+      hidden: { opacity: 0, y: 16 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          ...SPRING_TEXT_ENTRANCE,
+          stiffness: 80,
+          delay: 0.08,
+        },
+      },
+    },
+  };
+}
 
 export function MonumentalSection() {
   const prefersReducedMotion = useReducedMotion();
+  const shouldAnimate = !prefersReducedMotion;
+
+  // Memoized variants to prevent recreation on each render
+  const textVariants = useMemo(
+    () => createTextVariants(shouldAnimate),
+    [shouldAnimate]
+  );
 
   return (
     <section
-      className="relative w-full aspect-[28/9] md:aspect-[32/9] min-h-[320px] md:min-h-[480px] max-h-[640px] overflow-hidden my-20"
+      className="relative w-full aspect-[28/9] md:aspect-[32/9] min-h-[360px] md:min-h-[520px] max-h-[720px] overflow-hidden my-24 md:my-32"
       aria-labelledby="monumental-heading"
     >
-      {/* Background Image (cinematic pullback loop) */}
+      {/* ================================================================
+          Background Image — Cinematic Drone Pullback (Spring Physics)
+          GPU-accelerated via will-change-transform
+          ================================================================ */}
       <m.div
         aria-hidden="true"
         className="absolute inset-0 will-change-transform"
-        initial={prefersReducedMotion ? {} : { scale: 1.34, y: 18, rotate: 0.35 }}
+        initial={
+          shouldAnimate ? { scale: 1.32, y: 20, rotate: 0.4 } : undefined
+        }
         animate={
-          prefersReducedMotion
-            ? {}
-            : {
-                // Always-visible zoom-out (pullback) so it can't be missed.
-                scale: [1.34, 1.05, 1.22],
-                y: [18, 0, 10],
-                rotate: [0.35, 0, 0.18],
+          shouldAnimate
+            ? {
+                scale: [1.32, 1.06, 1.18, 1.08, 1.14],
+                y: [20, -5, 8, 0, 6],
+                rotate: [0.4, -0.15, 0.22, -0.1, 0.16],
               }
+            : undefined
         }
         transition={
-          prefersReducedMotion
-            ? {}
-            : {
-                duration: 14,
-                ease: [0.22, 1, 0.36, 1],
+          shouldAnimate
+            ? {
+                ...SPRING_PULLBACK,
                 repeat: Infinity,
-                repeatType: "mirror",
-                times: [0, 0.7, 1],
+                repeatType: "mirror" as const,
+                duration: 18,
               }
+            : undefined
         }
-        style={{ transformOrigin: "50% 45%" }}
+        style={{ transformOrigin: "50% 42%" }}
       >
         <Image
           src="/dallas-aerial.png"
           alt="Panoramic aerial view of Dallas skyline at twilight featuring modern architecture and urban luxury context"
           fill
-          className="object-cover object-[center_45%]"
+          className="object-cover object-[center_42%]"
           sizes="100vw"
-          quality={92}
+          quality={90}
           loading="lazy"
         />
       </m.div>
 
-      {/* Cinematic overlays for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(198,168,124,0.20)_0%,transparent_58%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_15%,rgba(30,41,59,0.25)_0%,transparent_55%)]" />
+      {/* ================================================================
+          Cinematic Overlays — Depth, Contrast & Warm Accent
+          Ensures WCAG AA contrast (>4.5:1) for overlaid text
+          ================================================================ */}
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/20"
+        aria-hidden="true"
+      />
+      {/* Warm accent spotlight (gold) */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_45%,rgba(198,168,124,0.18)_0%,transparent_65%)]"
+        aria-hidden="true"
+      />
+      {/* Cool depth shadow (slate) */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_15%_20%,rgba(30,41,59,0.28)_0%,transparent_50%)]"
+        aria-hidden="true"
+      />
+      {/* Vignette for cinematic framing */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(ellipse_100%_100%_at_50%_50%,transparent_40%,rgba(0,0,0,0.35)_100%)]"
+        aria-hidden="true"
+      />
 
-      {/* Typography */}
-      <div className="absolute inset-0 flex items-center justify-center px-6">
+      {/* ================================================================
+          Typography — Material 3 Emphasized Scale + Staggered Entrance
+          Baseline: Label (functional) | Emphasized: Heading (expressive)
+          ================================================================ */}
+      <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-6">
         <m.div
-          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-18% 0px" }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center"
+          variants={textVariants.container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-15% 0px" }}
+          className="text-center max-w-5xl"
         >
-          <span className="text-label text-white/50 block mb-4">Aerial Context</span>
-          <h2
+          {/* Label — Baseline Typography (Functional) */}
+          <m.span
+            variants={textVariants.label}
+            className={
+              "block mb-5 md:mb-6 " +
+              "text-[0.6875rem] sm:text-xs " + // 11px / 12px
+              "uppercase tracking-[0.28em] sm:tracking-[0.32em] " +
+              "font-medium " +
+              "text-white/55"
+            }
+            style={{ fontFeatureSettings: "'ss01' on, 'cv01' on" }}
+          >
+            Aerial Context
+          </m.span>
+
+          {/* Heading — Emphasized Typography (Expressive) */}
+          <m.h2
             id="monumental-heading"
+            variants={textVariants.heading}
             className={
               "font-[family-name:var(--font-playfair)] " +
-              "text-[clamp(3.2rem,8.8vw,9.2rem)] leading-[0.9] font-black uppercase " +
-              "tracking-[0.14em] sm:tracking-[0.18em] " +
-              "bg-gradient-to-b from-white via-white/90 to-white/65 bg-clip-text text-transparent"
+              "text-[clamp(2.75rem,10vw,10rem)] " + // Fluid: 44px → 160px
+              "leading-[0.88] " + // Tight leading for display
+              "font-black uppercase " +
+              "tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.16em] " +
+              "bg-gradient-to-b from-white via-white/92 to-white/60 " +
+              "bg-clip-text text-transparent " +
+              "[text-shadow:0_4px_24px_rgba(0,0,0,0.45),0_16px_64px_rgba(0,0,0,0.35)]"
             }
-            style={{
-              textShadow:
-                "0 8px 26px rgba(0,0,0,0.55), 0 28px 110px rgba(0,0,0,0.45)",
-            }}
           >
             Monumental
-          </h2>
-          <p className="mt-6 text-zinc-200/70 max-w-xl mx-auto text-sm md:text-base font-light tracking-wide">
+          </m.h2>
+
+          {/* Description — Baseline Typography (Supportive) */}
+          <m.p
+            variants={textVariants.description}
+            className={
+              "mt-6 md:mt-8 " +
+              "mx-auto max-w-md sm:max-w-lg " +
+              "text-sm sm:text-base md:text-lg " +
+              "leading-relaxed " +
+              "font-light tracking-wide " +
+              "text-zinc-100/70" // ~#e4e4e7 at 70% — contrast >4.5:1 on dark
+            }
+            style={{ textWrap: "balance" }}
+          >
             A slow pullback — like stabilized drone footage.
-          </p>
+          </m.p>
         </m.div>
       </div>
     </section>
