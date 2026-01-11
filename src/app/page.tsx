@@ -1,161 +1,56 @@
-import { TechnicalNavbar, TechnicalFooter, BentoCard, BackToTop } from "@/components/ui";
-import { HeroScene } from "@/components/features/HeroScene";
-import { FAQSection } from "@/components/features/FAQSection";
-import { TrustSignalSection } from "@/components/features/TrustSignalSection";
-import { ContactCapture } from "@/components/features/ContactCapture";
+import { BackToTop, TechnicalFooter, TechnicalNavbar } from "@/components/ui";
+import HeroSection from "@/components/HeroSection";
+import SelectedWorks from "@/components/SelectedWorks";
 import { InsightBrief } from "@/components/features/InsightBrief";
-import { MonumentalSection } from "@/components/features/MonumentalSection";
 import { TechnicalProcessTimeline } from "@/components/features/TechnicalProcessTimeline";
 import { TechnicalServiceList } from "@/components/features/TechnicalServiceList";
-import Image from "next/image";
-import { IMAGES } from "@/lib/image-data";
-
-import { SelectedWorks } from "@/components/features/SelectedWorks";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[hsl(var(--background))] selection:bg-[hsl(var(--primary))/0.3]">
+    <div className="min-h-screen bg-black text-[#ededed] selection:bg-white selection:text-black overflow-x-hidden">
       <TechnicalNavbar />
 
-      <main id="main-content" className="px-0 relative pt-14">
-        {/* 1. HERO - Definition */}
-        <header aria-labelledby="hero-title">
-          <HeroScene />
-        </header>
+      <main id="main-content" className="relative pt-14">
+        {/* 1. HERO (keep) */}
+        <HeroSection />
 
-        {/* 2. PROOF (Trust Signals) */}
-        <TrustSignalSection />
-
-        <div className="max-w-[1400px] mx-auto px-6">
-
-          {/* 3. METHOD (Bento Grid) - Inline for simplicity or component */}
-          <section
-            id="philosophy"
-            className="section-spacing scroll-mt-20"
-            aria-labelledby="philosophy-heading"
-          >
-            <div className="mb-20 grid md:grid-cols-12 gap-6 items-end">
-              <div className="md:col-span-8">
-                <span className="text-label mb-4 block">Our Philosophy</span>
-                <h2 id="philosophy-heading" className="text-white">
-                  The <span className="text-[hsl(var(--primary))] italic">Art</span> of <br />
-                  Precision.
-                </h2>
-              </div>
-              <div className="md:col-span-4 pb-2">
-                <p className="text-lead text-sm md:text-base max-w-sm ml-auto">
-                  Where raw engineering meets distinct aesthetics.
-                  Every detail is a deliberate design choice.
-                </p>
-              </div>
-            </div>
-
-            {/* Bento Grid - Agentrules #1: WebP images with blur placeholders */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px] md:auto-rows-[500px]">
-              {/* Card 01 - Engineering */}
-              <BentoCard className="md:col-span-8 relative group">
-                <Image
-                  src={IMAGES.bentoConcrete.src}
-                  alt="Raw concrete texture showing premium construction materials and craftsmanship details in luxury home building"
-                  fill
-                  className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 opacity-80 group-hover:opacity-60"
-                  sizes="(max-width: 768px) 100vw, 66vw"
-                  placeholder="blur"
-                  blurDataURL={IMAGES.bentoConcrete.blurDataURL}
-                />
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10">
-                  <div className="flex justify-between items-start">
-                    <span className="text-label text-white/80 border border-white/20 px-2 py-1 rounded-sm">01 — Engineering</span>
-                    <div className="bg-white/10 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-white"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-[family-name:var(--font-playfair)] text-4xl md:text-5xl text-white mb-4">The Backbone</h3>
-                    <p className="text-zinc-300 max-w-md text-lg font-light leading-relaxed">
-                      Raw concrete reinforced with brushed bronze. The unshakeable foundation.
-                    </p>
-                  </div>
-                </div>
-              </BentoCard>
-
-              {/* Stacked Right Column */}
-              <div className="md:col-span-4 flex flex-col gap-6 h-full">
-                {/* Card 02 - Planning */}
-                <BentoCard className="flex-1 relative min-h-[240px] group">
-                  <Image
-                    src={IMAGES.bentoBlueprints.src}
-                    alt="Detailed architectural blueprints and construction planning documents for custom luxury home design"
-                    fill
-                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 opacity-60 group-hover:opacity-40"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    placeholder="blur"
-                    blurDataURL={IMAGES.bentoBlueprints.blurDataURL}
-                  />
-                  <div className="absolute inset-0 p-6 flex flex-col justify-end z-10">
-                    <span className="text-label text-[hsl(var(--primary))] mb-2">02 — Planning</span>
-                    <h3 className="text-2xl text-white mb-2">Architectural Void</h3>
-                  </div>
-                </BentoCard>
-
-                {/* Card 03 - Systems */}
-                <BentoCard className="flex-1 relative min-h-[240px] group">
-                  <div className="absolute inset-0 bg-neutral-900 z-0" />
-                  <Image
-                    src={IMAGES.bentoThermostat.src}
-                    alt="Smart home thermostat and automation interface showcasing integrated technology systems in modern luxury homes"
-                    fill
-                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105 opacity-80 mix-blend-overlay"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    placeholder="blur"
-                    blurDataURL={IMAGES.bentoThermostat.blurDataURL}
-                  />
-                  <div className="absolute inset-0 p-6 flex flex-col z-10">
-                    <div className="flex justify-between items-start mb-auto">
-                      <span className="text-label text-white/50">03 — Systems</span>
-                    </div>
-                    <div className="text-right">
-                      <h3 className="text-2xl text-white mb-1">Invisible Tech</h3>
-                    </div>
-                  </div>
-                </BentoCard>
-              </div>
-            </div>
-          </section>
-
-        </div>
-
-        {/* TECHNICAL PROCESS TIMELINE */}
-        <div id="process" className="scroll-mt-20">
-          <TechnicalProcessTimeline />
-        </div>
-
-        {/* TECHNICAL CAPABILITIES */}
-        <div id="capabilities" className="scroll-mt-20">
+        {/* 2. CAPABILITIES (new) */}
+        <section id="capabilities" className="relative z-10 scroll-mt-20">
           <TechnicalServiceList />
-        </div>
+        </section>
 
-        {/* 4. EVIDENCE (Gallery) */}
-        <SelectedWorks />
+        {/* 3. PROJECTS / PORTFOLIO (keep) */}
+        <section className="relative z-10 border-t border-neutral-900">
+          <SelectedWorks />
+        </section>
 
-        {/* PARALLAX BREAK - Panoramic Monumental Section */}
-        <MonumentalSection />
+        {/* 4. PROCESS (new) */}
+        <section id="process" className="relative z-10 scroll-mt-20 bg-[#0a0a0a]">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-12 pt-24 md:pt-32">
+            <div className="mb-16 max-w-2xl">
+              <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter mb-4 text-white">
+                Execution Protocol
+              </h2>
+              <p className="font-mono text-sm text-neutral-500 uppercase tracking-widest">
+                {"//"} From Feasibility to Handover
+              </p>
+            </div>
+          </div>
 
-        {/* 5. AUTHORITY (Insights) */}
-        <div id="journal" className="scroll-mt-20">
+          <TechnicalProcessTimeline />
+        </section>
+
+        {/* 5. JOURNAL (keep) */}
+        <section id="journal" className="border-t border-neutral-900 scroll-mt-20">
           <InsightBrief />
+        </section>
+
+        {/* 6. FOOTER (new) */}
+        <div id="contact" className="scroll-mt-20">
+          <TechnicalFooter />
         </div>
-
-        {/* 6. AEO (FAQ) */}
-        <FAQSection />
-
-        {/* 7. ACTION (Contact) */}
-        <ContactCapture />
-
-        <TechnicalFooter />
       </main>
 
-      {/* Back to Top Button */}
       <BackToTop threshold={400} />
     </div>
   );
