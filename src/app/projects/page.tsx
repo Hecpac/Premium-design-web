@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/ui";
 import { getAllProjects, type Project, type ProjectCategory } from "@/lib/projects";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,8 +43,6 @@ export default async function ProjectsPage({ searchParams }: PageProps) {
 
     return (
         <div className="min-h-screen bg-[hsl(var(--background))]">
-            <Navbar brandName="Premium Home" />
-
             <main id="main-content" className="pt-32 pb-20 px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Header */}
@@ -122,13 +119,6 @@ export default async function ProjectsPage({ searchParams }: PageProps) {
                 </div>
             </main>
 
-            <footer className="py-20 text-center text-zinc-600 text-sm border-t border-white/5 mt-20">
-                <div className="thin-rule max-w-xs mx-auto mb-8 opacity-50" />
-                <p>© 2026 Premium Home Design. Dallas, TX.</p>
-                <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
-                    Concept demo — not a real business.
-                </p>
-            </footer>
         </div>
     );
 }

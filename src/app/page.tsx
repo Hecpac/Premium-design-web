@@ -1,4 +1,4 @@
-import { BackToTop, TechnicalFooter, TechnicalNavbar } from "@/components/ui";
+import { BackToTop } from "@/components/ui";
 import HeroSection from "@/components/HeroSection";
 import SelectedWorks from "@/components/SelectedWorks";
 import { InsightBrief } from "@/components/features/InsightBrief";
@@ -8,8 +8,6 @@ import { TechnicalServiceList } from "@/components/features/TechnicalServiceList
 export default function Home() {
   return (
     <div className="min-h-screen bg-black text-[#ededed] selection:bg-white selection:text-black overflow-x-hidden">
-      <TechnicalNavbar />
-
       <main id="main-content" className="relative pt-14">
         {/* 1. HERO (keep) */}
         <HeroSection />
@@ -45,10 +43,6 @@ export default function Home() {
           <InsightBrief />
         </section>
 
-        {/* 6. FOOTER (new) */}
-        <div id="contact" className="scroll-mt-20">
-          <TechnicalFooter />
-        </div>
       </main>
 
       <BackToTop threshold={400} />

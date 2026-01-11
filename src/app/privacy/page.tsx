@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/ui";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -10,8 +9,6 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
     return (
         <div className="min-h-screen bg-[hsl(var(--background))]">
-            <Navbar brandName="Premium Home" />
-
             <main id="main-content" className="pt-32 pb-20 px-6">
                 <article className="max-w-3xl mx-auto">
                     <header className="mb-16">
@@ -99,12 +96,6 @@ export default function PrivacyPage() {
                 </article>
             </main>
 
-            <footer className="py-20 text-center text-zinc-600 text-sm border-t border-white/5">
-                <p>© 2026 Premium Home Design. Dallas, TX.</p>
-                <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
-                    Concept demo — not a real business.
-                </p>
-            </footer>
         </div>
     );
 }

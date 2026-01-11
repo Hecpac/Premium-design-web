@@ -5,6 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Providers } from "@/components/providers";
 import { WebVitals } from "@/components/web-vitals";
 import { AxeDevtools } from "@/components/axe-devtools";
+import { TechnicalNavbar } from "@/components/ui/TechnicalNavbar";
+import { TechnicalFooter } from "@/components/ui/TechnicalFooter";
 import "./globals.css";
 
 const SITE_URL =
@@ -159,7 +161,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased font-sans">
+      <body className="bg-black text-[#ededed] antialiased font-sans selection:bg-white selection:text-black">
         {/* WCAG skip link (Regla #10) */}
         <a
           href="#main-content"
@@ -170,7 +172,17 @@ export default function RootLayout({
         <Providers>
           <AxeDevtools />
           <WebVitals />
+
+          {/* GLOBAL COMMAND BAR */}
+          <TechnicalNavbar />
+
+          {/* PAGE CONTENT */}
           {children}
+
+          {/* GLOBAL BLUEPRINT FOOTER */}
+          <div id="contact" className="scroll-mt-20">
+            <TechnicalFooter />
+          </div>
         </Providers>
         {/* Vercel Analytics - Page views, visitors, top pages */}
         <Analytics />

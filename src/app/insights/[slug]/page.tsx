@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
-import { Navbar } from "@/components/ui";
 import { getInsightBySlug, getAllInsightSlugs } from "@/lib/insights";
 import type { Metadata } from "next";
 
@@ -78,8 +77,6 @@ export default async function InsightPage({ params }: PageProps) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <Navbar brandName="Premium Home" />
-
             <main id="main-content" className="pt-32 pb-20">
                 <article>
                     {/* Header Section */}
@@ -153,12 +150,6 @@ export default async function InsightPage({ params }: PageProps) {
                 </article>
             </main>
 
-            <footer className="py-20 text-center text-zinc-600 text-sm border-t border-white/5">
-                <p>© 2026 Premium Home Design. Dallas, TX.</p>
-                <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
-                    Concept demo — not a real business.
-                </p>
-            </footer>
         </div>
     );
 }

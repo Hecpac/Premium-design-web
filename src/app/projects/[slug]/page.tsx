@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Calendar, Tag, ArrowUpRight } from "lucide-react";
-import { Navbar, Button } from "@/components/ui";
+import { Button } from "@/components/ui";
 import {
     getProjectBySlug,
     getAllProjectSlugs,
@@ -47,8 +47,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
     return (
         <div className="min-h-screen bg-[hsl(var(--background))] selection:bg-[hsl(var(--primary))/0.3]">
-            <Navbar brandName="Premium Home" />
-
             <main id="main-content" className="pt-32 pb-20">
                 <article>
                     {/* Hero Header */}
@@ -198,12 +196,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 </article>
             </main>
 
-            <footer className="py-20 text-center text-zinc-600 text-sm border-t border-white/5">
-                <p>© 2026 Premium Home Design. Dallas, TX.</p>
-                <p className="mt-2 text-[11px] text-zinc-700 tracking-widest uppercase">
-                    Concept demo — not a real business.
-                </p>
-            </footer>
         </div>
     );
 }
