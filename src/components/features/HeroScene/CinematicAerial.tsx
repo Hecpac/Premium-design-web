@@ -50,8 +50,8 @@ export function CinematicAerial() {
                     width={IMAGES.heroAerialCinematic.width}
                     height={IMAGES.heroAerialCinematic.height}
                     priority={true}
-                    quality={85}
-                    className="object-cover w-full h-full scale-110 saturate-[1.3] contrast-[1.15] [-webkit-image-rendering:optimize-contrast]"
+                    quality={100}
+                    className="object-cover w-full h-full scale-105 saturate-[1.15] contrast-[1.2] brightness-[1.05] [-webkit-image-rendering:optimize-contrast]"
                     sizes="100vw"
                     placeholder="blur"
                     blurDataURL={IMAGES.heroAerialCinematic.blurDataURL}
