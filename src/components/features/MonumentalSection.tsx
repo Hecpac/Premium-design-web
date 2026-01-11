@@ -11,15 +11,33 @@ export function MonumentalSection() {
       className="relative w-full aspect-[28/9] md:aspect-[32/9] min-h-[320px] md:min-h-[480px] max-h-[640px] overflow-hidden my-20"
       aria-labelledby="monumental-heading"
     >
-      {/* Background Image (cinematic pullback on enter) */}
+      {/* Background Image (cinematic pullback loop) */}
       <m.div
         aria-hidden="true"
         className="absolute inset-0 will-change-transform"
-        initial={prefersReducedMotion ? {} : { scale: 1.35, y: 16, rotate: 0.35 }}
-        whileInView={prefersReducedMotion ? {} : { scale: 1, y: 0, rotate: 0 }}
-        viewport={{ once: true, margin: "-15% 0px" }}
-        transition={prefersReducedMotion ? {} : { duration: 9.5, ease: [0.22, 1, 0.36, 1] }}
-        style={{ transformOrigin: "center" }}
+        initial={prefersReducedMotion ? {} : { scale: 1.34, y: 18, rotate: 0.35 }}
+        animate={
+          prefersReducedMotion
+            ? {}
+            : {
+                // Always-visible zoom-out (pullback) so it can't be missed.
+                scale: [1.34, 1.05, 1.22],
+                y: [18, 0, 10],
+                rotate: [0.35, 0, 0.18],
+              }
+        }
+        transition={
+          prefersReducedMotion
+            ? {}
+            : {
+                duration: 14,
+                ease: [0.22, 1, 0.36, 1],
+                repeat: Infinity,
+                repeatType: "mirror",
+                times: [0, 0.7, 1],
+              }
+        }
+        style={{ transformOrigin: "50% 45%" }}
       >
         <Image
           src="/dallas-aerial.png"
@@ -33,8 +51,9 @@ export function MonumentalSection() {
       </m.div>
 
       {/* Cinematic overlays for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(198,168,124,0.18)_0%,transparent_55%)]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(198,168,124,0.20)_0%,transparent_58%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_15%,rgba(30,41,59,0.25)_0%,transparent_55%)]" />
 
       {/* Typography */}
       <div className="absolute inset-0 flex items-center justify-center px-6">

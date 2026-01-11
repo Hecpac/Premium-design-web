@@ -20,27 +20,28 @@ export function CinematicAerial() {
     return (
         <div className="relative w-full h-full overflow-hidden">
             <m.div
-                // Drone-like camera drift: clearly perceptible but still premium.
-                // Transforms only (GPU-friendly) + respects reduced motion.
+                // Drone-like camera drift: make it unmistakable.
+                // (Still transform-only + reduced-motion safe.)
                 initial={prefersReducedMotion ? {} : {
-                    scale: 1.24,
-                    x: "-4%",
-                    y: "-3%",
-                    rotate: 0.35,
+                    scale: 1.28,
+                    x: "-5%",
+                    y: "-4%",
+                    rotate: 0.45,
                 }}
                 animate={prefersReducedMotion ? {} : {
-                    // Multi-axis drift with gentle easing to feel like stabilized drone footage
-                    scale: [1.24, 1.16, 1.2, 1.12],
-                    x: ["-4%", "2%", "-2%", "1%"],
-                    y: ["-3%", "1%", "-2%", "2%"],
-                    rotate: [0.35, -0.22, 0.28, -0.14],
+                    // Keyframes feel more like stabilized drone footage than a simple pan.
+                    scale: [1.28, 1.2, 1.24, 1.16, 1.22],
+                    x: ["-5%", "2%", "-3%", "1%", "-1%"],
+                    y: ["-4%", "1%", "-2%", "3%", "0%"],
+                    rotate: [0.45, -0.28, 0.22, -0.18, 0.12],
                 }}
                 transition={prefersReducedMotion ? {} : {
-                    duration: 30,
+                    duration: 22,
                     ease: "easeInOut",
                     repeat: Infinity,
                     repeatType: "mirror",
                 }}
+                style={{ transformOrigin: "50% 50%" }}
                 className="relative w-full h-full will-change-transform"
             >
                 <Image
