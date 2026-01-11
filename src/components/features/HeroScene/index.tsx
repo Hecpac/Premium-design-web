@@ -11,7 +11,7 @@ import {
 import { StatsCounterClient } from "@/components/features/StatsCounterClient";
 import { FloorPlanOverlay } from "@/components/features/FloorPlanOverlay";
 import { Hero3D } from "@/components/features/Hero3D";
-import { IMAGES } from "@/lib/image-data";
+import { CinematicAerial } from "./CinematicAerial";
 
 /**
  * HeroScene Component
@@ -36,19 +36,7 @@ export function HeroScene() {
              */}
             <HeroAnimator className="absolute inset-0 z-0 select-none pointer-events-none w-full h-full">
                 <div className="relative w-full h-full">
-                    <Image
-                        src={IMAGES.heroTwilight.src}
-                        alt="Stunning modern luxury villa at twilight with warm interior lighting, floor-to-ceiling windows, and contemporary architectural design showcasing Premium Home Design craftsmanship in Dallas Texas"
-                        width={IMAGES.heroTwilight.width}
-                        height={IMAGES.heroTwilight.height}
-                        priority={true}
-                        quality={85}
-                        className="object-cover w-full h-full"
-                        sizes="100vw"
-                        placeholder="blur"
-                        blurDataURL={IMAGES.heroTwilight.blurDataURL}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30" />
+                    <CinematicAerial />
                     {/* Architectural Layer */}
                     <FloorPlanOverlay opacity={0.06} />
                     {/* Cinematic 3D Layer */}

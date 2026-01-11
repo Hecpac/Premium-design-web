@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-01-08T05:31:46.711Z",
+  "generatedAt": "2026-01-11T00:32:35.414Z",
   "config": {
     "maxWidth": 1920,
     "quality": 85
@@ -69,6 +69,28 @@
       "savings": {
         "bytes": 468161,
         "percent": "94.7"
+      }
+    },
+    "/images/hero-aerial-cinematic.webp": {
+      "original": {
+        "path": "images/hero-aerial-cinematic.png",
+        "size": 889267,
+        "sizeFormatted": "868.4 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "optimized": {
+        "path": "images/hero-aerial-cinematic.webp",
+        "publicPath": "/images/hero-aerial-cinematic.webp",
+        "size": 168488,
+        "sizeFormatted": "164.5 KB",
+        "width": 1024,
+        "height": 1024
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAgCdASoKAAoABUB8JYgCdAD0SCymWAAAAPujbzfMJheMl89mIKB/Y13aVteytCtMZPezMcBY50AA",
+      "savings": {
+        "bytes": 720779,
+        "percent": "81.1"
       }
     },
     "/images/hero-twilight.webp": {
@@ -381,12 +403,12 @@
     }
   },
   "summary": {
-    "totalOriginalSize": 12780020,
-    "totalOptimizedSize": 2136070,
-    "totalSavings": 10643950,
-    "totalOriginalSizeFormatted": "12.19 MB",
-    "totalOptimizedSizeFormatted": "2.04 MB",
-    "totalSavingsFormatted": "10.15 MB",
-    "totalSavingsPercent": "83.3"
+    "totalOriginalSize": 13669287,
+    "totalOptimizedSize": 2304558,
+    "totalSavings": 11364729,
+    "totalOriginalSizeFormatted": "13.04 MB",
+    "totalOptimizedSizeFormatted": "2.20 MB",
+    "totalSavingsFormatted": "10.84 MB",
+    "totalSavingsPercent": "83.1"
   }
 }

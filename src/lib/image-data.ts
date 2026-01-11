@@ -43,6 +43,14 @@ export const IMAGES = {
       "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADwAQCdASoKAAoABUB8JbACdAEQ/SQCcAAA/nalGyAuF8bMS0F2w5Ju/9oFNLRlP9WtyMBVpYOuwAAA",
   },
 
+  // New cinematic aerial background
+  heroAerialCinematic: {
+    src: "/images/hero-aerial-cinematic.webp",
+    width: 1024,
+    height: 1024,
+    blurDataURL: "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAgCdASoKAAoABUB8JYgCdAD0SCymWAAAAPujbzfMJheMl89mIKB/Y13aVteytCtMZPezMcBY50AA",
+  },
+
   // Parallax break section
   parallaxMansion: {
     src: "/images/parallax-mansion.webp",
