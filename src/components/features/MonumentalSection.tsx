@@ -1,52 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { m, useReducedMotion } from "framer-motion";
 
 export function MonumentalSection() {
   const prefersReducedMotion = useReducedMotion();
-  const sectionRef = useRef<HTMLElement | null>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Cinematic “pullback” (zoom out) as the user scrolls through the section
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 0.7, 1],
-    prefersReducedMotion ? [1, 1, 1] : [1.22, 1.08, 1]
-  );
-
-  // Subtle vertical drift for parallax depth
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    prefersReducedMotion ? [0, 0] : [18, -18]
-  );
-
-  // Title micro-kinetics: slightly relax letter spacing and opacity on scroll
-  const titleOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.15, 1],
-    prefersReducedMotion ? [1, 1, 1] : [0.95, 1, 1]
-  );
 
   return (
     <section
-      ref={(node) => {
-        sectionRef.current = node;
-      }}
-      className="relative w-full aspect-[28/9] md:aspect-[32/9] min-h-[320px] md:min-h-[460px] max-h-[600px] overflow-hidden my-20"
+      className="relative w-full aspect-[28/9] md:aspect-[32/9] min-h-[320px] md:min-h-[480px] max-h-[640px] overflow-hidden my-20"
       aria-labelledby="monumental-heading"
     >
-      {/* Background Image (animated wrapper) */}
+      {/* Background Image (cinematic pullback on enter) */}
       <m.div
         aria-hidden="true"
         className="absolute inset-0 will-change-transform"
-        style={{ scale, y }}
+        initial={prefersReducedMotion ? {} : { scale: 1.35, y: 16, rotate: 0.35 }}
+        whileInView={prefersReducedMotion ? {} : { scale: 1, y: 0, rotate: 0 }}
+        viewport={{ once: true, margin: "-15% 0px" }}
+        transition={prefersReducedMotion ? {} : { duration: 9.5, ease: [0.22, 1, 0.36, 1] }}
+        style={{ transformOrigin: "center" }}
       >
         <Image
           src="/dallas-aerial.png"
@@ -66,26 +39,30 @@ export function MonumentalSection() {
       {/* Typography */}
       <div className="absolute inset-0 flex items-center justify-center px-6">
         <m.div
-          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: "-18% 0px" }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="text-center"
-          style={{ opacity: titleOpacity }}
         >
           <span className="text-label text-white/50 block mb-4">Aerial Context</span>
           <h2
             id="monumental-heading"
-            className="font-[family-name:var(--font-playfair)] text-[clamp(3rem,8.5vw,8.5rem)] leading-[0.92] font-black text-white uppercase tracking-[0.18em] sm:tracking-[0.22em] drop-shadow-[0_12px_60px_rgba(0,0,0,0.65)]"
+            className={
+              "font-[family-name:var(--font-playfair)] " +
+              "text-[clamp(3.2rem,8.8vw,9.2rem)] leading-[0.9] font-black uppercase " +
+              "tracking-[0.14em] sm:tracking-[0.18em] " +
+              "bg-gradient-to-b from-white via-white/90 to-white/65 bg-clip-text text-transparent"
+            }
             style={{
               textShadow:
-                "0 6px 22px rgba(0,0,0,0.55), 0 20px 80px rgba(0,0,0,0.45)",
+                "0 8px 26px rgba(0,0,0,0.55), 0 28px 110px rgba(0,0,0,0.45)",
             }}
           >
             Monumental
           </h2>
           <p className="mt-6 text-zinc-200/70 max-w-xl mx-auto text-sm md:text-base font-light tracking-wide">
-            A slow pullback — designed to feel like a drone shot, not a scroll effect.
+            A slow pullback — like stabilized drone footage.
           </p>
         </m.div>
       </div>

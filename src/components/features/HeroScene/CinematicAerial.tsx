@@ -20,23 +20,24 @@ export function CinematicAerial() {
     return (
         <div className="relative w-full h-full overflow-hidden">
             <m.div
-                // Drone-like camera drift: subtle translate + micro-rotation + slow pull focus.
-                // Keep transforms only (INP-friendly) and respect reduced motion.
+                // Drone-like camera drift: clearly perceptible but still premium.
+                // Transforms only (GPU-friendly) + respects reduced motion.
                 initial={prefersReducedMotion ? {} : {
-                    scale: 1.18,
-                    x: "-3%",
-                    y: "-2%",
-                    rotate: 0.18,
+                    scale: 1.24,
+                    x: "-4%",
+                    y: "-3%",
+                    rotate: 0.35,
                 }}
                 animate={prefersReducedMotion ? {} : {
-                    scale: [1.18, 1.12, 1.16, 1.1],
-                    x: ["-3%", "1%", "-2%", "0%"],
-                    y: ["-2%", "0%", "-1%", "1%"],
-                    rotate: [0.18, -0.12, 0.15, -0.08],
+                    // Multi-axis drift with gentle easing to feel like stabilized drone footage
+                    scale: [1.24, 1.16, 1.2, 1.12],
+                    x: ["-4%", "2%", "-2%", "1%"],
+                    y: ["-3%", "1%", "-2%", "2%"],
+                    rotate: [0.35, -0.22, 0.28, -0.14],
                 }}
                 transition={prefersReducedMotion ? {} : {
-                    duration: 42,
-                    ease: "linear",
+                    duration: 30,
+                    ease: "easeInOut",
                     repeat: Infinity,
                     repeatType: "mirror",
                 }}
