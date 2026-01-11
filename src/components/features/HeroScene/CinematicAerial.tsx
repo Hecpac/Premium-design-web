@@ -51,7 +51,7 @@ export function CinematicAerial() {
                     height={IMAGES.heroAerialCinematic.height}
                     priority={true}
                     quality={85}
-                    className="object-cover w-full h-full scale-110" // Slight scale to hide edges during pan
+                    className="object-cover w-full h-full scale-110 saturate-[1.3] contrast-[1.15] [-webkit-image-rendering:optimize-contrast]"
                     sizes="100vw"
                     placeholder="blur"
                     blurDataURL={IMAGES.heroAerialCinematic.blurDataURL}
