@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useInView } from "framer-motion";
+
 import { IMAGES } from "@/lib/image-data";
+import { cn } from "@/lib/utils";
 
 // ============================================================================
 // TYPES
@@ -22,10 +25,21 @@ export interface ProcessStepData {
 
 interface ProcessStepProps {
     step: ProcessStepData;
-    isLast?: boolean;
+    isMobile: boolean;
 }
 
-function ProcessStep({ step, isLast }: ProcessStepProps) {
+function ProcessStep({ step, isMobile }: ProcessStepProps) {
+    const viewportRef = useRef<HTMLDivElement | null>(null);
+
+    // Trigger when ~50% of the image is visible. Margin biases the hit-zone toward the center of the viewport.
+    const isInView = useInView(viewportRef, {
+        amount: 0.5,
+        margin: "-25% 0px -25% 0px",
+        once: false,
+    });
+
+    const isActive = isMobile && isInView;
+
     return (
         <div className="group relative w-full">
             {/* Horizontal Divider (Tech Line) */}
@@ -54,19 +68,50 @@ function ProcessStep({ step, isLast }: ProcessStepProps) {
                 {/* RIGHT COLUMN: Technical Viewport Image */}
                 <div className="lg:col-span-7 relative">
                     {/* Viewport Container */}
-                    <div className="relative aspect-[16/9] w-full bg-[#0a0a0a] border border-neutral-800 overflow-hidden group/image">
+                    <div
+                        ref={viewportRef}
+                        className={cn(
+                            "relative aspect-[16/9] w-full bg-[#0a0a0a] border border-neutral-800 overflow-hidden group/image",
+                            // Subtle "lit" frame on mobile when the step is in view.
+                            isActive && "border-white/20"
+                        )}
+                    >
 
                         {/* Image */}
                         <Image
                             src={step.imageSrc}
                             alt={step.imageAlt}
                             fill
-                            className="object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
+                            className={cn(
+                                "object-cover grayscale transition-all duration-700 ease-out will-change-transform",
+                                // Desktop hover stays intact
+                                "group-hover:grayscale-0 group-hover:scale-105",
+                                // Mobile: activate on scroll (no hover)
+                                isActive && "grayscale-0 brightness-110 scale-105"
+                            )}
                             sizes="(max-width: 768px) 100vw, 50vw"
                         />
 
                         {/* Tech Overlays / Reticle (Decorative) */}
-                        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-[#ededed]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                        <div
+                            className={cn(
+                                "absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-[#ededed]/20 to-transparent",
+                                "opacity-0 transition-opacity duration-700",
+                                "group-hover:opacity-100",
+                                isActive && "opacity-100"
+                            )}
+                        />
+
+                        {/* Optional: a faint scan wash when active on mobile */}
+                        <div
+                            aria-hidden="true"
+                            className={cn(
+                                "absolute inset-0 pointer-events-none",
+                                "bg-gradient-to-b from-white/0 via-white/5 to-transparent",
+                                "opacity-0 transition-opacity duration-500",
+                                isActive && "opacity-100"
+                            )}
+                        />
 
                         {/* Top-Left Corner Marker */}
                         <div className="absolute top-4 left-4 w-4 h-4 border-l border-t border-[#ededed]/30" />
@@ -82,7 +127,7 @@ function ProcessStep({ step, isLast }: ProcessStepProps) {
 
             </div>
 
-            {/* Closing Divider for the last item if needed, but usually we just want dividers between. 
+            {/* Closing Divider for the last item if needed, but usually we just want dividers between.
            The prompt said "Each step should be separated by a full-width horizontal divider".
            Common pattern is top-divider for all.
        */}
@@ -98,18 +143,44 @@ interface TechnicalProcessTimelineProps {
     steps?: ProcessStepData[];
 }
 
+function useIsMobile(): boolean {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        // "Mobile" here means "no reliable hover" (touch / coarse pointer), which is
+        // exactly when we need scroll-triggered activation.
+        const mq = window.matchMedia("(hover: none), (pointer: coarse), (max-width: 767px)");
+
+        const update = () => setIsMobile(mq.matches);
+        update();
+
+        // Safari < 14 fallback
+        if (typeof mq.addEventListener === "function") {
+            mq.addEventListener("change", update);
+            return () => mq.removeEventListener("change", update);
+        }
+
+        mq.addListener(update);
+        return () => mq.removeListener(update);
+    }, []);
+
+    return isMobile;
+}
+
 export function TechnicalProcessTimeline({ steps = DEFAULT_STEPS }: TechnicalProcessTimelineProps) {
+    const isMobile = useIsMobile();
+
     return (
         <section className="w-full bg-[#0a0a0a] text-[#ededed]">
             <div className="max-w-[1400px] mx-auto px-6 md:px-12 w-full">
                 {/* Optional Header if needed, but component focuses on the timeline list */}
 
                 <div className="flex flex-col w-full">
-                    {steps.map((step, index) => (
+                    {steps.map((step) => (
                         <ProcessStep
                             key={step.id}
                             step={step}
-                            isLast={index === steps.length - 1}
+                            isMobile={isMobile}
                         />
                     ))}
                     {/* Final Divider at the bottom */}
